@@ -28,7 +28,10 @@ public class ReceiptPanel extends JPanel
 	private static final  Color PALE_GOLDENROD = new Color(238,232,170);
 	
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
+
+
 	private static JList<String> receiptList = new JList<String>(listModel);
+
 	private static long subtotalAmount = 0;
 	private static long taxAmount = 0;
 	private static long tipAmount = 0;
@@ -37,6 +40,13 @@ public class ReceiptPanel extends JPanel
 	private static double salesTax=0;
 	private static String transaction = "";
 	
+	public static JList<String> getReceiptList() {
+		return receiptList;
+	}
+
+	public static DefaultListModel<String> getListModel() {
+		return listModel;
+	}
 	/**
 	 * Constructs the ReceiptPanel.  Sets the initial conditions of the panel and the receiptList JList object.
 	 * Adds a JScrollPane containing receiptList to this JPanel.

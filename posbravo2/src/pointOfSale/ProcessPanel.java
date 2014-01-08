@@ -97,6 +97,8 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			Tools.addBlankSpace(buttonPanel, 1);
 //		buttonPanel.add(new MenuButton("Delete", "Delete", this));
 	//	buttonPanel.add(new MenuButton("Card", "Card", this));
+		buttonPanel.add(new MenuButton("Gift Card", "Gift Card", this));	
+		buttonPanel.add(new MenuButton("Debit", "Debit", this));	
 		buttonPanel.add(new MenuButton("Cash", "Cash", this));
 		buttonPanel.add(new MenuButton("Back", "Back", this));
 
@@ -173,6 +175,17 @@ public class ProcessPanel extends JPanel implements ActionListener {
 		    CardPanel.setLoaded(false);
 		    CardPanel.timerCheck();
 		}
+		//Jung needs to program giftcard at this point
+		if (event.getActionCommand().equals("Gift Card") && receiptList.getSelectedIndex() > -1) {
+			
+		}
+			
+		//Jung needs to program giftcard at this point
+		if (event.getActionCommand().equals("Debit") && receiptList.getSelectedIndex() > -1) {
+			
+			
+		}
+			
 	}
 
 	private void deleteReceipt() {

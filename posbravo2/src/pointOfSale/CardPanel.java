@@ -1521,15 +1521,17 @@ public class CardPanel extends JPanel implements ActionListener {
 	
 		return toReturn;
 	}
+/*	//no longer use becuase we have response extract
 
 	private static String[] num3() {
 		return num3(receiptSave, false);
 	}
 	
+	
 	private static String[] num3(boolean voidsale) {
 		return num3(receiptSave, voidsale);
 	}
-	
+	*/
 	private Object[] checkForPartialApproval(){
 		String [] checker = ResponseExtract.getData(receiptSave.getName(), "PreAuth"); //num2();
 		Object [] retrn = new Object [3];
@@ -1557,7 +1559,7 @@ public class CardPanel extends JPanel implements ActionListener {
 		}
 		return retrn;
 	}
-	
+	/*
 	// changed to Static
 	protected static String[] num3(File receiptSaveTemp, boolean voidSale) {
 		String toReturn[] = new String[10];
@@ -1592,7 +1594,7 @@ public class CardPanel extends JPanel implements ActionListener {
 				/*Pattern p = Pattern.compile("[\\da-zA-z=]+");
 				Matcher m = p.matcher(toReturn[8]);
 			    m.find();
-			    toReturn[8] = m.group();*/
+			    toReturn[8] = m.group();
 				
 			}
 			else if (read.contains("InvoiceNo")) {
@@ -1725,7 +1727,7 @@ public class CardPanel extends JPanel implements ActionListener {
 
 		return toReturn;
 	}
-
+*/
 	private static boolean validate(String cardNum, String expDate) {
 		boolean toReturn = false;
 		Calendar cal = Calendar.getInstance();

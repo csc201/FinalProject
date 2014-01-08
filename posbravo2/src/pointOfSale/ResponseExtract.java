@@ -50,7 +50,8 @@ public class ResponseExtract {
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
-		} else {
+		} 
+		else {
 			try {
 				reader = new Scanner(new File("Files/Transaction/Response/2/"
 						+ fileName + ".xml"));

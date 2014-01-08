@@ -1,5 +1,6 @@
 package pointOfSale;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +31,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 	private JList<String> receiptList = new JList<String>(listModel);
 	private JLabel titleLabel = new JLabel("Load Saved Receipts", SwingConstants.CENTER);
 	private JLabel listLabel = new JLabel("Select Receipt from list below", SwingConstants.LEFT);
-	
+	private String firstline;
 	/**
 	 * Arranges all components in this class onto a JPanel and reads all saved receipt text files, displaying
 	 * the text files names in a JList
@@ -77,12 +78,32 @@ public class ReceiptLoader extends JPanel implements ActionListener
 			deleteAll();
 		if(event.getActionCommand().equals("Void") && receiptList.getSelectedIndex() > -1 && checkValidState(receiptList.getSelectedValue()))
 		{
-			Response response3 = new Response(5, CardPanel.num3(new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()), true));
+			//ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
+			//String firstLine = ReceiptPanel.getListModel().get(0).trim();
+			String inputVoid[] = null;
+			String data[] = null;
+			if(firstline.equalsIgnoreCase("SWIPED")) {
+				data = ResponseExtract.getData(receiptList.getSelectedValue(), "PreAuthCapture");
+				inputVoid = new String[] {"", data[1], data[2], "POS BRAVO v1.0", data[5], data[3], data[7], data[8], data[6], data[0]};
+				
+			} else if(firstline.equalsIgnoreCase("PROGRESS")) {
+				data = ResponseExtract.getData(receiptList.getSelectedValue(), "PreAuth");
+				inputVoid = new String[] {"", data[1], data[1], "POS BRAVO v1.0", data[5], data[4], data[7], data[8], data[6], data[0]};
+			} else if(firstline.equalsIgnoreCase("OPEN")) {
+				deleteReceipt();
+				return;
+			} else{
+				System.out.print("Extract Error");
+			}
+		
+			Response response3 = new Response(4, inputVoid);
 			CardPanel.saveTransaction(response3.getXML(), response3.getResponse(), 3, new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()));
 			if(response3.getResponse().contains("Approved")) {
 				ProcessPanel.closeReceipt("VOIDED", new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()));
 				//tabStrings = new String[]{"","","",""};
 				//SystemInit.setTransactionScreen();
+				
+				ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
 				Tools.update(receiptList);
 			} else {
 				//String response = CardPanel.getText(response3.getResponse());
@@ -129,15 +150,18 @@ public class ReceiptLoader extends JPanel implements ActionListener
 		Scanner checker = null;
 		try {
 			checker = new Scanner(toCheck);
-			String line = checker.nextLine();
+			firstline = checker.nextLine();
 			checker.close();
-			if(line == null)
+			if(firstline == null)
 			{
 				throw new FileNotFoundException();
 			}
-			if(line.equalsIgnoreCase("PROGRESS") || line.equalsIgnoreCase("SWIPED"))
+			if(firstline.equalsIgnoreCase("PROGRESS") || firstline.equalsIgnoreCase("SWIPED") || firstline.equalsIgnoreCase("OPEN"))
 			{
 				return true;
+			} else {
+					JOptionPane.showMessageDialog(null, "This ticket has already VOIDED or This ticket is not SWIPED/PROGRESS/OPEN type.");
+					return false;
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
