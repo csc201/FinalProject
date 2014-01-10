@@ -39,7 +39,7 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			SwingConstants.CENTER);
 	private JLabel listLabel = new JLabel("Select Receipt from list below",
 			SwingConstants.LEFT);
-	
+
 	private static boolean isAdmin;
 
 	public ProcessPanel(boolean isAdmin__) {
@@ -51,37 +51,47 @@ public class ProcessPanel extends JPanel implements ActionListener {
 		readReceipts();
 		receiptList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		receiptList.setSelectionBackground(new Color(132, 250, 53));
-		receiptList.addMouseListener(new MouseListener(){
+		receiptList.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				if(arg0.getClickCount() >= 2)
-					
-					{if(receiptList.getSelectedIndex() > -1){
+				if (arg0.getClickCount() >= 2)
+				{
+					if (receiptList.getSelectedIndex() > -1) {
 						CardPanel.setLoaded(true);
 						CardPanel.reset();
 						CardPanel.DisplayFocus(true);
 						ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
-						CardPanel.loadReciept(new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()));
-					
-						
-					}}
+						CardPanel.loadReciept(new File(RECEIPT_PATH + "/"
+								+ receiptList.getSelectedValue()));
+
+					}
+					if(!receiptList.isFocusOwner()){
+						receiptList.clearSelection();
+						//receiptList.setSelectionBackground(Color.white);
+						System.out.print(receiptList.getSelectedIndex());
+					}
+				} 
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 			}
+
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub	
+				// TODO Auto-generated method stub
 			}
 		});
 		titleLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -91,14 +101,14 @@ public class ProcessPanel extends JPanel implements ActionListener {
 
 		buttonPanel.setBackground(DARK_CHAMPAGNE);
 		buttonPanel.add(new MenuButton("Load", "Load", this));
-//		if(isAdmin)
-//			buttonPanel.add(new MenuButton("Void", "Void", this));
-//		else
-			Tools.addBlankSpace(buttonPanel, 1);
-//		buttonPanel.add(new MenuButton("Delete", "Delete", this));
-	//	buttonPanel.add(new MenuButton("Card", "Card", this));
-		buttonPanel.add(new MenuButton("Gift Card", "Gift Card", this));	
-		buttonPanel.add(new MenuButton("Debit", "Debit", this));	
+		// if(isAdmin)
+		// buttonPanel.add(new MenuButton("Void", "Void", this));
+		// else
+		Tools.addBlankSpace(buttonPanel, 1);
+		// buttonPanel.add(new MenuButton("Delete", "Delete", this));
+		// buttonPanel.add(new MenuButton("Card", "Card", this));
+		buttonPanel.add(new MenuButton("Gift Card", "Gift Card", this));
+		buttonPanel.add(new MenuButton("Debit", "Debit", this));
 		buttonPanel.add(new MenuButton("Cash", "Cash", this));
 		buttonPanel.add(new MenuButton("Back", "Back", this));
 
@@ -136,56 +146,62 @@ public class ProcessPanel extends JPanel implements ActionListener {
 				;
 			else {
 				String read = reader.nextLine();
-			//	System.out.println(read.matches("OPEN"));
-				if (!read.matches("CASH") && !read.matches("SWIPED") && !read.matches("VOIDED")) {
+				// System.out.println(read.matches("OPEN"));
+				if (!read.matches("CASH") && !read.matches("SWIPED")
+						&& !read.matches("VOIDED")) {
 					listModel.addElement(line);
 				}
 			}
 		}
-		if(reader != null)
-		reader.close();
+		if (reader != null)
+			reader.close();
 		inputStream.close();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
-		if (event.getActionCommand().equals("Load") && receiptList.getSelectedIndex() > -1)
-		{
+		if (event.getActionCommand().equals("Load")
+				&& receiptList.getSelectedIndex() > -1) {
 			CardPanel.setLoaded(true);
 			CardPanel.reset();
 			CardPanel.DisplayFocus(true);
 			ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
-			CardPanel.loadReciept(new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()));
-			
-			
+			CardPanel.loadReciept(new File(RECEIPT_PATH + "/"
+					+ receiptList.getSelectedValue()));
+
 		}
-		if (event.getActionCommand().equals("Delete") && receiptList.getSelectedIndex() > -1)
+		if (event.getActionCommand().equals("Delete")
+				&& receiptList.getSelectedIndex() > -1)
 			deleteReceipt();
-		if (event.getActionCommand().equals("Cash") && receiptList.getSelectedIndex() > -1)
-		{
+		if (event.getActionCommand().equals("Cash")
+				&& receiptList.getSelectedIndex() > -1) {
 			closeReceipt("CASH");
 			SystemInit.setTransactionScreen();
 		}
-		if (event.getActionCommand().equals("Card") && receiptList.getSelectedIndex() > -1)
+		if (event.getActionCommand().equals("Card")
+				&& receiptList.getSelectedIndex() > -1)
 			closeReceipt("CARD");
-		if (event.getActionCommand().equals("Back")){
+		if (event.getActionCommand().equals("Back")) {
 			SystemInit.setTransactionScreen();
-		    CardPanel.clearDisplay();
-		    CardPanel.setLoaded(false);
-		    CardPanel.timerCheck();
+			if (!receiptList.isSelectedIndex(-1))
+				ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
+			CardPanel.clearDisplay();
+			CardPanel.setLoaded(false);
+			CardPanel.timerCheck();
 		}
-		//Jung needs to program giftcard at this point
-		if (event.getActionCommand().equals("Gift Card") && receiptList.getSelectedIndex() > -1) {
-			
+		// Jung needs to program giftcard at this point
+		if (event.getActionCommand().equals("Gift Card")
+				&& receiptList.getSelectedIndex() > -1) {
+
 		}
-			
-		//Jung needs to program giftcard at this point
-		if (event.getActionCommand().equals("Debit") && receiptList.getSelectedIndex() > -1) {
-			
-			
+
+		// Jung needs to program giftcard at this point
+		if (event.getActionCommand().equals("Debit")
+				&& receiptList.getSelectedIndex() > -1) {
+
 		}
-			
+
 	}
 
 	private void deleteReceipt() {
@@ -210,24 +226,22 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			listWriter.println(listModel.getElementAt(count));
 		listWriter.close();
 	}
-	
+
 	public static void closeReceipt(String title) {
-		closeReceipt(title, new File(RECEIPT_PATH + "/"
-				+ receiptList.getSelectedValue()));
+		closeReceipt(title,
+				new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()));
 		SystemInit.setProcessScreen(isAdmin);
 	}
-
 
 	public static void closeReceipt(String title, File file) {
-//		File file = new File(RECEIPT_PATH + "/"
-//				+ receiptList.getSelectedValue());
+		// File file = new File(RECEIPT_PATH + "/"
+		// + receiptList.getSelectedValue());
 		Scanner reader = null;
 		PrintWriter printer = null;
 		String toPrint = "";
 		try {
 			reader = new Scanner(file);
-			if(!title.equalsIgnoreCase("OPEN"))
-			{
+			if (!title.equalsIgnoreCase("OPEN")) {
 				reader.nextLine();
 			}
 			toPrint += title;
@@ -248,33 +262,35 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			System.out.println("Error printing");
 		}
 
-		
 	}
+
 	public static void closeReceipt(String title, String approve) {
-		closeReceipt(title, new File(RECEIPT_PATH + "/"
-				+ receiptList.getSelectedValue()), approve);
+		closeReceipt(title,
+				new File(RECEIPT_PATH + "/" + receiptList.getSelectedValue()),
+				approve);
 		SystemInit.setProcessScreen(isAdmin);
 	}
+
 	public static void closeReceipt(String title, File file, String approve) {
-//		File file = new File(RECEIPT_PATH + "/"
-//				+ receiptList.getSelectedValue());
+		// File file = new File(RECEIPT_PATH + "/"
+		// + receiptList.getSelectedValue());
 		Scanner reader = null;
 		PrintWriter printer = null;
 		String toPrint = "";
 		try {
 			reader = new Scanner(file);
-			if(!title.equalsIgnoreCase("OPEN"))
-			{
+			if (!title.equalsIgnoreCase("OPEN")) {
 				reader.nextLine();
 			}
 			toPrint += title;
 			while (reader.hasNextLine()) {
 				toPrint += "\n" + reader.nextLine();
-				
-				
+
 			}
-			if(approve != null && !approve.equals("")){
-				toPrint += "\n" + Tools.toMoney(approve) + ReceiptPanel.manualTab(Tools.toMoney(approve)) + "Approved";
+			if (approve != null && !approve.equals("")) {
+				toPrint += "\n" + Tools.toMoney(approve)
+						+ ReceiptPanel.manualTab(Tools.toMoney(approve))
+						+ "Approved";
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -290,19 +306,15 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			System.out.println("Error printing");
 		}
 
-		
 	}
 
-	public static void toggleSelection(){
-		if(receiptList.getSelectionBackground().equals(new Color(132, 250, 53))){
+	public static void toggleSelection() {
+		if (receiptList.getSelectionBackground()
+				.equals(new Color(132, 250, 53))) {
 			receiptList.setSelectionBackground(new Color(252, 28, 35));
-		}
-		else{
+		} else {
 			receiptList.setSelectionBackground(new Color(132, 250, 53));
 		}
 	}
 
-	
 }
-
-

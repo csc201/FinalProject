@@ -114,12 +114,19 @@ public class TransactionGUI extends JPanel implements ActionListener
 			ReceiptPanel.deleteItem();
 		else if(event.getActionCommand().equals("Checkout"))
 			ReceiptPanel.saveReceipt();
+		//Tanes need to add the print to printer
 		else if(event.getActionCommand().equals("System"))
 			SystemInit.setAdminScreen();
 		else if(event.getActionCommand().equals("Categories"))
 			menuPanel.displayCategories();
-		else if(event.getActionCommand().equals("Process"))
+		else if(event.getActionCommand().equals("Process")) {	
+			//Tanes need to add the log file to prevent cheating
+			if (!ReceiptPanel.getListModel().isEmpty()) {
+				ReceiptPanel.saveReceipt();
+			}
+	
 			SystemInit.setProcessScreen(adminPrivilege);
+		}
 		    CardPanel.reset();
 	}
 	/**
