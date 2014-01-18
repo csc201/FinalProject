@@ -32,6 +32,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 	private JLabel titleLabel = new JLabel("Load Saved Receipts", SwingConstants.CENTER);
 	private JLabel listLabel = new JLabel("Select Receipt from list below", SwingConstants.LEFT);
 	private String firstline;
+	private static String[] ext;
 	/**
 	 * Arranges all components in this class onto a JPanel and reads all saved receipt text files, displaying
 	 * the text files names in a JList
@@ -55,6 +56,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 		buttonPanel.add(new MenuButton("Delete","Delete",this));
 		buttonPanel.add(new MenuButton("Void", "Void", this));
 		buttonPanel.add(new MenuButton("Delete All","Delete All",this));
+		buttonPanel.add(new MenuButton("Return","Return",this));
 		
 		upperPanel.setBackground(DARK_CHAMPAGNE);
 		upperPanel.add(titleLabel);
@@ -72,10 +74,60 @@ public class ReceiptLoader extends JPanel implements ActionListener
 	{
 		if(event.getActionCommand().equals("Load") && receiptList.getSelectedIndex() > -1)
 			ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
-		if(event.getActionCommand().equals("Delete") && receiptList.getSelectedIndex() > -1)
+		if(event.getActionCommand().equals("Delete") && receiptList.getSelectedIndex() > -1){
+			JList<String> receiptPanelList = ReceiptPanel.getReceiptList();
+			if(receiptPanelList.isSelectionEmpty()){
 			deleteReceipt();
+			}
+			else{
+				ReceiptPanel.deleteItem();
+			}
+		}
 		if(event.getActionCommand().equals("Delete All"))
 			deleteAll();
+		if(event.getActionCommand().equals("Return")){
+			
+			Scanner read = null;
+				try {
+					read = new Scanner(new File("Files/Receipts/" + receiptList.getSelectedValue()));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			
+			
+				if(read.nextLine().contains("RETURN")){
+					JList<String> receiptPanelList = ReceiptPanel.getReceiptList();
+					ListModel<String> listmodel = ReceiptPanel.getListModel();
+					String amount = "0";
+					for(int x = 0; x < listmodel.getSize(); x++){
+						if(listmodel.getElementAt(x).contains("Total")){
+							Scanner ext = new Scanner(listmodel.getElementAt(x));
+							amount = ext.findInLine("\\d+\\.\\d+");
+							
+						}
+					}
+					if(receiptPanelList.isSelectionEmpty()){
+						
+						String data[] = {"Return", CardPanel.getInvoiceNo() + "", CardPanel.getInvoiceNo() + "", "POS BRAVO v1.0", ext[5] , amount, "merchantID2" };
+						Response res = new Response(2, data);
+						if (res.getResponse().contains("Approved")) {
+							JOptionPane.showMessageDialog(null, "Success");
+						}
+					}
+					else{
+							
+					}	
+				}
+				else{
+					ext = ResponseExtract.getData(receiptList.getSelectedValue(), "Return");
+					ReceiptPanel.saveReceiptReturn(); //generate new Receipt
+				}
+				read.close();
+			
+			
+		}
 		if(event.getActionCommand().equals("Void") && receiptList.getSelectedIndex() > -1 && checkValidState(receiptList.getSelectedValue()))
 		{
 			//ReceiptPanel.loadReceipt(receiptList.getSelectedValue());
