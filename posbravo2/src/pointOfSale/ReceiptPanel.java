@@ -40,6 +40,10 @@ public class ReceiptPanel extends JPanel
 	private static double salesTax=0;
 	private static String transaction = "";
 	
+	public static String getNewReceipt() {
+		return newReceipt;
+	}
+	
 	public static JList<String> getReceiptList() {
 		return receiptList;
 	}
@@ -204,10 +208,9 @@ public class ReceiptPanel extends JPanel
 		
 		contentWriter.println("RETURN");
 		listWriter.println(newReceipt);
-		for(int count=0; count < listModel.getSize(); count++){
-			if(!listModel.elementAt(count).equalsIgnoreCase("open")){
-			contentWriter.println(listModel.elementAt(count));
-			}
+		for(int count=1; count < listModel.getSize(); count++){
+				contentWriter.println(listModel.elementAt(count));
+			
 }
 		
 		listWriter.close();
@@ -271,6 +274,7 @@ public class ReceiptPanel extends JPanel
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
+	
 	/**
 	 * Private helper method which reads the local sales tax amount 
 	 * from a text file and sets a double value equal to it.

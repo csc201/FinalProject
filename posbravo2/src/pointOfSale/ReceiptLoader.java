@@ -85,7 +85,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 		}
 		if(event.getActionCommand().equals("Delete All"))
 			deleteAll();
-		if(event.getActionCommand().equals("Return")){
+		if(event.getActionCommand().equalsIgnoreCase("Return")){
 			
 			Scanner read = null;
 				try {
@@ -94,10 +94,11 @@ public class ReceiptLoader extends JPanel implements ActionListener
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				ext = ResponseExtract.getData(receiptList.getSelectedValue(), "Return");
 				
 			
 			
-				if(read.nextLine().contains("RETURN")){
+				if(read.nextLine().contains("SWIPED")){
 					JList<String> receiptPanelList = ReceiptPanel.getReceiptList();
 					ListModel<String> listmodel = ReceiptPanel.getListModel();
 					String amount = "0";
@@ -109,21 +110,20 @@ public class ReceiptLoader extends JPanel implements ActionListener
 						}
 					}
 					if(receiptPanelList.isSelectionEmpty()){
-						
 						String data[] = {"Return", CardPanel.getInvoiceNo() + "", CardPanel.getInvoiceNo() + "", "POS BRAVO v1.0", ext[5] , amount, "merchantID2" };
 						Response res = new Response(2, data);
 						if (res.getResponse().contains("Approved")) {
 							JOptionPane.showMessageDialog(null, "Success");
+							ReceiptPanel.saveReceiptReturn();
+							listModel.clear();
+							readReceipts();
 						}
 					}
 					else{
 							
 					}	
 				}
-				else{
-					ext = ResponseExtract.getData(receiptList.getSelectedValue(), "Return");
-					ReceiptPanel.saveReceiptReturn(); //generate new Receipt
-				}
+				
 				read.close();
 			
 			
