@@ -57,8 +57,16 @@ public class ResponseCredit {
 		//PreAuth/Return For Encrypted Reader
 		case 2:
 			tranCode = "PreAuth";
-			if(data[0].equals("Return")){
-				tranCode = data[0];
+			if(data[0].equalsIgnoreCase("Return")){
+				tranCode = "ReturnByRecordNo";
+				invoiceNo = data[1];
+				refNo = data[2];
+				memo = data[3];
+				recordNo = data[4];
+				authorize = data[5];
+				merchantID = data[6];
+				result = getResultRec2(); 
+				return;
 			}
 			invoiceNo = data[1];
 			refNo = data[2];
@@ -453,6 +461,35 @@ public class ResponseCredit {
 				return temp;
 				
 			}
+			private String getResultRec2()
+			{
+				String temp = "<TStream>\n\t<Transaction>\n\t\t<MerchantID>";
+				temp += merchantID;
+				temp += "</MerchantID>\n\t\t<OperatorID>test</OperatorID>\n\t\t<TranType>";
+				temp += tranType;
+				temp += "</TranType>\n\t\t<TranCode>";
+				temp += tranCode;
+				temp += "</TranCode>\n\t\t<PartialAuth>";
+				temp += partialAuth + "</PartialAuth>";		
+				temp +=	"\n\t\t<InvoiceNo>";
+				temp += invoiceNo;//"38";
+				temp += "</InvoiceNo>\n\t\t<RefNo>";
+				temp += refNo;//"38";
+				temp += "</RefNo>\n\t\t<Memo>";
+				temp += memo;
+				temp += "</Memo>\n\t\t<Frequency>";
+				temp += frequency;
+				temp += "</Frequency>\n\t\t<RecordNo>";
+				temp += recordNo;
+				temp += "</RecordNo>";
+				temp += "\n\t\t<Amount>\n\t\t\t<Purchase>";
+				temp += authorize;
+				temp += "</Purchase>\n\t\t</Amount>";
+				temp += "\n\t</Transaction>\n</TStream>";
+				
+				return temp;
+			}
+		
 		
 
 		public String getXML() {

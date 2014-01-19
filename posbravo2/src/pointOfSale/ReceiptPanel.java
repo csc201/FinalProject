@@ -148,8 +148,11 @@ public class ReceiptPanel extends JPanel
 		
 		contentWriter.println("OPEN");
 		listWriter.println(newReceipt);
-		for(int count=0; count < listModel.getSize(); count++)
+		for(int count=0; count < listModel.getSize(); count++){
+			if(!listModel.elementAt(count).equalsIgnoreCase("open")){
 			contentWriter.println(listModel.elementAt(count));
+			}
+}
 		
 		listWriter.close();
 		contentWriter.close();
@@ -177,6 +180,35 @@ public class ReceiptPanel extends JPanel
 		listWriter.println(newReceipt);
 		for(int count=0; count < listModel.getSize(); count++)
 			contentWriter.println(listModel.elementAt(count));
+		
+		listWriter.close();
+		contentWriter.close();
+		clearReceipt();
+	}
+	public static void saveReceiptReturn()
+	{
+
+		PrintWriter listWriter = null;
+		PrintWriter contentWriter = null;
+		newReceipt = getTimeStamp();
+		
+		try
+		{
+			listWriter = new PrintWriter(new FileOutputStream(RECEIPT_LIST_FILE, true));
+			contentWriter = new PrintWriter(RECEIPT_PATH + newReceipt);
+		}
+		catch(FileNotFoundException e)
+		{
+			JOptionPane.showMessageDialog(null,"File Not Found");
+		}
+		
+		contentWriter.println("RETURN");
+		listWriter.println(newReceipt);
+		for(int count=0; count < listModel.getSize(); count++){
+			if(!listModel.elementAt(count).equalsIgnoreCase("open")){
+			contentWriter.println(listModel.elementAt(count));
+			}
+}
 		
 		listWriter.close();
 		contentWriter.close();

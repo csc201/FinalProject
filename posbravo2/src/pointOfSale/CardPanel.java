@@ -1432,11 +1432,11 @@ public class CardPanel extends JPanel implements ActionListener {
 
 	}
 
-	private static int getInvoiceNo() {
+	public static int getInvoiceNo() {
 		File dir = new File("Files/Transaction/Sent/1/");
 		return dir.list().length + 1;
 	}
-
+	
 
 	
 	private String[] num2() {
