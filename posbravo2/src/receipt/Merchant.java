@@ -25,7 +25,7 @@ public class Merchant implements Serializable {
 	 * @param merchantAddress
 	 * @param merchantLogo
 	 */
-	Merchant(String merchantName, String merchantType, String merchantPhone, Address merchantAddress) {
+	public Merchant(String merchantName, String merchantType, String merchantPhone, Address merchantAddress) {
 		this.merchantName = merchantName;
 		this.merchantType = merchantType;
 		this.merchantPhone = merchantPhone;

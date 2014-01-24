@@ -1,11 +1,13 @@
 package receipt;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.math.BigDecimal;
 
 /**
  * This class runs the receipt manager application for demonstration in my CSC 201 class as part of my final exam
@@ -117,7 +119,7 @@ public class ReceiptDemo {
 			receiptManager.setVisible(false);
 		
 
-		Receipt receipt = new Receipt(merchant, "Stephen", salesTax);
+		Receipt receipt = new Receipt(merchant, "Stephen", new BigDecimal(salesTax));
 		int items = getRandomNumber(100,50);
 		for(int i=0; i < items; i++) {
 			MenuItem menuItem = receiptMenu[getRandomNumber(menuPool, receiptMenu.length)];
@@ -126,7 +128,7 @@ public class ReceiptDemo {
 			receipt.addItem(menuItem);
 		}
 		
-		receiptManager = new ReceiptManager(receipt);
+		receiptManager = new ReceiptManager(merchant, "Stephen", new BigDecimal(salesTax));
 		receiptManager.setVisible(true);
 	}
 	/**

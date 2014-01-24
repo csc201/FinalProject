@@ -27,7 +27,7 @@ public class MenuItem implements Serializable {
 	 * @param name
 	 * @param price
 	 */
-	MenuItem(String name, int price) { this(name, new BigDecimal(price)); }
+	public MenuItem(String name, int price) { this(name, new BigDecimal(price)); }
 	/**
 	 * Instantiates the menu item class with a new name and a double value price, which is converted to a 
 	 * BigDecimal object
@@ -35,7 +35,7 @@ public class MenuItem implements Serializable {
 	 * @param name
 	 * @param price
 	 */
-	MenuItem(String name, String price) { this(name, new BigDecimal(price)); }
+	public MenuItem(String name, String price) { this(name, new BigDecimal(price)); }
 	/**
 	 * Instantiates the menu item class with a new name and price using a BigDecimal object for the price
 	 * 

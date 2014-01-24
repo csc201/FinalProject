@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-
+import receipt.*;
+import receipt.MenuItem;
 /**
  * 
  * @author Stephen Collins, Vanessa Harris, Kolter Bradshaw, Cristhian Ramirez
@@ -20,25 +22,22 @@ import java.util.Scanner;
  */
 public class ReceiptPanel extends JPanel
 {
+	private static final String TEMP_CASHIER = "CASHIER";
+	private static final Merchant TEMP_MERCHANT = new Merchant("Merchant", "Restaurant"," 703-323-3000",
+			new Address("8333 Little River Turnpike","","Annandale",Address.State.VA,"22003"));
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIPT_PATH = "Files/Receipts/";
 	private static final String RECEIPT_LIST_FILE = RECEIPT_PATH + "ReceiptList";
 	private static final String TAX_FILE = "Files/Tax/SalesTax";
-	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
-	private static final  Color PALE_GOLDENROD = new Color(238,232,170);
 	
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
-
-
 	private static JList<String> receiptList = new JList<String>(listModel);
-
-	private static long subtotalAmount = 0;
-	private static long taxAmount = 0;
-	private static long tipAmount = 0;
-	private static long totalAmount = 0;
+	
 	private static String newReceipt = "";
-	private static double salesTax=0;
+	private static BigDecimal salesTax = BigDecimal.ZERO;
 	private static String transaction = "";
+	
+	private static ReceiptManager receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, salesTax);
 	
 	public static JList<String> getReceiptList() {
 		return receiptList;
@@ -53,18 +52,12 @@ public class ReceiptPanel extends JPanel
 	 */
 	ReceiptPanel()
 	{
-		setBorder(BorderFactory.createMatteBorder(10,10,10,10,DARK_CHAMPAGNE));
 		setLayout(new GridLayout(1,1));
-		setBackground(DARK_CHAMPAGNE);
-		
 		readTax();
 		
-		receiptList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		receiptList.setBackground(PALE_GOLDENROD);
-		receiptList.setFont(new Font(Font.SERIF,Font.PLAIN,16));
-
-		add(new JScrollPane(receiptList, 
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
+		receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, salesTax);
+		
+		add(receiptManager);
 	}
 	/**
 	 * Static method called by the ItemPanel class to add an item to the receiptList.
@@ -74,18 +67,10 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void addItem(String itemPrice, String itemName)
 	{
-		subtotalAmount = subtotalAmount + Integer.parseInt(itemPrice);
-		updateTotals();
-		
-		if(listModel.getSize() > 1)
-			for(int count=0; count < 5; count++)
-				listModel.removeElementAt(listModel.getSize()-1);
-		listModel.addElement(Tools.toMoney(itemPrice) + manualTab(itemPrice) + itemName);
-		listModel.addElement(" ");
-		listModel.addElement(Tools.toMoney(subtotalAmount) + manualTab(Tools.toMoney(subtotalAmount)) + "Subtotal");
-		listModel.addElement(Tools.toMoney(taxAmount) + manualTab(Tools.toMoney(taxAmount)) + "Tax");
-		listModel.addElement(Tools.toMoney(tipAmount) + manualTab(Tools.toMoney(tipAmount)) + "Tip");
-		listModel.addElement(Tools.toMoney(totalAmount) + manualTab(Tools.toMoney(totalAmount)) + "Total");
+		itemPrice = itemPrice.substring(0, itemPrice.length()-2) +"." 
+				+ itemPrice.substring(itemPrice.length()-2, itemPrice.length());
+		MenuItem item = new MenuItem(itemName, itemPrice);
+		receiptManager.addItem(item);
 	}
 	/**
 	 * Called by the Delete button in the CheckOutPanel class to remove an item from the receiptList.
@@ -93,39 +78,14 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void deleteItem()
 	{
-		if(receiptList.getSelectedIndex() < listModel.getSize()-4 && receiptList.getSelectedIndex() > -1)
-		{
-			String itemPrice = receiptList.getSelectedValue().substring(0,
-																receiptList.getSelectedValue().indexOf(" "));
-			
-			subtotalAmount = subtotalAmount - Tools.toAmount(itemPrice);
-			updateTotals();
-			
-			listModel.removeElementAt(receiptList.getSelectedIndex());
-			if(listModel.getSize() == 5)
-				clearReceipt();
-			else
-			{
-				for(int count=0; count < 4; count++)
-					listModel.removeElementAt(listModel.getSize()-1);
-				listModel.addElement(" ");
-				listModel.addElement(Tools.toMoney(subtotalAmount) + manualTab(Tools.toMoney(subtotalAmount)) + "Subtotal");
-				listModel.addElement(Tools.toMoney(taxAmount) + manualTab(Tools.toMoney(taxAmount)) + "Tax");
-				listModel.addElement(Tools.toMoney(tipAmount) + manualTab(Tools.toMoney(tipAmount)) + "Tip");
-				listModel.addElement(Tools.toMoney(totalAmount) + manualTab(Tools.toMoney(totalAmount)) + "Total");
-			}
-		}
+		receiptManager.deleteSelectedItem();
 	}
 	/**
 	 * Removes all elements from the receiptList and resets the total price to zero.
 	 */
 	public static void clearReceipt()
 	{
-		listModel.removeAllElements();
-		subtotalAmount = 0;
-		taxAmount = 0;
-		tipAmount = 0;
-		totalAmount = 0;
+		receiptManager.clearReceipt();
 	}
 	/**
 	 * Saves the receiptList to text file before clearing it
@@ -208,14 +168,6 @@ public class ReceiptPanel extends JPanel
 		inputStream.close();
 	}
 	/**
-	 * Updates the total price to include sales tax
-	 */
-	private static void updateTotals()
-	{
-		taxAmount = Math.round(subtotalAmount * salesTax / 100.0);
-		totalAmount = subtotalAmount + taxAmount;
-	}
-	/**
 	 * JLists do not recognize the tab character, so this inserts a manual tab that, while not perfect,
 	 * gets the job done.
 	 * @param entry First character, which the "tab" will follow
@@ -245,7 +197,6 @@ public class ReceiptPanel extends JPanel
 	 */
 	private static void readTax()
 	{
-
 		Scanner inputStream = null;
 		try
 		{
@@ -256,8 +207,11 @@ public class ReceiptPanel extends JPanel
 			JOptionPane.showMessageDialog(null,"File Not Found");
 		}
 		
-		salesTax = Double.parseDouble(inputStream.next());
+		salesTax = new BigDecimal(inputStream.next());
+		salesTax = salesTax.divide(new BigDecimal(100));
 		inputStream.close();
+		
+		receiptManager.setSalesTax(salesTax);
 	}
 	
 	public static String getTransaction() {

@@ -30,6 +30,7 @@ public class Receipt {
 	private Date date;
 	private LinkedHashMap<Integer, MenuItem> itemMap;
 	private ReceiptGUI gui;
+	private String table;
 	
 	/**
 	 * Instantiates the Receipt object with the argument Merchant, cashier and taxPercent data
@@ -37,11 +38,10 @@ public class Receipt {
 	 * @param cashier
 	 * @param taxPercent
 	 */
-	Receipt(Merchant merchant, String cashier, String taxPercent) {
+	Receipt(Merchant merchant, String cashier, BigDecimal salesTax) {
 		this.merchant = merchant;
 		this.cashier = cashier;
-		salesTax = new BigDecimal(taxPercent);
-		salesTax = salesTax.divide(new BigDecimal(100), MathContext.DECIMAL64);
+		this.salesTax = salesTax;
 		date = new Date();
 		itemMap = new LinkedHashMap<Integer, MenuItem>();
 		gui = new ReceiptGUI();
@@ -107,6 +107,13 @@ public class Receipt {
 	 */
 	public void removeSelectedItem() {
 		itemMap.remove(gui.getSelectedKey());
+		gui.updateReceipt();
+	}
+	/**
+	 * Removes all items from the receipt;
+	 */
+	public void removeAll() {
+		itemMap.clear();
 		gui.updateReceipt();
 	}
 	/**

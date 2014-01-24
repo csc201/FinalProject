@@ -2,6 +2,7 @@ package receipt;
 import javax.swing.*;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -15,194 +16,164 @@ import java.awt.event.MouseWheelListener;
 /**
  * Manages Receipt Objects to allow the user to create copies of an original receipt and moves MenuItems between them.
  * 
- * @author Stephen
+ * @author Stephen Collins
  *
  */
-public class ReceiptManager extends JFrame {
+public class ReceiptManager extends JPanel {
 	private static final long serialVersionUID = 1L; //Default value
-	private Receipt original;
-	private ArrayList<Receipt> copyList;
-	private JPanel contentPanel;
-	private JPanel copyFrame;
-	private JPanel copyPanel;
-	private JPopupMenu originalPopup;
-	private JPopupMenu copyPopup;
-	private JComboBox<Integer> copyBox;
+	
+	private JPanel receiptPanel;
+	private ArrayList<Receipt> receiptList;
+	private JPopupMenu popup;
+	private JComboBox<Integer> receiptBox;
 	private Dimension screenSize;
-	private boolean copyIsSelected;
-	private boolean originalIsSelected;
+	private boolean receiptIsSelected;
+	private int selectedReceiptIndex;
+	private int selectedItemNum;
 	private JDialog dialog;
 	private int dialogChoice;
+	private Merchant merchant;
+	private String cashier;
+	private BigDecimal salesTax;
 	
 	/**
-	 * Instantiates the ReceiptManger using the argument Receipt to create an original receipt which can be copied an manipulated
+	 * Instantiates the ReceiptManger using the argument Receipt to create an original receipt which can be copied and manipulated
 	 * 
 	 * @param original
 	 */
-	ReceiptManager(Receipt original) {
-		setUndecorated(true);
-		setExtendedState(MAXIMIZED_BOTH);
+	public ReceiptManager(Merchant merchant, String cashier, BigDecimal salesTax) {
+		setBackground(CustomColor.PALE_GOLDENROD);
+		addMouseListener(new BackgroundListener());
 		
-		generateBackground();
-		generatePopups();
+		this.merchant = merchant;
+		this.cashier = cashier;
+		this.salesTax = salesTax;
 		
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.original = original;
-		this.original.addReceiptListener(new OriginalListener());
-		this.original.addReceiptItemListener(new OriginalItemListener());
-		copyList = new ArrayList<Receipt>();
-		originalIsSelected = false;
-		copyIsSelected = false;
+		receiptList = new ArrayList<Receipt>();
+		receiptList.add(new Receipt(this.merchant, this.cashier, this.salesTax));
+		receiptList.get(0).addReceiptListener(new ReceiptListener());
+		receiptList.get(0).addReceiptItemListener(new ReceiptItemListener());
+		receiptList.get(0).addReceiptWheelListener(new ReceiptScroller());
+		receiptIsSelected = false;
 		
-		contentPanel.add(generateOriginalReceiptPanel());
-		generateCopyReceiptPanel();
+		generatePopupMenu();
+		
+		add(generateReceiptPanel());
 	}
-	/**
-	 * Generates the background of the Receipt manager
-	 */
-	private void generateBackground() {
-		JPanel borderPanel = new JPanel(new BorderLayout());
-		borderPanel.setBackground(CustomColor.PALE_GOLDENROD);
-		borderPanel.setBorder(BorderFactory.createMatteBorder(10,10,10,10, borderPanel.getBackground()));
-		getContentPane().add(borderPanel, BorderLayout.CENTER);
+	private JPanel generateReceiptPanel() {
+		JPanel receiptFrame = new JPanel();
+		receiptFrame.setLayout(new BorderLayout());
+		receiptFrame.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4 - 10,
+				(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100));
 		
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonPanel.setBackground(CustomColor.PALE_GOLDENROD);
-		JButton button = new JButton("Exit");
-		button.setFont(new Font(Font.SERIF, Font.BOLD, 24));
-		button.addActionListener(new ExitListener());
-		buttonPanel.add(button);
-		borderPanel.add(buttonPanel, BorderLayout.NORTH);
+		JPanel splitPanel = new JPanel();
+		splitPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		splitPanel.setBackground(CustomColor.PALE_GOLDENROD);
+
+		receiptBox = new JComboBox<Integer>();
+		receiptBox.addItem(1);
+		receiptBox.addItemListener(new ReceiptBoxListener());
+		splitPanel.add(receiptBox);
 		
-		contentPanel = new JPanel(new FlowLayout());
-		contentPanel.setBackground(CustomColor.PALE_GOLDENROD);
-		contentPanel.addMouseListener(new BackgroundListener());
-		borderPanel.add(contentPanel, BorderLayout.CENTER);
-	}
-	/*
-	 * Constructs a JPanel to hold the original Receipt object's GUI
-	 */
-	private JPanel generateOriginalReceiptPanel() {
-		JPanel originalReceiptPanel = new JPanel(new BorderLayout());
-		originalReceiptPanel.setPreferredSize(new Dimension(400,(int)screenSize.getHeight()-100));
-		
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		panel.setBackground(CustomColor.PALE_GOLDENROD);
 		JButton button = new JButton("Create Copy");
 		button.addActionListener(new ButtonListener());
-		panel.add(button);
-		originalReceiptPanel.add(panel, BorderLayout.NORTH);
+		splitPanel.add(button);
 		
-		panel = new JPanel(new GridLayout(1,1));
-		panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEtchedBorder()));
-		panel.add(original.getGUI());
-		originalReceiptPanel.add(panel, BorderLayout.CENTER);
-		
-		return originalReceiptPanel;
-	}
-	/*
-	 * Constructs a JPanel to hold the GUI for the Receipt copies
-	 */
-	private void generateCopyReceiptPanel() {
-		copyFrame = new JPanel(new BorderLayout());
-		copyFrame.setPreferredSize(new Dimension(400,(int)screenSize.getHeight()-100));
-		
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		panel.setBackground(CustomColor.PALE_GOLDENROD);
-		panel.add(new JLabel("Receipt Copy:"));
-		
-		copyBox = new JComboBox<Integer>();
-		copyBox.addItemListener(new CopyBoxListener());
-		panel.add(copyBox);
-		
-		JButton button = new JButton("Delete Copy");
+		button = new JButton("Delete Copy");
 		button.addActionListener(new ButtonListener());
-		panel.add(button);
+		splitPanel.add(button);
 		
 		button = new JButton("Delete All");
 		button.addActionListener(new ButtonListener());
-		panel.add(button);
+		splitPanel.add(button);
 		
-		copyPanel = new JPanel(new GridLayout(1,1));
-		copyPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEtchedBorder()));
+		receiptPanel = new JPanel();
+		receiptPanel.setLayout(new GridLayout(1,1));
+		receiptPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEtchedBorder()));
 		
-		copyFrame.add(panel, BorderLayout.NORTH);
-		copyFrame.add(copyPanel, BorderLayout.CENTER);
+		receiptFrame.add(splitPanel, BorderLayout.NORTH);
+		receiptFrame.add(receiptPanel, BorderLayout.CENTER);
+		
+		viewReceipt(0);
+		
+		return receiptFrame;
+	}
+	public void clearReceipt() {
+		deleteAll();
+	}
+	public void setSalesTax(BigDecimal salesTax) {
+		this.salesTax = salesTax;
+		for(Receipt receipt : receiptList)
+			receipt.refresh();
 	}
 	/*
 	 * Constructs the popup menus which appear when the user right clicks a receipt
 	 */
-	private void generatePopups() {
-		OriginalPopupListener originalListener = new OriginalPopupListener();
-		CopyPopupListener copyListener = new CopyPopupListener();
+	private void generatePopupMenu() {
+		ReceiptPopupListener popupListener = new ReceiptPopupListener();
 		JMenuItem item;
 		
-		originalPopup = new JPopupMenu();
+		popup = new JPopupMenu();
 		item = new JMenuItem("Split");
-		item.addActionListener(originalListener);
-		originalPopup.add(item);
+		item.addActionListener(popupListener);
+		popup.add(item);
 		item = new JMenuItem("Discount");
-		item.addActionListener(originalListener);
-		originalPopup.add(item);
-		
-		copyPopup = new JPopupMenu();
-		item = new JMenuItem("Split");
-		item.addActionListener(copyListener);
-		copyPopup.add(item);
-		item = new JMenuItem("Discount");
-		item.addActionListener(copyListener);
-		copyPopup.add(item);
+		item.addActionListener(popupListener);
+		popup.add(item);
+	}
+	public void deleteSelectedItem() {
+		if(receiptList.get(receiptBox.getSelectedIndex()).hasOrderSelected())
+			receiptList.get(receiptBox.getSelectedIndex()).removeSelectedItem();
+	}
+	public void addItem(MenuItem item) {
+		receiptList.get(receiptBox.getSelectedIndex()).addItem(item);
 	}
 	/*
 	 * Creates another copy of the receipt and selects it
 	 */
 	private void createCopy() {
-		copyList.add(original.emptyCopy());
-		copyList.get(copyList.size()-1).addReceiptListener(new CopyListener());
-		copyList.get(copyList.size()-1).addReceiptWheelListener(new CopyScroller());
-		copyList.get(copyList.size()-1).addReceiptItemListener(new CopyItemListener());
-		copyList.get(copyList.size()-1).addReceiptWheelListener(new CopyScroller());
-		copyBox.addItem(copyList.size());
+		receiptList.add(receiptList.get(0).emptyCopy());
+		receiptList.get(receiptList.size()-1).addReceiptListener(new ReceiptListener());
+		receiptList.get(receiptList.size()-1).addReceiptWheelListener(new ReceiptScroller());
+		receiptList.get(receiptList.size()-1).addReceiptItemListener(new ReceiptItemListener());
+		receiptList.get(receiptList.size()-1).addReceiptWheelListener(new ReceiptScroller());
 		
-		if(copyList.size() == 1) {
-			contentPanel.add(copyFrame);
-			contentPanel.repaint();
-			contentPanel.validate();
-		}
-		
-		copyBox.setSelectedIndex(copyList.size()-1);
+		receiptBox.addItem(receiptList.size());
+		receiptBox.setSelectedIndex(receiptList.size()-1);
 		clearSelections();
 	}
 	/*
 	 * Deletes a copy of a receipt moving all of its MenuItems back to the Original
 	 */
 	private void deleteCopy() {
-		if(copyList.size() == 1) 
+		if(receiptList.size() == 1) 
 			deleteAll();
 		else {
-			for(Integer orderNumber : copyList.get(copyBox.getSelectedIndex()).getItems().keySet()) {
-				if(copyList.get(copyBox.getSelectedIndex()).getItem(orderNumber).isSplit()) {
-					MenuItem item = copyList.get(copyBox.getSelectedIndex()).getItem(orderNumber);
+			int index = receiptBox.getSelectedIndex();
+			
+			for(Integer orderNumber : receiptList.get(index).getItems().keySet()) {
+				if(receiptList.get(index).getItem(orderNumber).isSplit()) {
+					MenuItem item = receiptList.get(index).getItem(orderNumber);
 					item.split(item.getSplitCount()-1);
 					
-					if(original.getItems().containsKey(orderNumber))
-						original.addItem(orderNumber, item);
-					for(Receipt copy : copyList)
-						if(copy.getItems().containsKey(orderNumber))
-							copy.addItem(orderNumber, item);
+					for(Receipt receipt : receiptList)
+						if(receipt.getItems().containsKey(orderNumber))
+							receipt.addItem(orderNumber, item);
 				}
+				else if(index == 0)
+					receiptList.get(1).addItem(orderNumber, receiptList.get(index).getItem(orderNumber));
 				else
-					original.addItem(orderNumber, copyList.get(copyBox.getSelectedIndex()).getItem(orderNumber));
+					receiptList.get(0).addItem(orderNumber, receiptList.get(index).getItem(orderNumber));
 			}
 			
-			copyList.remove(copyBox.getSelectedIndex());
+			receiptList.remove(index);
 			
-			if(copyBox.getSelectedIndex() == 0)
-				viewCopy(0);
+			if(index == 0)
+				viewReceipt(0);
 			else
-				copyBox.setSelectedIndex(copyBox.getSelectedIndex()-1);
+				receiptBox.setSelectedIndex(index-1);
 			
-			copyBox.removeItemAt(copyBox.getItemCount()-1);
+			receiptBox.removeItemAt(receiptBox.getItemCount()-1);
 			clearSelections();
 		}
 	}
@@ -210,40 +181,43 @@ public class ReceiptManager extends JFrame {
 	 * Deletes all Receipt Copies, moving their MenuItems back to the Original
 	 */
 	private void deleteAll() {
-		for(Receipt receipt : copyList)
-			for(Integer orderNumber : receipt.getItems().keySet()) {
-				if(receipt.getItem(orderNumber).isSplit())
-					receipt.getItem(orderNumber).split(1);
-				original.addItem(orderNumber, receipt.getItem(orderNumber));
-			}
+		receiptPanel.removeAll();
+		receiptPanel.validate();
 		
-		copyList.clear();
-		copyBox.removeAllItems();
+		receiptList.clear();
+		receiptList.add(new Receipt(merchant, cashier, salesTax));
 		
-		contentPanel.remove(copyFrame);
-		contentPanel.repaint();
-		contentPanel.validate();
+		receiptBox.removeAllItems();
+		receiptBox.addItem(1);
+		
+		viewReceipt(0);
 		clearSelections();
 	}
 	/*
 	 * Changes the receipt copy gui currently inhabiting the JPanel created to contain them
 	 */
-	private void viewCopy(int index) {
-		copyPanel.removeAll();
-		copyPanel.add(copyList.get(index).getGUI());
-		copyPanel.validate();
+	private void viewReceipt(int index) {
+		receiptPanel.removeAll();
+		receiptPanel.add(receiptList.get(index).getGUI());
+		receiptPanel.validate();
 	}
 	/*
 	 * Transfers MenuItems betwen the Original receipt and currently active receipt copy
 	 */
 	private void transferSelection() {
-		if(originalIsSelected && original.hasOrderSelected() && copyBox.getSelectedIndex() > -1) {
-			copyList.get(copyBox.getSelectedIndex()).addItem(original.getSelectedOrderNum(), original.getSelectedItem());
-			original.removeSelectedItem();
+		if(receiptList.get(selectedReceiptIndex).getItem(selectedItemNum).isSplit() 
+				&& receiptList.get(receiptBox.getSelectedIndex()).getItems().containsKey(selectedItemNum)) {
+			MenuItem item = receiptList.get(selectedReceiptIndex).getItem(selectedItemNum);
+			receiptList.get(selectedReceiptIndex).removeItem(selectedItemNum);
+			item.split(item.getSplitCount()-1);
+			
+			for(Receipt receipt : receiptList)
+				if(receipt.getItems().containsKey(selectedItemNum))
+					receipt.addItem(selectedItemNum, item);
 		}
-		else if(copyIsSelected && copyBox.getSelectedIndex() > -1 && copyList.get(copyBox.getSelectedIndex()).hasOrderSelected()) {
-			original.addItem(copyList.get(copyBox.getSelectedIndex()).getSelectedOrderNum(), copyList.get(copyBox.getSelectedIndex()).getSelectedItem());
-			copyList.get(copyBox.getSelectedIndex()).removeSelectedItem();
+		else {
+			receiptList.get(receiptBox.getSelectedIndex()).addItem(receiptList.get(selectedReceiptIndex).getItem(selectedItemNum));
+			receiptList.get(selectedReceiptIndex).removeItem(selectedItemNum);
 		}
 		clearSelections();
 	}
@@ -251,30 +225,22 @@ public class ReceiptManager extends JFrame {
 	 * Clears all selections from the Receipt GUIS
 	 */
 	private void clearSelections() {
-		original.clearSelection();
-		if(copyList.size() > 0)
-			copyList.get(copyBox.getSelectedIndex()).clearSelection();
-		originalIsSelected = false;
-		copyIsSelected = false;
+		receiptIsSelected = false;
 	}
 	/*
 	 * Brings up a JDialog box to allow the user to split a MenuItem between several different receipts
 	 */
-	private void splitItem(Receipt receipt) {
-		if(receipt.hasOrderSelected()) {
-			int orderNumber = receipt.getSelectedOrderNum();
+	private void splitItem() {
+		if(receiptList.get(receiptBox.getSelectedIndex()).hasOrderSelected()) {
+			int orderNumber = receiptList.get(receiptBox.getSelectedIndex()).getSelectedOrderNum();
 			JPanel panel = new JPanel();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			
-			JCheckBox originalCheckBox = new JCheckBox("Original", original.getItems().containsKey(orderNumber));
-			originalCheckBox.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
-			panel.add(originalCheckBox);
-			
-			JCheckBox[] copyCheckBox = new JCheckBox[copyList.size()];
-			for(int i=0; i < copyList.size(); i++) {
-				copyCheckBox[i] = new JCheckBox("Copy " + (i+1), copyList.get(i).getItems().containsKey(orderNumber));
-				copyCheckBox[i].setFont(new Font(Font.SERIF, Font.PLAIN, 16));
-				panel.add(copyCheckBox[i]);
+			JCheckBox[] receiptCheckBox = new JCheckBox[receiptList.size()];
+			for(int i=0; i < receiptList.size(); i++) {
+				receiptCheckBox[i] = new JCheckBox("Receipt " + (i+1), receiptList.get(i).getItems().containsKey(orderNumber));
+				receiptCheckBox[i].setFont(new Font(Font.SERIF, Font.PLAIN, 16));
+				panel.add(receiptCheckBox[i]);
 			}
 			
 			JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -285,26 +251,21 @@ public class ReceiptManager extends JFrame {
 			showDialog(scrollPane, "Split Item", new String[] { "Split", "Cancel" });
 			
 			if(dialogChoice == 0) {
-				MenuItem item = receipt.getItem(orderNumber);
+				MenuItem item = receiptList.get(receiptBox.getSelectedIndex()).getItem(orderNumber);
 				
-				original.removeItem(orderNumber);
-				for(Receipt copy : copyList)
-					copy.removeItem(orderNumber);
+				for(Receipt receipt : receiptList)
+					receipt.removeItem(orderNumber);
 				
 				int splitCount = 0;
-				if(originalCheckBox.isSelected())
-					splitCount++;
-				for(JCheckBox box : copyCheckBox)
+				for(JCheckBox box : receiptCheckBox)
 					if(box.isSelected())
 						splitCount++;
 				
 				item.split(splitCount);
 				
-				if(originalCheckBox.isSelected())
-					original.addItem(orderNumber, item);
-				for(int i=0; i < copyCheckBox.length; i++)
-					if(copyCheckBox[i].isSelected())
-						copyList.get(i).addItem(orderNumber, item);
+				for(int i=0; i < receiptCheckBox.length; i++)
+					if(receiptCheckBox[i].isSelected())
+						receiptList.get(i).addItem(orderNumber, item);
 			}
 		}
 		clearSelections();
@@ -312,10 +273,10 @@ public class ReceiptManager extends JFrame {
 	/*
 	 * Brings up a JDialog box to allow the user to change the discount for a MenuItem
 	 */
-	private void discountItem(Receipt receipt) {
-		if(receipt.hasOrderSelected()) {
-			MenuItem item = receipt.getSelectedItem();
-			int orderNumber = receipt.getSelectedOrderNum();
+	private void discountItem() {
+		if(receiptList.get(receiptBox.getSelectedIndex()).hasOrderSelected()) {
+			MenuItem item = receiptList.get(receiptBox.getSelectedIndex()).getSelectedItem();
+			int orderNumber = receiptList.get(receiptBox.getSelectedIndex()).getSelectedOrderNum();
 			
 			JPanel panel = new JPanel();
 			panel.setSize(150,100);
@@ -333,11 +294,7 @@ public class ReceiptManager extends JFrame {
 			if(dialogChoice == 0) {
 				item.setDiscount(discountBox.getSelectedItem().toString());
 				
-				if(original.getItems().containsKey(orderNumber))
-					original.addItem(orderNumber, item);
-				for(Receipt copy : copyList)
-					if(copy.getItems().containsKey(orderNumber))
-						copy.addItem(orderNumber, item);
+				receiptList.get(receiptBox.getSelectedIndex()).addItem(orderNumber, item);
 			}
 		}
 		clearSelections();
@@ -345,8 +302,8 @@ public class ReceiptManager extends JFrame {
 	/*
 	 * Refreshes the receipt, causing its GUI to rewrite its MenuItem data
 	 */
-	private void refreshReceipt(Receipt receipt) {
-		receipt.refresh();
+	private void refreshReceipt() {
+		receiptList.get(receiptBox.getSelectedIndex()).refresh();
 	}
 	/*
 	 * Shows a dialog box containing the argument JComponent, with the argument String title, and a number of buttons equal to the String array
@@ -354,7 +311,9 @@ public class ReceiptManager extends JFrame {
 	 * in the string array. If the user exits the dialog box, dialog choice is set to -1
 	 */
 	private void showDialog(JComponent component, String title, String[] buttonText) {
-		dialog = new JDialog(this, title, true);
+		dialog = new JDialog();
+		dialog.setTitle(title);
+		dialog.setModal(true);
 		dialog.setSize(component.getSize());
 		dialog.setResizable(false);
 		dialog.setLocation(((int)screenSize.getWidth() - dialog.getWidth())/2, ((int)screenSize.getHeight() - dialog.getHeight())/2);
@@ -390,69 +349,17 @@ public class ReceiptManager extends JFrame {
 	/*
 	 * Responds to the JComboBox which contains the number of current copies
 	 */
-	private class CopyBoxListener implements ItemListener {
+	private class ReceiptBoxListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			if(e.getStateChange() == ItemEvent.SELECTED)
-				viewCopy(copyBox.getSelectedIndex());
+				viewReceipt(receiptBox.getSelectedIndex());
 		}
 	}
-	/*
-	 * responds to mouse clicks within the entier Original receipt gui
-	 */
-	private class OriginalListener implements MouseListener {
+	private class ReceiptListener implements MouseListener {
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(copyIsSelected)
-				transferSelection();
-		}
-		@Override
-		public void mouseClicked(MouseEvent e) {}
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-		@Override
-		public void mouseExited(MouseEvent e) {}
-		@Override
-		public void mouseReleased(MouseEvent e) {}
-		
-	}
-	/*
-	 * Responds to mouse clicks on the original receipt's JTable displaying its 
-	 * MenuItems
-	 */
-	private class OriginalItemListener implements MouseListener {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if(e.isPopupTrigger())
-				originalPopup.show(e.getComponent(), e.getX(), e.getY());
-			else if(copyIsSelected)
-				transferSelection();
-			else if(e.getClickCount() == 2) {
-				originalIsSelected = true;
-				transferSelection();
-			}
-			else
-				originalIsSelected = true;
-		}
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			if(e.isPopupTrigger())
-				originalPopup.show(e.getComponent(), e.getX(), e.getY());
-		}
-		@Override
-		public void mouseClicked(MouseEvent e) {}
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-		@Override
-		public void mouseExited(MouseEvent e) {}		
-	}
-	/*
-	 * Responds to mouse clicks over a receipt copy's enter gui
-	 */
-	private class CopyListener implements MouseListener {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			if(originalIsSelected)
+			if(receiptIsSelected && selectedReceiptIndex != receiptBox.getSelectedIndex())
 				transferSelection();
 		}
 		@Override
@@ -464,38 +371,31 @@ public class ReceiptManager extends JFrame {
 		@Override
 		public void mouseReleased(MouseEvent e) {}
 	}
-	/*
-	 * Responds to mouse clicks for copy's JTable displaying its MenuItems
-	 */
-	private class CopyItemListener implements MouseListener {
+	private class ReceiptItemListener implements MouseListener {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(e.isPopupTrigger())
-				copyPopup.show(e.getComponent(), e.getX(), e.getY());
-			else if(originalIsSelected)
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			else if(receiptIsSelected && selectedReceiptIndex != receiptBox.getSelectedIndex())
 				transferSelection();
-			else if(e.getClickCount() == 2) {
-				copyIsSelected = true;
-				transferSelection();
+			else {
+				receiptIsSelected = true;
+				selectedReceiptIndex = receiptBox.getSelectedIndex();
+				selectedItemNum = receiptList.get(receiptBox.getSelectedIndex()).getSelectedOrderNum();
 			}
-			else
-				copyIsSelected = true;
 		}
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(e.isPopupTrigger())
-				copyPopup.show(e.getComponent(), e.getX(), e.getY());
+				popup.show(e.getComponent(), e.getX(), e.getY());
 		}
 		@Override
 		public void mouseClicked(MouseEvent e) {}
 		@Override
 		public void mouseEntered(MouseEvent e) {}
 		@Override
-		public void mouseExited(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}	
 	}
-	/*
-	 * Responds to clicks in the ReceiptManager's background by clearing selections
-	 */
 	private class BackgroundListener implements MouseListener {
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -510,33 +410,15 @@ public class ReceiptManager extends JFrame {
 		@Override
 		public void mouseReleased(MouseEvent e) {}
 	}
-	/*
-	 * Responds to the popup menu for the original receipt
-	 */
-	private class OriginalPopupListener implements ActionListener {
+	private class ReceiptPopupListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Split"))
-				splitItem(original);
+				splitItem();
 			else if(e.getActionCommand().equals("Discount"))
-				discountItem(original);
+				discountItem();
 			else if(e.getActionCommand().equals("Refresh"))
-				refreshReceipt(original);
-		}
-		
-	}
-	/*
-	 * Reponds to the popup menu for the receipt copies
-	 */
-	private class CopyPopupListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("Split"))
-				splitItem(copyList.get(copyBox.getSelectedIndex()));
-			else if(e.getActionCommand().equals("Discount"))
-				discountItem(copyList.get(copyBox.getSelectedIndex()));
-			else if(e.getActionCommand().equals("Refresh"))
-				refreshReceipt(copyList.get(copyBox.getSelectedIndex()));
+				refreshReceipt();
 		}
 	}
 	/*
@@ -550,23 +432,14 @@ public class ReceiptManager extends JFrame {
 		}
 	}
 	/*
-	 * Responds to the Exits button by closing this ReceiptManager
-	 */
-	private class ExitListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			setVisible(false);
-		}
-	}
-	/*
 	 * Responds to mouse wheel events over the copy gui by scrolling through the created Receipt copies
 	 */
-	private class CopyScroller implements MouseWheelListener {
+	private class ReceiptScroller implements MouseWheelListener {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			int movement= copyBox.getSelectedIndex() + e.getWheelRotation();
-			if(movement >= 0 && movement < copyBox.getItemCount())
-				copyBox.setSelectedIndex(movement);
+			int movement= receiptBox.getSelectedIndex() + e.getWheelRotation();
+			if(movement >= 0 && movement < receiptBox.getItemCount())
+				receiptBox.setSelectedIndex(movement);
 		}
 	}
 }

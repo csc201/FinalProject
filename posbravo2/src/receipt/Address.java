@@ -30,7 +30,7 @@ public class Address implements Serializable {
 	 * Instantiates the USaddress class with empty String variables and the state defaulted to 
 	 * Alabama
 	 */
-	Address() {
+	public Address() {
 		streetAddress = "";
 		suiteAddress = "";
 		city = "";
@@ -45,7 +45,7 @@ public class Address implements Serializable {
 	 * @param state
 	 * @param zipCode
 	 */
-	Address(String streetAddress, String suiteAddress, String city, State state, String zipCode) {
+	public Address(String streetAddress, String suiteAddress, String city, State state, String zipCode) {
 		this.streetAddress = streetAddress;
 		this.suiteAddress = suiteAddress;
 		this.city = city;
