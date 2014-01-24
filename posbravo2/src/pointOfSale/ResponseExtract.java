@@ -42,7 +42,7 @@ public class ResponseExtract {
 		if(!fileName2.equals("") && fileName2 != null){
 			fileName = fileName2;
 		}
-		
+		//1 is for preauth
 		if (receiptType.equals("PreAuth") || receiptType == null || receiptType.equals("")) {
 			try {
 				reader = new Scanner(new File("Files/Transaction/Response/1/"
@@ -52,6 +52,7 @@ public class ResponseExtract {
 			}
 		} 
 		else {
+			//2 is for preauth capture
 			try {
 				reader = new Scanner(new File("Files/Transaction/Response/2/"
 						+ fileName + ".xml"));
