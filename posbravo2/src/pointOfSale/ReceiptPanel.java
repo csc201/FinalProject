@@ -101,7 +101,13 @@ public class ReceiptPanel extends JPanel
 		{
 			String itemPrice = receiptList.getSelectedValue().substring(0,
 																receiptList.getSelectedValue().indexOf(" "));
-			
+			for(int x = 0; x < listModel.getSize(); x++){
+				if(listModel.get(x).contains("Subtotal")){
+					String subtotalString = listModel.get(x).substring(0,
+							listModel.get(x).indexOf(" "));
+					subtotalAmount = Tools.toAmount(subtotalString);
+				}
+			}
 			subtotalAmount = subtotalAmount - Tools.toAmount(itemPrice);
 			updateTotals();
 			
@@ -189,12 +195,12 @@ public class ReceiptPanel extends JPanel
 		contentWriter.close();
 		clearReceipt();
 	}
-	public static void saveReceiptReturn()
+	public static void saveReceiptReturn(String time)
 	{
 
 		PrintWriter listWriter = null;
 		PrintWriter contentWriter = null;
-		newReceipt = getTimeStamp();
+		newReceipt = time;
 		
 		try
 		{
@@ -268,7 +274,7 @@ public class ReceiptPanel extends JPanel
 	 * Method to retrieve the date and time of checkout for each receipt
 	 * @return returns the current time in String format
 	 */
-	private static String getTimeStamp()
+	public static String getTimeStamp()
 	{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
 		Date date = new Date();

@@ -29,7 +29,7 @@ public class LogInGUI extends JPanel implements ActionListener
 	private KeyPad numberPad = new KeyPad();
 	private MenuButton exitButton = new MenuButton("Exit","Exit",this);
 	private ImageIcon logo = new ImageIcon("Files/Icons/logoBig.jpg");
-	private JLabel logoLabel = new JLabel(logo,SwingConstants.CENTER);
+	private JLabel logoLabel = new JLabel(logo);
 	private Border margin = BorderFactory.createMatteBorder(125,25,125,25,DARK_CHAMPAGNE);
 	private Border edge = BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 										DARK_CHAMPAGNE,DARK_CHAMPAGNE);
@@ -44,7 +44,10 @@ public class LogInGUI extends JPanel implements ActionListener
 		setBackground(DARK_CHAMPAGNE);
 		setBorder(BorderFactory.createLoweredBevelBorder());
 		
-		logoLabel.setVerticalAlignment(SwingConstants.CENTER);
+		//logoLabel.setVerticalAlignment(SwingConstants.CENTER);
+		logoLabel.setVerticalTextPosition(SwingConstants.TOP);
+		logoLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+		logoLabel.setText("Announcement Goes Here");
 		logoPanel.setBorder(BorderFactory.createCompoundBorder(margin,edge));
 		logoPanel.setBackground(DARK_GREEN);
 		logoPanel.add(logoLabel); 

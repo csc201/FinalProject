@@ -129,8 +129,9 @@ public class KeyPad extends JPanel implements ActionListener
 		{
 			//initProperties();
 			
-			TransactionGUI.setAdminPrivilege(adminPrivilege);
-			SystemInit.setTransactionScreen();
+			//TransactionGUI.setAdminPrivilege(adminPrivilege);
+			SystemInit.setCategoryPanel(adminPrivilege);
+			//SystemInit.setTransactionScreen();
 		}
 		else
 		{

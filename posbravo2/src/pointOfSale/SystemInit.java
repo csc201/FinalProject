@@ -97,6 +97,21 @@ public class SystemInit extends JFrame
 		
 	}
 	
+	public static void setCategoryPanel(boolean isAdmin){
+		
+		systemPanel.removeAll();
+		systemPanel.add(new CategoryGUI(isAdmin));
+		Tools.update(systemPanel);
+		
+	}
+	
+	public static void setTablePanel(boolean isAdmin){	
+		systemPanel.removeAll();
+		systemPanel.add(new tableGUI(isAdmin));
+		Tools.update(systemPanel);
+	}
+	
+	
 //	public static void setCardScreen()
 //	{
 //		

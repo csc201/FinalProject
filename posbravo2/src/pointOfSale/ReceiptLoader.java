@@ -22,8 +22,8 @@ public class ReceiptLoader extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;  //Added to satisfy the compiler
 	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
-	private static final String RECEIPT_PATH = "Files/Receipts";
-	private static final String RECEIPT_LIST = RECEIPT_PATH + "/ReceiptList";
+	private static final String RECEIPT_PATH = "Files/Receipts/";
+	private static final String RECEIPT_LIST = RECEIPT_PATH + "ReceiptList";
 	
 	private JPanel upperPanel = new JPanel(new GridLayout(3,1));
 	private JPanel buttonPanel = new JPanel(new GridLayout(2,2));
@@ -97,8 +97,8 @@ public class ReceiptLoader extends JPanel implements ActionListener
 				ext = ResponseExtract.getData(receiptList.getSelectedValue(), "Return");
 				
 			
-			
-				if(read.nextLine().contains("SWIPED")){
+				String type = read.nextLine();
+				if(type.contains("SWIPED")){
 					JList<String> receiptPanelList = ReceiptPanel.getReceiptList();
 					ListModel<String> listmodel = ReceiptPanel.getListModel();
 					String amount = "0";
@@ -109,12 +109,14 @@ public class ReceiptLoader extends JPanel implements ActionListener
 							
 						}
 					}
-					if(receiptPanelList.isSelectionEmpty()){
+					if(receiptPanelList.isSelectionEmpty()){ 
 						String data[] = {"Return", CardPanel.getInvoiceNo() + "", CardPanel.getInvoiceNo() + "", "POS BRAVO v1.0", ext[5] , amount, "merchantID2" };
 						Response res = new Response(2, data);
 						if (res.getResponse().contains("Approved")) {
 							JOptionPane.showMessageDialog(null, "Success");
-							ReceiptPanel.saveReceiptReturn();
+							String time = ReceiptPanel.getTimeStamp();
+							ReceiptPanel.saveReceiptReturn(time);
+							CardPanel.saveTransaction(res.getXML(), res.getResponse(), 1, new File(RECEIPT_PATH + time));
 							listModel.clear();
 							readReceipts();
 						}
@@ -123,6 +125,13 @@ public class ReceiptLoader extends JPanel implements ActionListener
 							
 					}	
 				}
+				/*else if(type.contains("SWIPED")){
+					ReceiptPanel.saveReceiptReturn();
+					ext = ResponseExtract.getData(receiptList.getSelectedValue(), "Return");
+					listModel.clear();
+					readReceipts();
+			
+				}*/
 				
 				read.close();
 			
@@ -270,6 +279,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 		
 		for(int count=0; count < file.length; count++)
 			file[count].delete();
+		
 		listModel.removeAllElements();
 		saveReceiptList();
 		ReceiptPanel.clearReceipt();
