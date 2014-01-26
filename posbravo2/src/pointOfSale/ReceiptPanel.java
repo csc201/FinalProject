@@ -99,26 +99,54 @@ public class ReceiptPanel extends JPanel
 	{
 		if(receiptList.getSelectedIndex() < listModel.getSize()-4 && receiptList.getSelectedIndex() > -1)
 		{
-			String itemPrice = receiptList.getSelectedValue().substring(0,
-																receiptList.getSelectedValue().indexOf(" "));
-			for(int x = 0; x < listModel.getSize(); x++){
-				if(listModel.get(x).contains("Subtotal")){
-					String subtotalString = listModel.get(x).substring(0,
-							listModel.get(x).indexOf(" "));
-					subtotalAmount = Tools.toAmount(subtotalString);
+			
+			
+			String value = receiptList.getSelectedValue();
+			int countLoop = 0;
+			int count1 = 0;
+			while(countLoop < listModel.getSize()){
+				if(listModel.get(countLoop).equals(value)){
+					count1++;
+				}
+				countLoop++;
+			}
+			
+			countLoop = 0;
+			int count2 = 0;
+			while(countLoop < listModel.getSize()){
+				if(listModel.get(countLoop).equals("-"+value)){
+					count2++;
+				}
+				countLoop++;
+			}
+			
+			
+			if(++count2 <= count1){	
+				if(!value.contains("-")){
+					listModel.add(receiptList.getSelectedIndex()+1, "-"+receiptList.getSelectedValue());
+					String itemPrice = receiptList.getSelectedValue().substring(0,
+									receiptList.getSelectedValue().indexOf(" "));
+					for (int x = 0; x < listModel.getSize(); x++) {
+						if (listModel.get(x).contains("Subtotal")) {
+							String subtotalString = listModel.get(x).substring(
+									0, listModel.get(x).indexOf(" "));
+							subtotalAmount = Tools.toAmount(subtotalString);
+						}
+					}
+					subtotalAmount = subtotalAmount - Tools.toAmount(itemPrice);
+					updateTotals();
 				}
 			}
-			subtotalAmount = subtotalAmount - Tools.toAmount(itemPrice);
-			updateTotals();
 			
-			listModel.removeElementAt(receiptList.getSelectedIndex());
+			receiptList.clearSelection();
+			
 			if(listModel.getSize() == 5)
 				clearReceipt();
 			else
 			{
 				for(int count=0; count < 4; count++)
 					listModel.removeElementAt(listModel.getSize()-1);
-				listModel.addElement(" ");
+				//listModel.addElement(" ");
 				listModel.addElement(Tools.toMoney(subtotalAmount) + manualTab(Tools.toMoney(subtotalAmount)) + "Subtotal");
 				listModel.addElement(Tools.toMoney(taxAmount) + manualTab(Tools.toMoney(taxAmount)) + "Tax");
 				listModel.addElement(Tools.toMoney(tipAmount) + manualTab(Tools.toMoney(tipAmount)) + "Tip");
@@ -195,6 +223,34 @@ public class ReceiptPanel extends JPanel
 		contentWriter.close();
 		clearReceipt();
 	}
+	public static void saveReceiptReturn(String time, String item)
+	{
+
+		PrintWriter listWriter = null;
+		PrintWriter contentWriter = null;
+		newReceipt = time;
+		
+		try
+		{
+			listWriter = new PrintWriter(new FileOutputStream(RECEIPT_LIST_FILE, true));
+			contentWriter = new PrintWriter(RECEIPT_PATH + newReceipt);
+		}
+		catch(FileNotFoundException e)
+		{
+			JOptionPane.showMessageDialog(null,"File Not Found");
+		}
+		
+		contentWriter.println("RETURN");
+		listWriter.println(newReceipt);
+		contentWriter.println(item);	
+		for(int count=listModel.getSize()-5; count < listModel.getSize(); count++)
+			contentWriter.println(listModel.elementAt(count));
+		
+		listWriter.close();
+		contentWriter.close();
+		clearReceipt();
+	}
+
 	public static void saveReceiptReturn(String time)
 	{
 
@@ -223,6 +279,7 @@ public class ReceiptPanel extends JPanel
 		contentWriter.close();
 		clearReceipt();
 	}
+
 	/**
 	 * Loads items of the selected receipt from text file back into receipt list
 	 * @param receiptFile Text file to be loaded

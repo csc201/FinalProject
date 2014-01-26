@@ -145,10 +145,9 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			if (line.equals(""))
 				;
 			else {
-				String read = reader.nextLine();
+				String read = reader.nextLine().trim();
 				// System.out.println(read.matches("OPEN"));
-				if (!read.matches("CASH") && !read.matches("SWIPED")
-						&& !read.matches("VOIDED") && !read.matches("RETURN")) {
+				if (read.equalsIgnoreCase("OPEN") || read.equalsIgnoreCase("PROGRESS")) {
 					listModel.addElement(line);
 				}
 			}
