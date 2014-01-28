@@ -1,15 +1,20 @@
 package pointOfSale;
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+
 import receipt.*;
 import receipt.MenuItem;
 /**
@@ -28,6 +33,7 @@ public class ReceiptPanel extends JPanel
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIPT_PATH = "Files/Receipts/";
 	private static final String RECEIPT_LIST_FILE = RECEIPT_PATH + "ReceiptList";
+	private static final String RECEIPT_LOG_FILE = RECEIPT_PATH + "ReceiptLog";
 	private static final String TAX_FILE = "Files/Tax/SalesTax";
 	
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
@@ -38,6 +44,7 @@ public class ReceiptPanel extends JPanel
 	private static String transaction = "";
 	
 	private static ReceiptManager receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, salesTax);
+	private static ReceiptLog receiptLog = new ReceiptLog();
 	
 	public static JList<String> getReceiptList() {
 		return receiptList;
@@ -92,28 +99,20 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void saveReceipt()
 	{
-		PrintWriter listWriter = null;
-		PrintWriter contentWriter = null;
-		newReceipt = getTimeStamp();
-		
-		try
-		{
-			listWriter = new PrintWriter(new FileOutputStream(RECEIPT_LIST_FILE, true));
-			contentWriter = new PrintWriter(RECEIPT_PATH + newReceipt);
+		ObjectOutputStream outputStream;
+		try {
+			ArrayList<Receipt> receiptList = receiptManager.getList();
+			for(Receipt receipt : receiptList)
+				receiptLog.addReceipt(receipt);
+			clearReceipt();
+			
+			outputStream = new ObjectOutputStream(new FileOutputStream(RECEIPT_LOG_FILE));
+			outputStream.writeObject(receiptLog);
+			outputStream.close();
 		}
-		catch(FileNotFoundException e)
-		{
-			JOptionPane.showMessageDialog(null,"File Not Found");
+		catch(IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		contentWriter.println("OPEN");
-		listWriter.println(newReceipt);
-		for(int count=0; count < listModel.getSize(); count++)
-			contentWriter.println(listModel.elementAt(count));
-		
-		listWriter.close();
-		contentWriter.close();
-		clearReceipt();
 	}
 	public static void saveReceipt(String name)
 	{

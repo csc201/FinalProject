@@ -1,6 +1,6 @@
 package receipt;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -20,7 +20,8 @@ import java.awt.event.MouseWheelListener;
  * @author Stephen
  *
  */
-public class Receipt {
+public class Receipt implements Serializable {
+	private static final long serialVersionUID = 1L;  //Default value, added to satisfy compiler
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	private Merchant merchant;
@@ -30,7 +31,8 @@ public class Receipt {
 	private Date date;
 	private LinkedHashMap<Integer, MenuItem> itemMap;
 	private ReceiptGUI gui;
-	private String table;
+	private String tableNum;
+	private int receiptNum;
 	
 	/**
 	 * Instantiates the Receipt object with the argument Merchant, cashier and taxPercent data
@@ -42,6 +44,7 @@ public class Receipt {
 		this.merchant = merchant;
 		this.cashier = cashier;
 		this.salesTax = salesTax;
+		tableNum = "";
 		date = new Date();
 		itemMap = new LinkedHashMap<Integer, MenuItem>();
 		gui = new ReceiptGUI();
@@ -53,11 +56,12 @@ public class Receipt {
 	 * @param salesTax
 	 * @param date
 	 */
-	Receipt(Merchant merchant, String cashier, BigDecimal salesTax, Date date) {
+	Receipt(Merchant merchant, String cashier, BigDecimal salesTax, Date date, String table) {
 		this.merchant = merchant;
 		this.cashier = cashier;
 		this.salesTax = salesTax;
 		this.date = date;
+		this.tableNum = table;
 		itemMap = new LinkedHashMap<Integer, MenuItem>();
 		gui = new ReceiptGUI();
 	}
@@ -69,11 +73,12 @@ public class Receipt {
 	 * @param date
 	 * @param itemCollection
 	 */
-	Receipt(Merchant merchant, String cashier, BigDecimal salesTax, Date date, Collection<MenuItem> itemCollection) {
+	Receipt(Merchant merchant, String cashier, BigDecimal salesTax, Date date, Collection<MenuItem> itemCollection, String table) {
 		this.merchant = merchant;
 		this.cashier = cashier;
 		this.salesTax = salesTax;
 		this.date = date;
+		this.tableNum = table;
 		itemMap = new LinkedHashMap<Integer, MenuItem>();
 		for(MenuItem item : itemCollection)
 			itemMap.put(itemMap.size()+1, item);
@@ -141,6 +146,20 @@ public class Receipt {
 	 */
 	public boolean hasOrderSelected() { return gui.hasOrderSelected(); }
 	/**
+	 * Returns the identifying number assigned to this receipt, if any
+	 * @return
+	 */
+	public int getReceiptNum() { return receiptNum; }
+	/**
+	 * Sets the identifying number assigned to this receipt to a new value
+	 * @param receiptNum
+	 */
+	public void setReceiptNum(int receiptNum) { 
+		this.receiptNum = receiptNum;
+		gui.updateReceipt();
+	}
+	
+	/**
 	 * Returns the HashMap key value for the currently selected MenuItem in this receipt's GUI
 	 * 
 	 * @return
@@ -173,7 +192,7 @@ public class Receipt {
 	 * 
 	 * @return
 	 */
-	public Receipt emptyCopy() { return new Receipt(merchant, cashier, salesTax, date); }
+	public Receipt emptyCopy() { return new Receipt(merchant, cashier, salesTax, date, tableNum); }
 	/**
 	 * Adds a MouseListener to all components except the MenuItem JTable
 	 * 
@@ -205,6 +224,10 @@ public class Receipt {
 	public void removeReceiptListeners() { 
 		for(MouseListener listener : gui.getMouseListeners())
 			gui.removeMouseListener(listener);
+	}
+	public void setTableNum(String tableNum) {
+		this.tableNum = tableNum;
+		gui.updateReceipt();
 	}
 	/**
 	 * Removes mouse listeners from the GUI Jtable displaying this receipt's MenuITems
@@ -239,6 +262,8 @@ public class Receipt {
 		private JTable table;
 		private StringTableModel totalModel;
 		private JTable totalTable;
+		private JLabel tableNumLabel;
+		private JLabel receiptNumLabel;
 		
 		/*
 		 * Creates a JPanel GUI to allow the user to select the MenuItems stored in this receipt and interact with the object as if it
@@ -327,14 +352,36 @@ public class Receipt {
 			label.setBorder(BorderFactory.createMatteBorder(10,10,10,10,Color.WHITE));
 			panel.add(label, BorderLayout.CENTER);
 			
-			JPanel subPanel = new JPanel(new GridLayout(1,2));
+			JPanel subPanel = new JPanel(new GridLayout(2,1));
 			subPanel.setBackground(Color.WHITE);
 			
+			JPanel receiptNumPanel = new JPanel();
+			receiptNumPanel.setBackground(Color.WHITE);
+			if(receiptNum > 0) {
+				String receiptNumString = String.valueOf(receiptNum);
+				while(receiptNumString.length() < 9)
+					receiptNumString = "0" + receiptNumString;
+				receiptNumLabel = new JLabel(receiptNumString);
+			}
+			else
+				receiptNumLabel = new JLabel("");
+			receiptNumPanel.add(receiptNumLabel);
+			subPanel.add(receiptNumPanel);
+			
+			JPanel infoPanel = new JPanel(new GridLayout(1,3));
+			infoPanel.setBackground(Color.WHITE);
 			label = new JLabel(new SimpleDateFormat(DATE_FORMAT).format(date));
-			subPanel.add(label);
+			infoPanel.add(label);
+			
+			if(tableNum.equals(""))
+				tableNumLabel = new JLabel(tableNum, SwingConstants.CENTER);
+			else
+				tableNumLabel = new JLabel("Table: " + tableNum, SwingConstants.CENTER);
+			infoPanel.add(tableNumLabel);
 			
 			label = new JLabel("Cashier: " + cashier, SwingConstants.RIGHT);
-			subPanel.add(label);
+			infoPanel.add(label);
+			subPanel.add(infoPanel);
 			
 			panel.add(subPanel, BorderLayout.SOUTH);
 			
@@ -362,6 +409,21 @@ public class Receipt {
 			totalModel.setValueAt(subtotal.toPlainString(), 0, 3);
 			totalModel.setValueAt(subtotal.multiply(salesTax).setScale(2,BigDecimal.ROUND_HALF_UP).toPlainString(), 1, 3);
 			totalModel.setValueAt(subtotal.multiply(salesTax.add(BigDecimal.ONE)).setScale(2,BigDecimal.ROUND_HALF_UP).toPlainString(), 2, 3);
+			
+			if(tableNum.equals(""))
+				tableNumLabel.setText(tableNum);
+			else
+				tableNumLabel.setText("Table: " + tableNum);
+			
+			if(receiptNum > 0) {
+				String receiptNumString = String.valueOf(receiptNum);
+				while(receiptNumString.length() < 9)
+					receiptNumString = "0" + receiptNumString;
+				receiptNumLabel.setText(receiptNumString);
+			}
+			else
+				receiptNumLabel.setText("");
+			
 			refresh();
 		}
 		/*

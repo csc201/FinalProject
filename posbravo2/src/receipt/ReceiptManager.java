@@ -1,6 +1,5 @@
 package receipt;
 import javax.swing.*;
-
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class ReceiptManager extends JPanel {
 	private ArrayList<Receipt> receiptList;
 	private JPopupMenu popup;
 	private JComboBox<Integer> receiptBox;
+	private JComboBox<String> tableBox;
 	private Dimension screenSize;
 	private boolean receiptIsSelected;
 	private int selectedReceiptIndex;
@@ -45,6 +45,8 @@ public class ReceiptManager extends JPanel {
 		setBackground(CustomColor.PALE_GOLDENROD);
 		addMouseListener(new BackgroundListener());
 		
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
 		this.merchant = merchant;
 		this.cashier = cashier;
 		this.salesTax = salesTax;
@@ -63,27 +65,37 @@ public class ReceiptManager extends JPanel {
 	private JPanel generateReceiptPanel() {
 		JPanel receiptFrame = new JPanel();
 		receiptFrame.setLayout(new BorderLayout());
-		receiptFrame.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4 - 10,
-				(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100));
+		receiptFrame.setPreferredSize(new Dimension((int)screenSize.getWidth()/4 - 10, (int)screenSize.getHeight()-50));
 		
 		JPanel splitPanel = new JPanel();
 		splitPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		splitPanel.setBackground(CustomColor.PALE_GOLDENROD);
-
+		
+		splitPanel.add(new JLabel("Receipt #"));
+		
 		receiptBox = new JComboBox<Integer>();
 		receiptBox.addItem(1);
 		receiptBox.addItemListener(new ReceiptBoxListener());
 		splitPanel.add(receiptBox);
 		
-		JButton button = new JButton("Create Copy");
+		JButton button = new JButton("Copy");
+		button.setBackground(CustomColor.PALE_GOLDENROD);
+		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
+				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
 		splitPanel.add(button);
 		
-		button = new JButton("Delete Copy");
+		button = new JButton("Delete");
+		button.setBackground(CustomColor.PALE_GOLDENROD);
+		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
+				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
 		splitPanel.add(button);
 		
 		button = new JButton("Delete All");
+		button.setBackground(CustomColor.PALE_GOLDENROD);
+		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
+				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
 		splitPanel.add(button);
 		
@@ -91,13 +103,26 @@ public class ReceiptManager extends JPanel {
 		receiptPanel.setLayout(new GridLayout(1,1));
 		receiptPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEtchedBorder()));
 		
+		JPanel tablePanel = new JPanel();
+		tablePanel.setBackground(CustomColor.PALE_GOLDENROD);
+		
+		tablePanel.add(new JLabel("Table #"));
+		
+		tableBox = new JComboBox<String>();
+		for(int i=0; i < 100; i++)
+			tableBox.addItem("" + i);
+		tableBox.addItemListener(new TableBoxListener());
+		tablePanel.add(tableBox);
+		
 		receiptFrame.add(splitPanel, BorderLayout.NORTH);
 		receiptFrame.add(receiptPanel, BorderLayout.CENTER);
+		receiptFrame.add(tablePanel, BorderLayout.SOUTH);
 		
 		viewReceipt(0);
 		
 		return receiptFrame;
 	}
+	public ArrayList<Receipt> getList() { return receiptList; }
 	public void clearReceipt() {
 		deleteAll();
 	}
@@ -279,7 +304,7 @@ public class ReceiptManager extends JPanel {
 			int orderNumber = receiptList.get(receiptBox.getSelectedIndex()).getSelectedOrderNum();
 			
 			JPanel panel = new JPanel();
-			panel.setSize(150,100);
+			panel.setSize(200,100);
 			
 			JComboBox<Integer> discountBox = new JComboBox<Integer>();
 			for(int i=0; i <= 100; i++)
@@ -338,9 +363,9 @@ public class ReceiptManager extends JPanel {
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("Create Copy"))
+			if(e.getActionCommand().equals("Copy"))
 				createCopy();
-			else if(e.getActionCommand().equals("Delete Copy"))
+			else if(e.getActionCommand().equals("Delete"))
 				deleteCopy();
 			else if(e.getActionCommand().equals("Delete All"))
 				deleteAll();
@@ -441,5 +466,14 @@ public class ReceiptManager extends JPanel {
 			if(movement >= 0 && movement < receiptBox.getItemCount())
 				receiptBox.setSelectedIndex(movement);
 		}
+	}
+	private class TableBoxListener implements ItemListener {
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if(e.getStateChange() == ItemEvent.SELECTED)
+				for(Receipt receipt : receiptList)
+					receipt.setTableNum(tableBox.getItemAt(tableBox.getSelectedIndex()));
+		}
+		
 	}
 }
