@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.url">jdbc:mysql://174.79.186.25:3306/posbravo</property>
+        <property name="hibernate.connection.username">david</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <mapping class="com.posbravo.model.Invoice" />
+        <mapping class="com.posbravo.model.Contact" />
+        <mapping class="com.posbravo.model.Zone" />
+        <mapping class="com.posbravo.model.Delivery" />
+        <mapping class="com.posbravo.model.DiscountByInvoice" />
+        <mapping class="com.posbravo.model.Service" />
+        <mapping class="com.posbravo.model.Transaction" />
+        <mapping class="com.posbravo.model.Promotion" />
+        <mapping class="com.posbravo.model.TableType" />
+        <mapping class="com.posbravo.model.TaxClass" />
+        <mapping class="com.posbravo.model.PreauthCapture" />
+        <mapping class="com.posbravo.model.UserInRole" />
+        <mapping class="com.posbravo.model.ShippingClass" />
+        <mapping class="com.posbravo.model.SecurityQa" />
+        <mapping class="com.posbravo.model.User" />
+        <mapping class="com.posbravo.model.Shipping" />
+        <mapping class="com.posbravo.model.InvoiceStatus" />
+        <mapping class="com.posbravo.model.Sale" />
+        <mapping class="com.posbravo.model.Rates" />
+        <mapping class="com.posbravo.model.TransactionStatus" />
+        <mapping class="com.posbravo.model.AuthLog" />
+        <mapping class="com.posbravo.model.Tax" />
+        <mapping class="com.posbravo.model.Preauth" />
+        <mapping class="com.posbravo.model.DiscountByItem" />
+        <mapping class="com.posbravo.model.Payment" />
+        <mapping class="com.posbravo.model.Reverse" />
+        <mapping class="com.posbravo.model.Product" />
+        <mapping class="com.posbravo.model.Creditcardinfo" />
+        <mapping class="com.posbravo.model.Return" />
+        <mapping class="com.posbravo.model.Address" />
+        <mapping class="com.posbravo.model.Labor" />
+        <mapping class="com.posbravo.model.Diningtable" />
+        <mapping class="com.posbravo.model.Adjust" />
+        <mapping class="com.posbravo.model.Accesscontrol" />
+        <mapping class="com.posbravo.model.Residence" />
+        <mapping class="com.posbravo.model.Role" />
+        <mapping class="com.posbravo.model.Authentication" />
+        <mapping class="com.posbravo.model.Purchase" />
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Purchase" table="purchase" catalog="posbravo">
+        <id name="purchaseId" type="java.lang.Integer">
+            <column name="PurchaseId" />
+            <generator class="identity" />
+        </id>
+        <property name="quantity" type="java.lang.Integer">
+            <column name="Quantity" />
+        </property>
+        <property name="purchaseDate" type="timestamp">
+            <column name="PurchaseDate" length="19" />
+        </property>
+        <property name="userId" type="string">
+            <column name="UserID" />
+        </property>
+        <property name="serviceId" type="string">
+            <column name="ServiceId" />
+        </property>
+        <property name="itemNo" type="string">
+            <column name="ItemNo" />
+        </property>
+    </class>
+</hibernate-mapping>

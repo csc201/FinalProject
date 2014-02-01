@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Creditcardinfo" table="creditcardinfo" catalog="posbravo">
+        <id name="ccId" type="java.lang.Integer">
+            <column name="Cc_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="recordNo" type="string">
+            <column name="RecordNo" />
+        </property>
+        <property name="lastFourDigit" type="string">
+            <column name="LastFourDigit" />
+        </property>
+        <property name="creditCardNo" type="string">
+            <column name="CreditCardNo" />
+        </property>
+        <property name="expDate" type="string">
+            <column name="ExpDate" />
+        </property>
+        <property name="cardHolderName" type="string">
+            <column name="CardHolderName" />
+        </property>
+        <property name="cardHolderLastName" type="string">
+            <column name="CardHolderLastName" />
+        </property>
+        <property name="addressId" type="java.lang.Integer">
+            <column name="AddressID" />
+        </property>
+        <property name="firstSixDigit" type="string">
+            <column name="FirstSixDigit" />
+        </property>
+        <property name="cardType" type="string">
+            <column name="CardType" />
+        </property>
+    </class>
+</hibernate-mapping>

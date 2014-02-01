@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Tax" table="tax" catalog="posbravo">
+        <id name="taxId" type="java.lang.Integer">
+            <column name="TaxID" />
+            <generator class="identity" />
+        </id>
+        <property name="state" type="string">
+            <column name="State" />
+        </property>
+        <property name="rate" type="java.lang.Integer">
+            <column name="Rate" />
+        </property>
+        <property name="taxType" type="string">
+            <column name="TaxType" />
+        </property>
+        <property name="lastModified" type="timestamp">
+            <column name="LastModified" length="19" />
+        </property>
+        <property name="dateAdded" type="timestamp">
+            <column name="DateAdded" length="19" />
+        </property>
+        <property name="taxClassId" type="java.lang.Integer">
+            <column name="TaxClassID" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Product" table="product" catalog="posbravo">
+        <id name="itemNo" type="java.lang.Integer">
+            <column name="ItemNo" />
+            <generator class="identity" />
+        </id>
+        <property name="itemDescription" type="string">
+            <column name="ItemDescription" />
+        </property>
+        <property name="price" type="big_decimal">
+            <column name="Price" scale="4" />
+        </property>
+        <property name="barcode" type="string">
+            <column name="Barcode" />
+        </property>
+        <property name="size" type="string">
+            <column name="Size" />
+        </property>
+        <property name="image" type="string">
+            <column name="Image" />
+        </property>
+        <property name="addDate" type="timestamp">
+            <column name="AddDate" length="19" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="LastModifiedDate" length="19" />
+        </property>
+        <property name="dateAvailable" type="timestamp">
+            <column name="DateAvailable" length="19" />
+        </property>
+        <property name="weight" type="string">
+            <column name="Weight" />
+        </property>
+        <property name="taxClassId" type="string">
+            <column name="TaxClassID" />
+        </property>
+    </class>
+</hibernate-mapping>
