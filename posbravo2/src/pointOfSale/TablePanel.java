@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class tableGUI extends JPanel implements ActionListener, MouseListener {
+public class TablePanel extends JPanel implements ActionListener, MouseListener {
 
 	
 	boolean admin = false;
@@ -41,7 +41,7 @@ public class tableGUI extends JPanel implements ActionListener, MouseListener {
 	JPanel mid = new JPanel();
 	JPanel bot = new JPanel();
 	
-	public tableGUI(boolean isAdmin){
+	public TablePanel(boolean isAdmin){
 		
 		this.admin = isAdmin;
 		setLayout(new GridLayout(2, 1)); 
@@ -132,7 +132,9 @@ public class tableGUI extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-	
+		if(e.getSource() == jblog){
+			SystemInit.setLogInScreen();
+		}
 		
 		
 	}

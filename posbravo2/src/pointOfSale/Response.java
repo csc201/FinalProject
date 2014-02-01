@@ -807,7 +807,7 @@ public class Response{
 		
 		
 	}
-	private void setIDnPas(String id){
+	public void setIDnPas(String id){
 		//initProperties();
 		//for voidsale, reference appropriate ids based on merchantID on the sent receipt 
 	/*	if(id.contains("395347306")){

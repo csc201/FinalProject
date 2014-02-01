@@ -31,6 +31,8 @@ public class KeyPad extends JPanel implements ActionListener
 	private JPanel buttonRow1 = new JPanel(new GridLayout(1,4));
 	private JPanel buttonRow2 = new JPanel(new GridLayout(1,4));
 	private JPanel buttonRow3 = new JPanel(new GridLayout(1,4));
+	private JPanel buttonRow4 = new JPanel(new GridLayout(1,4));
+
 	private JTextField numberField = new JTextField("",11);
 	private String numberCode = "";
 	private boolean validCode = false;
@@ -45,7 +47,7 @@ public class KeyPad extends JPanel implements ActionListener
 	KeyPad()
 	{
 		setBorder(BorderFactory.createMatteBorder(10,10,10,10,DARK_CHAMPAGNE));
-		setLayout(new GridLayout(5,1));
+		setLayout(new GridLayout(6,1));
 		setBackground(DARK_CHAMPAGNE);
 		
 		numberField.setEditable(false);
@@ -65,13 +67,20 @@ public class KeyPad extends JPanel implements ActionListener
 		buttonRow3.add(new MenuButton("8","8",this));
 		buttonRow3.add(new MenuButton("9","9",this));
 		buttonRow3.add(new MenuButton("Clear","10",this));
-		buttonRow3.add(new MenuButton("Enter","11",this));
+		buttonRow3.add(new MenuButton("Fast Food","11",this));
+		
+		buttonRow4.add(new MenuButton("To Go","12",this));
+		buttonRow4.add(new MenuButton("Deli","13",this));
+		buttonRow4.add(new MenuButton("Dine In","14",this));
+		buttonRow4.add(new MenuButton("Back Office","15",this));
+		
 		
 		add(numberField);
 		Tools.addBlankSpace(this,1);
 		add(buttonRow1);
 		add(buttonRow2);
 		add(buttonRow3);
+		add(buttonRow4);
 	}
 	/**
 	 * Action listener assigned to the keypad.  Creates a password reflecting the user's entries, clears
@@ -93,18 +102,27 @@ public class KeyPad extends JPanel implements ActionListener
 			numberField.setText("");
 		}
 		else if (event.getActionCommand().equals("11"))
-			checkCode();
+			checkCode("11");
+		else if (event.getActionCommand().equals("12"))
+			checkCode("12");
+		else if (event.getActionCommand().equals("13"))
+			checkCode("13");
+		else if (event.getActionCommand().equals("14"))
+			checkCode("14");
+		else if (event.getActionCommand().equals("15"))
+			checkCode("15");
 	}
 	/**
 	 * Private helper method used to check the user entered password against a text file list of
 	 * valid passwords.  If the password checks out, the user is transfered to the transaction screen
 	 * along with the appropriate access privilege (server or admin)
 	 */
-	private void checkCode()
+	private void checkCode(String code)
 	{
 		Scanner inputStream = null;
 		try
 		{
+			//DB
 			inputStream = new Scanner(new File(SECURITY_FILE));
 		}
 		catch(FileNotFoundException e)
@@ -128,10 +146,21 @@ public class KeyPad extends JPanel implements ActionListener
 		if(validCode)
 		{
 			//initProperties();
-			
-			//TransactionGUI.setAdminPrivilege(adminPrivilege);
-			SystemInit.setCategoryPanel(adminPrivilege);
-			//SystemInit.setTransactionScreen();
+			switch(code){
+			case "11":TransactionGUI.setAdminPrivilege(adminPrivilege);
+						SystemInit.setTransactionScreen();
+						break;
+			case "12": //To Go: DB for existing customers 
+				
+				break;
+			case "13": //Delievery: DB for existing customers
+				break;
+			case "14": SystemInit.setTablePanel(adminPrivilege); //Dine In
+			//David needs to integrate 	
+				break;
+			case "15": SystemInit.setCategoryPanel(adminPrivilege); //BackOffice
+				break;
+			}
 		}
 		else
 		{

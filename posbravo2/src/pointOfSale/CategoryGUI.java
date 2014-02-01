@@ -73,5 +73,8 @@ public class CategoryGUI extends JPanel implements ActionListener {
 			jbClock.setActionCommand("ClockIn");
 			
 		}
+		else if(arg0.getActionCommand().equalsIgnoreCase("Out")){
+			SystemInit.setLogInScreen();
+		}
 	}
 }

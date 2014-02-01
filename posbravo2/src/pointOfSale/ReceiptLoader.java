@@ -89,6 +89,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 			
 			Scanner read = null;
 				try {
+					//DB look up Invoice table by receipt number
 					read = new Scanner(new File("Files/Receipts/" + receiptList.getSelectedValue()));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block

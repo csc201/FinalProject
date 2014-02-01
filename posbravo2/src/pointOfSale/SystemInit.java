@@ -107,7 +107,7 @@ public class SystemInit extends JFrame
 	
 	public static void setTablePanel(boolean isAdmin){	
 		systemPanel.removeAll();
-		systemPanel.add(new tableGUI(isAdmin));
+		systemPanel.add(new TablePanel(isAdmin));
 		Tools.update(systemPanel);
 	}
 	
