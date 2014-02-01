@@ -30,8 +30,7 @@ public class SystemInit extends JFrame
 	/**
 	 * Main method which initiates the application by instantiating this JFrame class
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		SystemInit gui = new SystemInit();  
 		gui.setVisible(true);
 	}
