@@ -40,17 +40,24 @@ public class ReceiptPanel extends JPanel
 	private static JList<String> receiptList = new JList<String>(listModel);
 	
 	private static String newReceipt = "";
-	private static BigDecimal salesTax = BigDecimal.ZERO;
+	private static long subtotalAmount = 0;
+	private static long taxAmount = 0;
+	private static long tipAmount = 0;
+	private static long totalAmount = 0;
+	private static double salesTax=0;
 	private static String transaction = "";
+
+	private static ReceiptManager receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, BigDecimal.valueOf(salesTax));
 	
-<<<<<<< HEAD
+	
+	
+//<<<<<<< HEAD
 	public static String getNewReceipt() {
 		return newReceipt;
 	}
-=======
-	private static ReceiptManager receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, salesTax);
+//=======
 	private static ReceiptLog receiptLog = new ReceiptLog();
->>>>>>> origin/test4
+//>>>>>>> origin/test4
 	
 	public static JList<String> getReceiptList() {
 		return receiptList;
@@ -68,7 +75,7 @@ public class ReceiptPanel extends JPanel
 		setLayout(new GridLayout(1,1));
 		readTax();
 		
-		receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, salesTax);
+		receiptManager = new ReceiptManager(TEMP_MERCHANT, TEMP_CASHIER, BigDecimal.valueOf(salesTax));
 		
 		add(receiptManager);
 	}
@@ -85,13 +92,18 @@ public class ReceiptPanel extends JPanel
 		MenuItem item = new MenuItem(itemName, itemPrice);
 		receiptManager.addItem(item);
 	}
+	private static void updateTotals()
+	{
+		taxAmount = Math.round(subtotalAmount * salesTax / 100.0);
+		totalAmount = subtotalAmount + taxAmount;
+	}
 	/**
 	 * Called by the Delete button in the CheckOutPanel class to remove an item from the receiptList.
 	 * Also adjusts the subtotals/totals to match the new receiptList elements.
 	 */
 	public static void deleteItem()
 	{
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		if(receiptList.getSelectedIndex() < listModel.getSize()-4 && receiptList.getSelectedIndex() > -1)
 		{
 			
@@ -148,9 +160,9 @@ public class ReceiptPanel extends JPanel
 				listModel.addElement(Tools.toMoney(totalAmount) + manualTab(Tools.toMoney(totalAmount)) + "Total");
 			}
 		}
-=======
+//=======
 		receiptManager.deleteSelectedItem();
->>>>>>> origin/test4
+//>>>>>>> origin/test4
 	}
 	/**
 	 * Removes all elements from the receiptList and resets the total price to zero.
@@ -178,21 +190,21 @@ public class ReceiptPanel extends JPanel
 		catch(IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		}
-<<<<<<< HEAD
-		
+//<<<<<<< HEAD
+	/*	
 		contentWriter.println("OPEN");
 		listWriter.println(newReceipt);
 		for(int count=0; count < listModel.getSize(); count++){
 			if(!listModel.elementAt(count).equalsIgnoreCase("open")){
 			contentWriter.println(listModel.elementAt(count));
 			}
-}
 		
 		listWriter.close();
 		contentWriter.close();
 		clearReceipt();
-=======
->>>>>>> origin/test4
+		*/
+//=======
+//>>>>>>> origin/test4
 	}
 	public static void saveReceipt(String name)
 	{
@@ -344,11 +356,10 @@ public class ReceiptPanel extends JPanel
 			JOptionPane.showMessageDialog(null,"File Not Found");
 		}
 		
-		salesTax = new BigDecimal(inputStream.next());
-		salesTax = salesTax.divide(new BigDecimal(100));
+		salesTax = Double.parseDouble(inputStream.next());
 		inputStream.close();
 		
-		receiptManager.setSalesTax(salesTax);
+		receiptManager.setSalesTax(BigDecimal.valueOf(salesTax).divide(new BigDecimal(100)));
 	}
 	
 	public static String getTransaction() {
