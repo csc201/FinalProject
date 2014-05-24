@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class ReceiptPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private static final String RECEIPT_PATH = "Files/Receipts/";
+	private static final String RECEIPT_PATH = "Files/Receipt/";
 	private static final String RECEIPT_LIST_FILE = RECEIPT_PATH + "ReceiptList";
 	private static final String TAX_FILE = "Files/Tax/SalesTax";
 	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);

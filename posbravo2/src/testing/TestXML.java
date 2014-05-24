@@ -74,7 +74,7 @@ public class TestXML extends JFrame {
 	}
 		/*double value = 0;
 		try {
-			Scanner read = new Scanner(new File("Files/Receipts/2013-12-08_16.32.19"));
+			Scanner read = new Scanner(new File("Files/Receipt/2013-12-08_16.32.19"));
 			while(read.hasNextLine()){
 				String temp = read.nextLine();
 				if(temp.contains("Approved")){
@@ -211,14 +211,14 @@ public class TestXML extends JFrame {
 		//	return;
 		//}
 		
-		//ProcessPanel.closeReceipt("PROGRESS", new File("Files/Receipts/2013-10-25_09.49.37"));
+		//ProcessPanel.closeReceipt("PROGRESS", new File("Files/Receipt/2013-10-25_09.49.37"));
 		//StringBuilder str = new StringBuilder(null);
 
 		
 		
 	/*	PrintWriter f;
 		try {
-			f = new PrintWriter(new File("Files/Receipts/2013-10-25_09.49.39"));
+			f = new PrintWriter(new File("Files/Receipt/2013-10-25_09.49.39"));
 			f.println("aaaaa\naaaa");
 			f.println("Baaa\naaa");
 			f.close();

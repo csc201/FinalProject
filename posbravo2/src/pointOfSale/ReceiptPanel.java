@@ -31,7 +31,7 @@ public class ReceiptPanel extends JPanel
 	private static final Merchant TEMP_MERCHANT = new Merchant("Merchant", "Restaurant"," 703-323-3000",
 			new Address("8333 Little River Turnpike","","Annandale",Address.State.VA,"22003"));
 	private static final long serialVersionUID = 1L;
-	private static final String RECEIPT_PATH = "Files/Receipts/";
+	private static final String RECEIPT_PATH = "Files/Receipt/";
 	private static final String RECEIPT_LIST_FILE = RECEIPT_PATH + "ReceiptList";
 	private static final String RECEIPT_LOG_FILE = RECEIPT_PATH + "ReceiptLog";
 	private static final String TAX_FILE = "Files/Tax/SalesTax";
@@ -176,7 +176,28 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void saveReceipt()
 	{
-		ObjectOutputStream outputStream;
+		PrintWriter listWriter = null;
+		PrintWriter contentWriter = null;
+		newReceipt = getTimeStamp();
+		try
+		{
+			listWriter = new PrintWriter(new FileOutputStream(RECEIPT_LIST_FILE, true));
+			contentWriter = new PrintWriter(RECEIPT_PATH + newReceipt);
+		}
+		catch(FileNotFoundException e)
+		{
+			JOptionPane.showMessageDialog(null,"File Not Found");
+		}
+		
+		contentWriter.println("OPEN");
+		listWriter.println(newReceipt);
+		for(int count=0; count < listModel.getSize(); count++)
+			contentWriter.println(listModel.elementAt(count));
+		
+		listWriter.close();
+		contentWriter.close();
+		clearReceipt();
+	/*	ObjectOutputStream outputStream;
 		try {
 			ArrayList<Receipt> receiptList = receiptManager.getList();
 			for(Receipt receipt : receiptList)
@@ -293,7 +314,31 @@ public class ReceiptPanel extends JPanel
 	/**
 	 * Loads items of the selected receipt from text file back into receipt list
 	 * @param receiptFile Text file to be loaded
-	 */
+	 **/
+		public static void loadReceipt(String receiptFile)
+		{
+			Scanner inputStream = null;
+			try
+			{
+				inputStream = new Scanner(new File(RECEIPT_PATH + receiptFile));
+			}
+			catch(FileNotFoundException e)
+			{
+				try{
+					inputStream = new Scanner(new File(receiptFile));
+					transaction = receiptFile;
+				} catch (FileNotFoundException e1) {
+				JOptionPane.showMessageDialog(null,"File Not Found");
+				}
+			}
+			clearReceipt();
+			while(inputStream.hasNextLine())
+				listModel.addElement(inputStream.nextLine());
+			inputStream.close();
+			
+		
+		}
+	 /*
 	public static void loadReceipt(String receiptFile)
 	{
 		Scanner inputStream = null;
@@ -314,7 +359,9 @@ public class ReceiptPanel extends JPanel
 		while(inputStream.hasNextLine())
 			listModel.addElement(inputStream.nextLine());
 		inputStream.close();
-	}
+		
+	
+	}*/
 	/**
 	 * JLists do not recognize the tab character, so this inserts a manual tab that, while not perfect,
 	 * gets the job done.

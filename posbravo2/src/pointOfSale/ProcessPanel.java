@@ -28,7 +28,7 @@ public class ProcessPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L; // Added to satisfy the
 														// compiler
 	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
-	private static final String RECEIPT_PATH = "Files/Receipts";
+	private static final String RECEIPT_PATH = "Files/Receipt";
 	private static final String RECEIPT_LIST = RECEIPT_PATH + "/ReceiptList";
 
 	private JPanel upperPanel = new JPanel(new GridLayout(3, 1));
@@ -122,7 +122,7 @@ public class ProcessPanel extends JPanel implements ActionListener {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
 	}
-
+   //Tanes makes changed on 5-24-2014 to support binary file reading the receipt
 	private void readReceipts() {
 		listModel.removeAllElements();
 		Scanner inputStream = null;
@@ -147,7 +147,8 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			else {
 				String read = reader.nextLine().trim();
 				// System.out.println(read.matches("OPEN"));
-				if (read.equalsIgnoreCase("OPEN") || read.equalsIgnoreCase("PROGRESS")) {
+				if (read.equalsIgnoreCase("OPEN")
+						|| read.equalsIgnoreCase("PROGRESS")) {
 					listModel.addElement(line);
 				}
 			}
@@ -156,6 +157,41 @@ public class ProcessPanel extends JPanel implements ActionListener {
 			reader.close();
 		inputStream.close();
 	}
+	
+	/*private void readReceipts() {
+		listModel.removeAllElements();
+		Scanner inputStream = null;
+		Scanner reader = null;
+		try {
+			inputStream = new Scanner(new File(RECEIPT_LIST));
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+		while (inputStream.hasNextLine()) {
+			String line = inputStream.nextLine().trim();
+			System.out.println(RECEIPT_PATH + "/" + line);
+			try {
+				reader = new Scanner(new File(RECEIPT_PATH + "/" + line));
+			} catch (FileNotFoundException e) {
+				System.out.println("Reciept file not found");
+				continue;
+			}
+
+			if (line.equals(""))
+				;
+			else {
+				String read = reader.nextLine().trim();
+				// System.out.println(read.matches("OPEN"));
+				if (read.equalsIgnoreCase("OPEN")
+						|| read.equalsIgnoreCase("PROGRESS")) {
+					listModel.addElement(line);
+				}
+			}
+		}
+		if (reader != null)
+			reader.close();
+		inputStream.close();
+	}*/
 
 	@Override
 	public void actionPerformed(ActionEvent event) {

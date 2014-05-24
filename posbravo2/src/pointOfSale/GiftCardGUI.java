@@ -10,15 +10,12 @@ import java.util.Scanner;
 
 /**
  * 
- * @author Stephen Collins, Vanessa Harris, Kolter Bradshaw, Cristhian Ramirez
- * (Date: 4/24/2013) 
- * Purpose: To load the GUI for processing and saving transactions. Upon successful login, 
- * the user is able to select items from each category into a receipt panel and save the receipt
- * by pressing the "Checkout" button. Administrators are given supplemented privileges to access and change
- * system info through a "System" button. 
+ * @author Tanes Kanchanawanchai
+ * (Date: 5/24/2014) 
+ * Purpose: To add giftcard for gifcard process with Mercury system 
  *
  */
-public class TransactionGUI extends JPanel implements ActionListener
+public class GiftCardGUI extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
@@ -27,9 +24,9 @@ public class TransactionGUI extends JPanel implements ActionListener
 	
 	private JPanel halfPanel = new JPanel(new GridLayout(1,2));
 	private JPanel transactionPanel = new JPanel(new GridLayout(4,1));
-	private JPanel receiptButtonPanel = new JPanel(new GridLayout(3,3));
+	//private JPanel receiptButtonPanel = new JPanel(new GridLayout(3,3));
 	private JPanel transButtonPanel = new JPanel(new GridLayout(6,1));
-	private JPanel logoPanel = new JPanel(new GridLayout(1,1));
+	//private JPanel logoPanel = new JPanel(new GridLayout(1,1));
 	private ItemPanel menuPanel = new ItemPanel();
 	private JPanel checkoutButtonPanel = new JPanel(new GridLayout(3,1));
 	private MenuButton systemButton = new MenuButton("System","System",this);
@@ -46,7 +43,7 @@ public class TransactionGUI extends JPanel implements ActionListener
 	 * Allows admin "System" button and label visibility dependent on the 
 	 * determined user privilege status
 	 */
-	TransactionGUI()
+	GiftCardGUI()
 	{
 		setLayout(new GridLayout(1,2));
 		setBackground(DARK_CHAMPAGNE);

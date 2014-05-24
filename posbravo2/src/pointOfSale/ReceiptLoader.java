@@ -22,7 +22,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;  //Added to satisfy the compiler
 	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
-	private static final String RECEIPT_PATH = "Files/Receipts/";
+	private static final String RECEIPT_PATH = "Files/Receipt/";
 	private static final String RECEIPT_LIST = RECEIPT_PATH + "ReceiptList";
 	
 	private JPanel upperPanel = new JPanel(new GridLayout(3,1));
@@ -80,7 +80,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 			//if(receiptPanelList.isSelectionEmpty()){
 			Scanner read = null;
 			try {
-				read = new Scanner(new File("Files/Receipts/" + receiptList.getSelectedValue()));
+				read = new Scanner(new File("Files/Receipt/" + receiptList.getSelectedValue()));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -102,7 +102,7 @@ public class ReceiptLoader extends JPanel implements ActionListener
 			Scanner read = null;
 				try {
 					//DB look up Invoice table by receipt number
-					read = new Scanner(new File("Files/Receipts/" + receiptList.getSelectedValue()));
+					read = new Scanner(new File("Files/Receipt/" + receiptList.getSelectedValue()));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
