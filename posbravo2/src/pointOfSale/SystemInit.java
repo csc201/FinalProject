@@ -33,6 +33,7 @@ public class SystemInit extends JFrame
 	public static void main(String[] args) {
 		SystemInit gui = new SystemInit();  
 		gui.setVisible(true);
+		gui.setSize(1024, 600);
 	}
 	/**
 	 * Defines the initial settings of the JFrame window, adds the top-level JPanel and invokes
@@ -68,7 +69,7 @@ public class SystemInit extends JFrame
 	public static void setTransactionScreen()
 	{
 		systemPanel.removeAll();
-		systemPanel.add(new TransactionGUI());
+		systemPanel.add(new TransactionGUI3());
 		Tools.update(systemPanel);
 	}
 	/**

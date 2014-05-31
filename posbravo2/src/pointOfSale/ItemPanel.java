@@ -50,6 +50,11 @@ public class ItemPanel extends JPanel implements ActionListener, MouseListener
 	{
 		int index = event.getActionCommand().indexOf(".");
 		
+		if(event.getActionCommand().equals("Back")){
+			displayCategories();
+			return;
+		}
+		
 		if(index == -1)
 			displayItems(Integer.parseInt(event.getActionCommand()));
 		else
@@ -105,15 +110,21 @@ public class ItemPanel extends JPanel implements ActionListener, MouseListener
 	 */
 	private void displayItems(int category)
 	{
+
+		button[0].setActionCommand("Back");
+		button[0].setText("Back");
+		button[0].setVisible(true);
+		
 		int count = 0;
-		for(; item[category][count].isActive() && count < 32; count++)
+		for(; item[category][count].isActive() && count < 31; count++)
 		{
-			button[count].setText(item[category][count].getName());
-			button[count].setActionCommand(String.valueOf(category) + "." + String.valueOf(count));
-			button[count].setVisible(true);
+			button[count+1].setText(item[category][count].getName());
+			button[count+1].setActionCommand(String.valueOf(category) + "." + String.valueOf(count));
+			button[count+1].setVisible(true);
+			
 		}
-		for(; count<32; count++)
-			button[count].setVisible(false);
+		for(; count<31; count++)
+			button[count+1].setVisible(false);
 			
 		Tools.update(this);
 	}

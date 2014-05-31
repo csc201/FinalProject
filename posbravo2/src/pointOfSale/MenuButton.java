@@ -1,7 +1,9 @@
 package pointOfSale;
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
+
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 /**
@@ -31,5 +33,8 @@ public class MenuButton extends JButton
 		setBackground(PALE_GOLDENROD);
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		addActionListener(listener);
+	}
+	public void setMargin(int x, int y){
+		setMargin(new Insets(y, x, y, x));
 	}
 }
