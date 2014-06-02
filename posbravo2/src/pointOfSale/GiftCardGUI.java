@@ -24,9 +24,9 @@ public class GiftCardGUI extends JPanel implements ActionListener
 	
 	private JPanel halfPanel = new JPanel(new GridLayout(1,2));
 	private JPanel transactionPanel = new JPanel(new GridLayout(4,1));
-	//private JPanel receiptButtonPanel = new JPanel(new GridLayout(3,3));
+	private JPanel receiptButtonPanel = new JPanel(new GridLayout(3,3));
 	private JPanel transButtonPanel = new JPanel(new GridLayout(6,1));
-	//private JPanel logoPanel = new JPanel(new GridLayout(1,1));
+	private JPanel logoPanel = new JPanel(new GridLayout(1,1));
 	private ItemPanel menuPanel = new ItemPanel();
 	private JPanel checkoutButtonPanel = new JPanel(new GridLayout(3,1));
 	private MenuButton systemButton = new MenuButton("System","System",this);
