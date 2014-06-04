@@ -1,4 +1,0 @@
-Right click posbravo2 -> Build Path -> Configure Build Path..
-Click Library Tab -> Add External JARs
-Navigate to posbravo2/lib/ -> Select All -> Press Open -> Press OK
-JAR files should now show up in Referenced Libraries
