@@ -1,20 +1,67 @@
-CSC201 Final Project.
+# CSC201 Final Project
+This Readme is a bit lengthy, but should provide all information necessary to contribute to the repository.
 
-Instructions on How to Import Posbravo2 into Eclipse.
+## Forking a Repository
+The easiest way to fork this project is to go to the top right corner of this page and click *Fork*.
 
-Step1:  Right click on package explorer perspective->Import->git->project from git->URI->paste URI and follow the eclipse           flow (it should be easy from this point).
+## Importing Project into Eclipse
+Eclipse and Git Bash don't like cooperating with each other.  You have to trick Eclipse into accepting the cloned repository.
 
-Step2:  Create new Eclipse project named posbravo2.
+### Setting up Eclipse
+- Create a folder called FinalProject
+- Open Eclipse and set the workspace to FinalProject
+- Create a Java Project named posbravo2
+- Close Eclipse
 
-Step3:  Right click on posbravo2 project and Import->general->file system and browse to local git folder and select       
-        posbravo2 folder then check all the files to import.
-        
-Step4:  We expect to see the errors because of the lib folder path configurations. To fix this: Right click on   
-        posbravo2->Build Path->Configure Build Path->Click on Add External JARs->Browse to local git folder and posbravo2           and lib folder->select all the files from this folder->click Open->click OK 
-        
+### Adding Git Repository to Eclipse
+Make sure you are in the folder **containing** *FinalProject/*, **not** inside *FinalProject/*.  Execute the following commands:
 
-Remarks:
+#### Windows
+    git clone https://github.com/USERNAME/FinalProject.git temp
+    robocopy /is /e ./temp/.git ./FinalProject/.git
+    rd /s /q temp
+    cd FinalProject
+    git reset --hard HEAD
+    git fetch
 
-posbravo is original code.  
+#### Mac / Linux
+    git clone https://github.com/USERNAME/FinalProject.git temp
+    mv ./temp/.git ./FinalProject/.git
+    rm -rf temp
+    cd FinalProject
+    git reset --hard HEAD
+    git fetch
 
-posbravo2 is current development. (This is the project that you need to import)
+Mac / Linux code hasn't been tested, but should work.  Feel free to test and update code.
+
+### Updating Eclipse
+- Open Eclipse and set the workspace to FinalProject
+- Refresh the Package Explorer by pressing F5
+
+## Adding JAR Files to Classpath
+The project will throw errors because the required JAR files aren't automatically added to the classpath.
+
+- Right click posbravo2 -> Build Path -> Configure Build Path...
+- Click Libraries tab -> Add External JARs
+- Navigate to posbravo2/lib/ -> Select all -> Press Open -> Press OK
+
+## Pushing Files to Forked Repository
+Pushing the files *Readme.md* and *HelloWorld.java* with the commit message *Sample git*.
+
+    git add Readme.md
+    git add HelloWorld.java
+    git commit -m "Sample git"
+    git push -u origin hibernate
+
+## Syncing Fork
+Instructions on how to sync forked repositories with original.  Forks should be synchronized after they have been merged with original.
+
+    git remote add upstream https://github.com/csc201/FinalProject.git
+    git fetch upstream
+    git merge upstream/hibernate
+    git commit -m "sync fork"
+    git push -u origin hibernate
+
+## Remarks
+- posbravo is original code.
+- posbravo2 is current development (this is the project you need to import).
