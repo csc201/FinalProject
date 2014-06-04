@@ -1,20 +1,23 @@
-CSC201 Final Project.
+# CSC201 Final Project
+----
+## Adding JAR files to classpath
+The project will throw errors because the required JAR files aren't automatically added to the classpath.
 
-Instructions on How to Import Posbravo2 into Eclipse.
+| Step 1 | Right click posbravo2 -> Build Path -> Configure Build Path... |
+| Step 2 | Click Libraries tab -> Add External JARs |
+| Step 3 | Navigate to posbravo2/lib/ -> Select all -> Press Open -> Press OK |
 
-Step1:  Right click on package explorer perspective->Import->git->project from git->URI->paste URI and follow the eclipse           flow (it should be easy from this point).
+The JAR files should now be in the classpath.
 
-Step2:  Create new Eclipse project named posbravo2.
+## Syncing Fork
+Instructions on how to sync forked repositories with original.  Forks should be synchronized after they have been merged with original.
 
-Step3:  Right click on posbravo2 project and Import->general->file system and browse to local git folder and select       
-        posbravo2 folder then check all the files to import.
-        
-Step4:  We expect to see the errors because of the lib folder path configurations. To fix this: Right click on   
-        posbravo2->Build Path->Configure Build Path->Click on Add External JARs->Browse to local git folder and posbravo2           and lib folder->select all the files from this folder->click Open->click OK 
-        
+    git remote add upstream https://github.com/csc201/FinalProject.git
+    git fetch upstream
+    git merge upstream/hibernate
+    git commit -m "sync fork"
+    git push -u origin hibernate
 
-Remarks:
-
-posbravo is original code.  
-
-posbravo2 is current development. (This is the project that you need to import)
+## Remarks
+- posbravo is original code.
+- posbravo2 is current development (this is the project you need to import).
