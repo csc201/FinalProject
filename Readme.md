@@ -53,6 +53,16 @@ Pushing the files *Readme.md* and *HelloWorld.java* with the commit message *Sam
     git commit -m "Sample git"
     git push -u origin hibernate
 
+## Create Pull Request
+Unfortunately there isn't an easy way to submit a new pull request via the command line.
+- Navigate to https://github.com/csc201/FinalProject/compare/
+- Click *compare across forks*
+- Change *head fork* to *USERNAME/FinalProject*
+- Click *Create pull request*
+- Add a title for your pull request and leave a comment
+- Press *Create pull request* (again)
+- You will receive an email when your pull reqeust has been merged
+
 ## Syncing Fork
 Instructions on how to sync forked repositories with original.  Forks should be synchronized after they have been merged with original.
 
