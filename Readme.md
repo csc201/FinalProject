@@ -8,13 +8,13 @@ The easiest way to fork this project is to go to the top right corner of this pa
 Eclipse and Git Bash don't like cooperating with each other.  You have to trick Eclipse into accepting the cloned repository.
 
 ### Setting up Eclipse
-- Create a folder called FinalProject
+- Create a folder called FinalProject on your Desktop
 - Open Eclipse and set the workspace to FinalProject
 - Create a Java Project named posbravo2
 - Close Eclipse
 
 ### Adding Git Repository to Eclipse
-Make sure you are in the folder **containing** *FinalProject/*, **not** inside *FinalProject/*.  Execute the following commands:
+Open command prompt.  Navigate to your desktop.  Execute the following commands:
 
 #### Windows
     git clone https://github.com/USERNAME/FinalProject.git temp
