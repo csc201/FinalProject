@@ -1,4 +1,6 @@
 package pointOfSale;
+import giftcard.GiftcardGUI;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -8,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowStateListener;
 import java.util.Scanner;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -290,7 +291,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		}
 		else if(event.getActionCommand().equals("Issue"))
 		{
-			
+			new GiftcardGUI(TransactionGUI3.this);
 		}
 		else if(event.getActionCommand().equals("Balance"))
 		{

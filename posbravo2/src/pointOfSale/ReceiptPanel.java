@@ -176,6 +176,8 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void saveReceipt()
 	{
+		
+		//Write to text file by using timestamp as file name
 		PrintWriter listWriter = null;
 		PrintWriter contentWriter = null;
 		newReceipt = getTimeStamp();
@@ -197,7 +199,9 @@ public class ReceiptPanel extends JPanel
 		listWriter.close();
 		contentWriter.close();
 		clearReceipt();
-	/*	ObjectOutputStream outputStream;
+		
+		//write to ReceiptLog as an object file
+		ObjectOutputStream outputStream;
 		try {
 			ArrayList<Receipt> receiptList = receiptManager.getList();
 			for(Receipt receipt : receiptList)
@@ -211,21 +215,7 @@ public class ReceiptPanel extends JPanel
 		catch(IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		}
-//<<<<<<< HEAD
-	/*	
-		contentWriter.println("OPEN");
-		listWriter.println(newReceipt);
-		for(int count=0; count < listModel.getSize(); count++){
-			if(!listModel.elementAt(count).equalsIgnoreCase("open")){
-			contentWriter.println(listModel.elementAt(count));
-			}
-		
-		listWriter.close();
-		contentWriter.close();
-		clearReceipt();
-		*/
-//=======
-//>>>>>>> origin/test4
+
 	}
 	public static void saveReceipt(String name)
 	{

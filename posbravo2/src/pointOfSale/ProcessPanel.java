@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import utils.ObjWriter;
 
 public class ProcessPanel extends JPanel implements ActionListener {
 
