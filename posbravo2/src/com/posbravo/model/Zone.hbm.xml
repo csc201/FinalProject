@@ -1,21 +1,36 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Zone" table="zone" catalog="posbravo">
+    <class name="com.posbravo.model.Zone" table="Zone" catalog="posbravo">
         <id name="zoneId" type="java.lang.Integer">
-            <column name="ZoneId" />
+            <column name="ZoneID" />
             <generator class="identity" />
         </id>
-        <property name="zip" type="java.lang.Integer">
-            <column name="Zip" />
+        <property name="zip" type="string">
+            <column name="Zip" length="5" />
+        </property>
+        <property name="zipPlusFour" type="string">
+            <column name="ZipPlusFour" length="4" />
         </property>
         <property name="state" type="string">
-            <column name="State" />
+            <column name="State" length="2" />
         </property>
         <property name="city" type="string">
-            <column name="City" />
+            <column name="City" length="25" />
         </property>
+        <set name="addresses" table="Address" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ZoneID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Address" />
+        </set>
+        <set name="deliveries" table="Delivery" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ZoneID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Delivery" />
+        </set>
     </class>
 </hibernate-mapping>

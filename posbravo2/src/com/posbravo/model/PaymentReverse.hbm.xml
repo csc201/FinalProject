@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.PaymentReverse" table="PaymentReverse" catalog="posbravo">
+        <id name="paymentReverseId" type="java.lang.Integer">
+            <column name="PaymentReverseID" />
+            <generator class="identity" />
+        </id>
+        <property name="dsixreturnCode" type="java.lang.Integer">
+            <column name="DSIXReturnCode" />
+        </property>
+        <property name="cmdStatus" type="string">
+            <column name="CmdStatus" length="63" />
+        </property>
+        <property name="textResponse" type="string">
+            <column name="TextResponse" length="31" />
+        </property>
+        <property name="authCode" type="string">
+            <column name="AuthCode" length="15" />
+        </property>
+        <property name="refNo" type="java.lang.Integer">
+            <column name="RefNo" />
+        </property>
+        <property name="acqRefData" type="string">
+            <column name="AcqRefData" />
+        </property>
+        <property name="recordNo" type="string">
+            <column name="RecordNo" />
+        </property>
+        <property name="purchaseAmount" type="big_decimal">
+            <column name="PurchaseAmount" scale="6" not-null="true" />
+        </property>
+        <property name="authorizeAmount" type="big_decimal">
+            <column name="AuthorizeAmount" scale="6" not-null="true" />
+        </property>
+        <set name="payments" table="Payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PaymentReverseID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>

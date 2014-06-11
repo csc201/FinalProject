@@ -1,42 +1,72 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Product" table="product" catalog="posbravo">
-        <id name="itemNo" type="java.lang.Integer">
-            <column name="ItemNo" />
+    <class name="com.posbravo.model.Product" table="Product" catalog="posbravo">
+        <id name="productId" type="java.lang.Integer">
+            <column name="ProductID" />
             <generator class="identity" />
         </id>
-        <property name="itemDescription" type="string">
-            <column name="ItemDescription" />
+        <many-to-one name="productType" class="com.posbravo.model.ProductType" fetch="select">
+            <column name="ProductTypeID" />
+        </many-to-one>
+        <many-to-one name="productCustomizationGroup" class="com.posbravo.model.ProductCustomizationGroup" fetch="select">
+            <column name="ProductCustomizationGroupID" />
+        </many-to-one>
+        <many-to-one name="taxClass" class="com.posbravo.model.TaxClass" fetch="select">
+            <column name="TaxClassID" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="Name" length="63" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="Description" />
         </property>
         <property name="price" type="big_decimal">
-            <column name="Price" scale="4" />
+            <column name="Price" scale="6" not-null="true" />
         </property>
         <property name="barcode" type="string">
-            <column name="Barcode" />
+            <column name="Barcode" length="7090" />
         </property>
         <property name="size" type="string">
-            <column name="Size" />
+            <column name="Size" length="24" />
         </property>
         <property name="image" type="string">
-            <column name="Image" />
+            <column name="Image" length="800" />
         </property>
-        <property name="addDate" type="timestamp">
-            <column name="AddDate" length="19" />
+        <property name="thumbnail" type="string">
+            <column name="Thumbnail" length="800" />
         </property>
-        <property name="lastModifiedDate" type="timestamp">
-            <column name="LastModifiedDate" length="19" />
+        <property name="dateAdded" type="timestamp">
+            <column name="DateAdded" length="19" not-null="true" />
+        </property>
+        <property name="dateLastModified" type="timestamp">
+            <column name="DateLastModified" length="19" not-null="true" />
         </property>
         <property name="dateAvailable" type="timestamp">
-            <column name="DateAvailable" length="19" />
+            <column name="DateAvailable" length="19" not-null="true" />
         </property>
-        <property name="weight" type="string">
-            <column name="Weight" />
+        <property name="kilograms" type="big_decimal">
+            <column name="Kilograms" precision="20" scale="10" />
         </property>
-        <property name="taxClassId" type="string">
-            <column name="TaxClassID" />
-        </property>
+        <set name="cartItems" table="CartItem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ProductID" />
+            </key>
+            <one-to-many class="com.posbravo.model.CartItem" />
+        </set>
+        <set name="productTagToProducts" table="ProductTagToProduct" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ProductID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.ProductTagToProduct" />
+        </set>
+        <set name="menuClassifications" table="MenuClassification" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ProductID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.MenuClassification" />
+        </set>
     </class>
 </hibernate-mapping>

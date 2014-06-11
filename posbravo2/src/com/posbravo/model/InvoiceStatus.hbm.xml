@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.InvoiceStatus" table="invoice_status" catalog="posbravo">
-        <id name="invoiceId" type="int">
-            <column name="InvoiceID" />
-            <generator class="assigned" />
+    <class name="com.posbravo.model.InvoiceStatus" table="InvoiceStatus" catalog="posbravo">
+        <id name="invoiceStatusId" type="java.lang.Integer">
+            <column name="InvoiceStatusID" />
+            <generator class="identity" />
         </id>
-        <property name="status" type="string">
-            <column name="Status" />
+        <many-to-one name="invoice" class="com.posbravo.model.Invoice" fetch="select">
+            <column name="InvoiceID" not-null="true" />
+        </many-to-one>
+        <property name="dateLastModified" type="timestamp">
+            <column name="DateLastModified" length="19" not-null="true" />
         </property>
-        <property name="lastModifiedDate" type="timestamp">
-            <column name="LastModifiedDate" length="19" />
-        </property>
+        <set name="payments" table="Payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="InvoiceStatusID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Payment" />
+        </set>
     </class>
 </hibernate-mapping>

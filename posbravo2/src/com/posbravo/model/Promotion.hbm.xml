@@ -1,15 +1,69 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Promotion" table="promotion" catalog="posbravo">
-        <id name="promId" type="java.lang.Integer">
-            <column name="PromId" />
+    <class name="com.posbravo.model.Promotion" table="Promotion" catalog="posbravo">
+        <id name="promotionId" type="java.lang.Integer">
+            <column name="PromotionID" />
             <generator class="identity" />
         </id>
-        <property name="discountPercentage" type="java.lang.Integer">
-            <column name="DiscountPercentage" />
+        <property name="name" type="string">
+            <column name="Name" not-null="true" />
         </property>
+        <property name="discountPercent" type="big_decimal">
+            <column name="DiscountPercent" precision="6" scale="3" not-null="true" />
+        </property>
+        <property name="discountAmount" type="big_decimal">
+            <column name="DiscountAmount" scale="6" not-null="true" />
+        </property>
+        <property name="startDate" type="timestamp">
+            <column name="StartDate" length="19" />
+        </property>
+        <property name="endDate" type="timestamp">
+            <column name="EndDate" length="19" />
+        </property>
+        <property name="vanityCode" type="string">
+            <column name="VanityCode" unique="true" />
+        </property>
+        <property name="usesPerCustomer" type="java.lang.Integer">
+            <column name="UsesPerCustomer" />
+        </property>
+        <set name="invoices" table="Invoice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Invoice" />
+        </set>
+        <set name="promotionToPromotionGroups" table="PromotionToPromotionGroup" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.PromotionToPromotionGroup" />
+        </set>
+        <set name="promotionUsages" table="PromotionUsage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.PromotionUsage" />
+        </set>
+        <set name="discountByItems" table="DiscountByItem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.DiscountByItem" />
+        </set>
+        <set name="discountByInvoices" table="DiscountByInvoice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.DiscountByInvoice" />
+        </set>
+        <set name="restaurantPromotions" table="RestaurantPromotion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PromotionID" />
+            </key>
+            <one-to-many class="com.posbravo.model.RestaurantPromotion" />
+        </set>
     </class>
 </hibernate-mapping>

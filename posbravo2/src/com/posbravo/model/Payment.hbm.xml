@@ -1,42 +1,42 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Payment" table="payment" catalog="posbravo">
+    <class name="com.posbravo.model.Payment" table="Payment" catalog="posbravo">
         <id name="paymentId" type="java.lang.Integer">
-            <column name="PaymentId" />
+            <column name="PaymentID" />
             <generator class="identity" />
         </id>
-        <property name="paymentType" type="string">
-            <column name="PaymentType" />
-        </property>
-        <property name="paymentDate" type="timestamp">
-            <column name="PaymentDate" length="19" />
-        </property>
-        <property name="invoiceNo" type="java.lang.Integer">
-            <column name="InvoiceNo" />
-        </property>
-        <property name="ccId" type="java.lang.Integer">
-            <column name="CcID" />
-        </property>
-        <property name="preAuthId" type="java.lang.Integer">
-            <column name="PreAuthID" />
-        </property>
-        <property name="preAuthCapId" type="java.lang.Integer">
-            <column name="PreAuthCapID" />
-        </property>
-        <property name="reverseId" type="java.lang.Integer">
-            <column name="ReverseID" />
-        </property>
-        <property name="returnId" type="java.lang.Integer">
-            <column name="ReturnID" />
-        </property>
-        <property name="adjustId" type="java.lang.Integer">
-            <column name="AdjustID" />
-        </property>
-        <property name="saleId" type="java.lang.Integer">
-            <column name="SaleID" />
+        <many-to-one name="paymentPreAuthCapture" class="com.posbravo.model.PaymentPreAuthCapture" fetch="select">
+            <column name="PaymentPreAuthCaptureID" />
+        </many-to-one>
+        <many-to-one name="paymentSale" class="com.posbravo.model.PaymentSale" fetch="select">
+            <column name="PaymentSaleID" />
+        </many-to-one>
+        <many-to-one name="creditCardInfo" class="com.posbravo.model.CreditCardInfo" fetch="select">
+            <column name="CreditCardInfoID" />
+        </many-to-one>
+        <many-to-one name="paymentReverse" class="com.posbravo.model.PaymentReverse" fetch="select">
+            <column name="PaymentReverseID" />
+        </many-to-one>
+        <many-to-one name="paymentType" class="com.posbravo.model.PaymentType" fetch="select">
+            <column name="PaymentTypeID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="paymentReturn" class="com.posbravo.model.PaymentReturn" fetch="select">
+            <column name="PaymentReturnID" />
+        </many-to-one>
+        <many-to-one name="invoiceStatus" class="com.posbravo.model.InvoiceStatus" fetch="select">
+            <column name="InvoiceStatusID" />
+        </many-to-one>
+        <many-to-one name="paymentAdjust" class="com.posbravo.model.PaymentAdjust" fetch="select">
+            <column name="PaymentAdjustID" />
+        </many-to-one>
+        <many-to-one name="paymentPreAuth" class="com.posbravo.model.PaymentPreAuth" fetch="select">
+            <column name="PaymentPreAuthID" />
+        </many-to-one>
+        <property name="dateOfPayment" type="timestamp">
+            <column name="DateOfPayment" length="19" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>
