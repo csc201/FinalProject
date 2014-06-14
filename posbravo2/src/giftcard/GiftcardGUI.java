@@ -21,11 +21,16 @@ public class GiftcardGUI extends JFrame {
 				BorderLayout.NORTH);
 		giftPanel.add(buttonPanel, BorderLayout.CENTER);
 		add(giftPanel);
-		int x = parent.getParent().getWidth() / 2 - 100;
-		int y = parent.getParent().getHeight() / 2 - 100;
-		setLocation(x, y);
+		//int x = parent.getParent().getWidth() / 2 - 100;
+		//int y = parent.getParent().getHeight() / 2 - 100;
+		//setLocation(x, y);
 		setSize(200, 200);
 		setVisible(true);
 		pack();
+	}
+	public static void main(String [] args){
+		
+		GiftcardGUI a = new GiftcardGUI(new JPanel());
+		
 	}
 }

@@ -37,6 +37,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 	private GridBagConstraints c = new GridBagConstraints();
 	private JPanel transButtonPanel = new JPanel(new GridLayout(7,1));
 	
+	
 	private JPanel receiptButtonPanel = new JPanel(new GridLayout(2,3));
 	
 	private JPanel markerPanel = new JPanel(new GridLayout(2, 1));
@@ -77,8 +78,8 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		setLayout(new GridLayout(1,2));
 		setBackground(DARK_CHAMPAGNE);
 		setBorder(BorderFactory.createLoweredBevelBorder());
-		
 		ReceiptPanel.clearReceipt();
+		
 		
 		adminLabel.setFont(new Font(Font.SERIF,Font.BOLD,24));
 		adminLabel.setForeground(Color.RED);
@@ -256,9 +257,9 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		else if(event.getActionCommand().equals("creditSale"))
 		{
 			String total = getTotal();
-			popup("Please Swipe....", this);
+			JButton button = (JButton) event.getSource();
+			SystemInit.swap(button, button.getBackground());
 			
-
 			
 		}
 		else if(event.getActionCommand().equals("giftSale"))
@@ -352,7 +353,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 				popup.dispose();
 			}
         	
-        });
+        }); 
         contentPane.setLayout(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
         con.gridwidth = GridBagConstraints.REMAINDER;
