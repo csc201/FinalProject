@@ -5,8 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-import com.posbravo.model.Accesscontrol;
-
+import wollits.hibernate.*;
 
 public class HibernateTestDriver {
 	public static void main(String[] args) {
@@ -21,21 +20,24 @@ public class HibernateTestDriver {
 			if (addAccess) {
 				session.beginTransaction();
 
-				Accesscontrol accesscontrol = new Accesscontrol("Systemss");
-				session.save(accesscontrol);
-
+				Roles roles = new Roles(99,"No Body");
+				
+				try {
+				session.save(roles);
 				session.getTransaction().commit();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 
-			List aclList = session.createQuery("from Accesscontrol").list();
+		/*	List aclList = session.createQuery("from Roles").list();
 			System.out.println("Found " + aclList.size() + " messages:");
 
 			Iterator iterator = aclList.iterator();
 			while (iterator.hasNext()) {
-				Accesscontrol accesscontrol = (Accesscontrol) iterator.next();
-				System.out.println(accesscontrol.getAccessControlName() + " "
-						+ accesscontrol.getAccessControlId());
-			}
+				Roles roles = (Roles) iterator.next();
+				System.out.println(roles.getName() + " " + roles.getRoleId());
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -43,6 +45,7 @@ public class HibernateTestDriver {
 			if (session != null) {
 				session.close();
 			}
+
 		}
 
 	}

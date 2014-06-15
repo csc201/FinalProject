@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.Locations" table="locations" catalog="wollits">
+        <id name="locationId" type="int">
+            <column name="location_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="locationTypes" class="wollits.hibernate.LocationTypes" fetch="select">
+            <column name="location_type_id" />
+        </many-to-one>
+        <many-to-one name="postCodes" class="wollits.hibernate.PostCodes" fetch="select">
+            <column name="post_code_id" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="latitude" type="java.lang.Double">
+            <column name="latitude" precision="22" scale="0" />
+        </property>
+        <property name="longitude" type="java.lang.Double">
+            <column name="longitude" precision="22" scale="0" />
+        </property>
+        <property name="streetAddress" type="string">
+            <column name="street_address" />
+        </property>
+        <property name="building" type="string">
+            <column name="building" />
+        </property>
+        <property name="room" type="string">
+            <column name="room" />
+        </property>
+        <property name="crossStreet" type="string">
+            <column name="cross_street" />
+        </property>
+        <set name="userLocationses" table="user_locations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="location_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.UserLocations" />
+        </set>
+        <set name="orderses" table="orders" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="location_id" />
+            </key>
+            <one-to-many class="wollits.hibernate.Orders" />
+        </set>
+        <set name="restaurantses" table="restaurants" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="location_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.Restaurants" />
+        </set>
+    </class>
+</hibernate-mapping>

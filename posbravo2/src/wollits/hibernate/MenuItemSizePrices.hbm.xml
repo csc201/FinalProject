@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.MenuItemSizePrices" table="menu_item_size_prices" catalog="wollits">
+        <id name="menuItemSizePriceId" type="int">
+            <column name="menu_item_size_price_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="sizes" class="wollits.hibernate.Sizes" fetch="select">
+            <column name="size_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="menuItems" class="wollits.hibernate.MenuItems" fetch="select">
+            <column name="menu_item_id" not-null="true" />
+        </many-to-one>
+        <property name="price" type="binary">
+            <column name="price" />
+        </property>
+        <property name="priority" type="java.lang.Integer">
+            <column name="priority" />
+        </property>
+        <set name="orderMenuItemses" table="order_menu_items" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="menu_item_size_price_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.OrderMenuItems" />
+        </set>
+    </class>
+</hibernate-mapping>

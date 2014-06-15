@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.MenuItems" table="menu_items" catalog="wollits">
+        <id name="menuItemId" type="int">
+            <column name="menu_item_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="menuSections" class="wollits.hibernate.MenuSections" fetch="select">
+            <column name="menu_section_id" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="imageUrl" type="string">
+            <column name="image_url" />
+        </property>
+        <property name="imageThumbUrl" type="string">
+            <column name="image_thumb_url" />
+        </property>
+        <property name="priority" type="java.lang.Integer">
+            <column name="priority" />
+        </property>
+        <set name="menuItemSizePriceses" table="menu_item_size_prices" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="menu_item_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.MenuItemSizePrices" />
+        </set>
+        <set name="menuItemCustomizationses" table="menu_item_customizations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="menu_item_id" />
+            </key>
+            <one-to-many class="wollits.hibernate.MenuItemCustomizations" />
+        </set>
+        <set name="orderMenuItemses" table="order_menu_items" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="menu_item_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.OrderMenuItems" />
+        </set>
+    </class>
+</hibernate-mapping>

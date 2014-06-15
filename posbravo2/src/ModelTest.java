@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.Test;
 
-import com.posbravo.model.Accesscontrol;
+import wollits.hibernate.*;
 
 
 public class ModelTest {
@@ -36,7 +36,7 @@ public class ModelTest {
 	public void insertAccessControl(String data) {
 		boolean addAccess = true;
 		if (addAccess) {
-			Accesscontrol accesscontrol = new Accesscontrol(data);
+			Roles accesscontrol = new Roles(data);
 			session.save(accesscontrol);
 			session.getTransaction().commit();
 		}
@@ -57,9 +57,9 @@ public class ModelTest {
 
 		Iterator iterator = aclList.iterator();
 		while (iterator.hasNext()) {
-			Accesscontrol accesscontrol = (Accesscontrol) iterator.next();
-			System.out.println(accesscontrol.getAccessControlName() + " "
-					+ accesscontrol.getAccessControlId());
+			Roles accesscontrol = (Roles) iterator.next();
+			System.out.println(accesscontrol.getName() + " "
+					+ accesscontrol.getRoleId());
 		}
 	}
 

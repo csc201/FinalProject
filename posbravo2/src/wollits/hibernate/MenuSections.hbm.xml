@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.MenuSections" table="menu_sections" catalog="wollits">
+        <id name="menuSectionId" type="int">
+            <column name="menu_section_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="menus" class="wollits.hibernate.Menus" fetch="select">
+            <column name="menu_id" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="priority" type="java.lang.Integer">
+            <column name="priority" />
+        </property>
+        <set name="menuItemses" table="menu_items" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="menu_section_id" />
+            </key>
+            <one-to-many class="wollits.hibernate.MenuItems" />
+        </set>
+    </class>
+</hibernate-mapping>

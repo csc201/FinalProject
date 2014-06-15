@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.Payments" table="payments" catalog="wollits">
+        <id name="paymentId" type="int">
+            <column name="payment_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="orders" class="wollits.hibernate.Orders" fetch="select">
+            <column name="order_id" not-null="true" />
+        </many-to-one>
+        <property name="cardName" type="string">
+            <column name="card_name" not-null="true" />
+        </property>
+        <property name="dateAuthorized" type="binary">
+            <column name="date_authorized" />
+        </property>
+        <property name="dateSettled" type="binary">
+            <column name="date_settled" />
+        </property>
+        <property name="transactionId" type="string">
+            <column name="transaction_id" not-null="true" />
+        </property>
+        <property name="cardNumberLast4Digits" type="string">
+            <column name="card_number_last_4_digits" not-null="true" />
+        </property>
+        <property name="gatewayAuthResponse" type="string">
+            <column name="gateway_auth_response" not-null="true" />
+        </property>
+        <property name="gatewaySettleResponse" type="string">
+            <column name="gateway_settle_response" />
+        </property>
+        <property name="transactionType" type="string">
+            <column name="transaction_type" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
