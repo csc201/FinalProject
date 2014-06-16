@@ -1,7 +1,11 @@
 package pointOfSale;
+import giftcard.GiftcardGUI;
+
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * 
@@ -26,7 +30,8 @@ public class SystemInit extends JFrame
 	private static final long serialVersionUID = 1L;  //Added to satisfy the compiler
 	private static final Color DARK_GREEN = new Color(0,100,0);
 	private static JPanel systemPanel = new JPanel(new GridLayout(1,1));
-	
+	private static LayeredPanels transLayer;
+	private static JPanel screen;
 	/**
 	 * Main method which initiates the application by instantiating this JFrame class
 	 */
@@ -69,8 +74,17 @@ public class SystemInit extends JFrame
 	public static void setTransactionScreen()
 	{
 		systemPanel.removeAll();
-		systemPanel.add(new TransactionGUI3());
+		transLayer = new LayeredPanels(systemPanel, new TransactionGUI3(), new guisForLayeredPane.GuiForCreditSale("Please Swipe the Card..."));
+		
+		systemPanel.add(transLayer.getPane());
 		Tools.update(systemPanel);
+	}
+	public static void swap(JButton button, Color buttonColor){
+		transLayer.setButton(button, buttonColor);
+		transLayer.swap();
+	}
+	public static void swap(){
+		transLayer.swap();
 	}
 	/**
 	 * Static method called by the TransactionGUI class to switch to the administrator screen, where
@@ -110,6 +124,8 @@ public class SystemInit extends JFrame
 		systemPanel.add(new TablePanel(isAdmin));
 		Tools.update(systemPanel);
 	}
+	
+	
 	
 	
 //	public static void setCardScreen()

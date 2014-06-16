@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.Restaurants" table="restaurants" catalog="wollits">
+        <id name="restaurantId" type="int">
+            <column name="restaurant_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="chains" class="wollits.hibernate.Chains" fetch="select">
+            <column name="chain_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="locations" class="wollits.hibernate.Locations" fetch="select">
+            <column name="location_id" not-null="true" />
+        </many-to-one>
+        <property name="orderingEnabled" type="binary">
+            <column name="ordering_enabled" not-null="true" />
+        </property>
+        <property name="timezone" type="string">
+            <column name="timezone" not-null="true" />
+        </property>
+        <property name="pickupEnabled" type="binary">
+            <column name="pickup_enabled" />
+        </property>
+        <property name="deliveryEnabled" type="binary">
+            <column name="delivery_enabled" />
+        </property>
+        <set name="restaurantRoleses" table="restaurant_roles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.RestaurantRoles" />
+        </set>
+        <set name="restaurantMenuses" table="restaurant_menus" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.RestaurantMenus" />
+        </set>
+        <set name="variableDeliveryRateses" table="variable_delivery_rates" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.VariableDeliveryRates" />
+        </set>
+        <set name="businessHourses" table="business_hours" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.BusinessHours" />
+        </set>
+        <set name="fixedDeliveryRateses" table="fixed_delivery_rates" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.FixedDeliveryRates" />
+        </set>
+    </class>
+</hibernate-mapping>
