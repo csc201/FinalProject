@@ -36,7 +36,7 @@ public class ModelTest {
 	public void insertAccessControl(String data) {
 		boolean addAccess = true;
 		if (addAccess) {
-			Roles accesscontrol = new Roles(data);
+			Roles accesscontrol = new Roles();
 			session.save(accesscontrol);
 			session.getTransaction().commit();
 		}
