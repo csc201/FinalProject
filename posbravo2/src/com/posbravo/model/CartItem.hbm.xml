@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.CartItem" table="CartItem" catalog="posbravo">
+        <id name="cartItemId" type="java.lang.Integer">
+            <column name="CartItemID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="service" class="com.posbravo.model.Service" fetch="select">
+            <column name="ServiceID" />
+        </many-to-one>
+        <many-to-one name="product" class="com.posbravo.model.Product" fetch="select">
+            <column name="ProductID" />
+        </many-to-one>
+        <many-to-one name="cart" class="com.posbravo.model.Cart" fetch="select">
+            <column name="CartID" not-null="true" />
+        </many-to-one>
+        <property name="specialInstructions" type="string">
+            <column name="SpecialInstructions" />
+        </property>
+        <property name="quantity" type="int">
+            <column name="Quantity" not-null="true" />
+        </property>
+        <property name="dateAdded" type="timestamp">
+            <column name="DateAdded" length="19" not-null="true" />
+        </property>
+        <set name="discountByItems" table="DiscountByItem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CartItemID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.DiscountByItem" />
+        </set>
+        <set name="cartItemCustomizations" table="CartItemCustomization" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CartItemID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.CartItemCustomization" />
+        </set>
+    </class>
+</hibernate-mapping>

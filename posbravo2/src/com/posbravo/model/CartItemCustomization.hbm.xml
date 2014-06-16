@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.CartItemCustomization" table="CartItemCustomization" catalog="posbravo">
+        <id name="cartItemCustomizationId" type="java.lang.Integer">
+            <column name="CartItemCustomizationID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cartItem" class="com.posbravo.model.CartItem" fetch="select">
+            <column name="CartItemID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="productCustomization" class="com.posbravo.model.ProductCustomization" fetch="select">
+            <column name="ProductCustomizationID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

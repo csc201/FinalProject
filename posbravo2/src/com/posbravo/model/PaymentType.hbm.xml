@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.PaymentType" table="PaymentType" catalog="posbravo">
+        <id name="paymentTypeId" type="java.lang.Integer">
+            <column name="PaymentTypeID" />
+            <generator class="identity" />
+        </id>
+        <property name="type" type="string">
+            <column name="Type" length="32" not-null="true" />
+        </property>
+        <set name="payments" table="Payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PaymentTypeID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>

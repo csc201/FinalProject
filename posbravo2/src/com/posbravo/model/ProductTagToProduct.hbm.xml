@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.ProductTagToProduct" table="ProductTagToProduct" catalog="posbravo">
+        <id name="productTagToProductId" type="java.lang.Integer">
+            <column name="ProductTagToProductID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="product" class="com.posbravo.model.Product" fetch="select">
+            <column name="ProductID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="productTag" class="com.posbravo.model.ProductTag" fetch="select">
+            <column name="ProductTagTagID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

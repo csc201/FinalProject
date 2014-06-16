@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.CreditCardInfo" table="CreditCardInfo" catalog="posbravo">
+        <id name="creditCardInfoId" type="java.lang.Integer">
+            <column name="CreditCardInfoID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="address" class="com.posbravo.model.Address" fetch="select">
+            <column name="AddressID" />
+        </many-to-one>
+        <property name="recordNo" type="int">
+            <column name="RecordNo" not-null="true" />
+        </property>
+        <property name="lastFourDigits" type="java.lang.Integer">
+            <column name="LastFourDigits" />
+        </property>
+        <property name="creditCard" type="java.lang.Integer">
+            <column name="CreditCard" />
+        </property>
+        <property name="dateExpired" type="timestamp">
+            <column name="DateExpired" length="19" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="FirstName" length="63" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="LastName" length="63" />
+        </property>
+        <property name="firstSixDigits" type="java.lang.Integer">
+            <column name="FirstSixDigits" />
+        </property>
+        <property name="cardType" type="string">
+            <column name="CardType" length="31" />
+        </property>
+        <set name="payments" table="Payment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CreditCardInfoID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Payment" />
+        </set>
+    </class>
+</hibernate-mapping>
