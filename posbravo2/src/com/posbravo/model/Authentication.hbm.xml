@@ -1,33 +1,33 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Authentication" table="authentication" catalog="posbravo">
-        <id name="authId" type="java.lang.Integer">
-            <column name="AuthID" />
+    <class name="com.posbravo.model.Authentication" table="Authentication" catalog="posbravo">
+        <id name="authenticationId" type="java.lang.Integer">
+            <column name="AuthenticationID" />
             <generator class="identity" />
         </id>
-        <property name="userId" type="java.lang.Integer">
-            <column name="UserID" />
-        </property>
+        <many-to-one name="user" class="com.posbravo.model.User" fetch="select">
+            <column name="UserID" not-null="true" />
+        </many-to-one>
         <property name="userName" type="string">
-            <column name="UserName" />
+            <column name="UserName" length="20" not-null="true" unique="true" />
         </property>
         <property name="password" type="string">
-            <column name="Password" />
+            <column name="Password" length="60" not-null="true" />
         </property>
         <property name="pin" type="java.lang.Integer">
-            <column name="Pin" />
+            <column name="PIN" />
         </property>
-        <property name="isLocked" type="java.lang.Boolean">
-            <column name="IsLocked" />
+        <property name="isEnabled" type="boolean">
+            <column name="IsEnabled" not-null="true" />
         </property>
-        <property name="maxPwAttempt" type="string">
-            <column name="MaxPwAttempt" />
-        </property>
-        <property name="maxPinAttempt" type="java.lang.Integer">
-            <column name="MaxPinAttempt" />
-        </property>
+        <set name="authenticationLogs" table="AuthenticationLog" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AuthenticationID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.AuthenticationLog" />
+        </set>
     </class>
 </hibernate-mapping>

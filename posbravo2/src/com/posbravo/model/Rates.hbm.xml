@@ -1,21 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Rates" table="rates" catalog="posbravo">
+    <class name="com.posbravo.model.Rates" table="Rates" catalog="posbravo">
         <id name="ratesId" type="java.lang.Integer">
-            <column name="RatesId" />
+            <column name="RatesID" />
             <generator class="identity" />
         </id>
-        <property name="hourRates" type="big_decimal">
-            <column name="HourRates" scale="4" />
+        <property name="hourlyRate" type="big_decimal">
+            <column name="HourlyRate" scale="6" />
         </property>
-        <property name="overTimeRates" type="big_decimal">
-            <column name="OverTimeRates" scale="4" />
+        <property name="overTimeRate" type="big_decimal">
+            <column name="OverTimeRate" scale="6" />
         </property>
-        <property name="flatRates" type="big_decimal">
-            <column name="FlatRates" scale="4" />
+        <property name="flatRate" type="big_decimal">
+            <column name="FlatRate" scale="6" />
         </property>
+        <set name="labors" table="Labor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RatesID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Labor" />
+        </set>
     </class>
 </hibernate-mapping>

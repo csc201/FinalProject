@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Labor" table="labor" catalog="posbravo">
+    <class name="com.posbravo.model.Labor" table="Labor" catalog="posbravo">
         <id name="laborId" type="java.lang.Integer">
-            <column name="LaborId" />
+            <column name="LaborID" />
             <generator class="identity" />
         </id>
+        <many-to-one name="rates" class="com.posbravo.model.Rates" fetch="select">
+            <column name="RatesID" />
+        </many-to-one>
         <property name="serviceDescription" type="string">
-            <column name="ServiceDescription" />
+            <column name="ServiceDescription" length="512" />
         </property>
-        <property name="ratesId" type="java.lang.Integer">
-            <column name="RatesId" />
-        </property>
+        <set name="services" table="Service" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="LaborID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Service" />
+        </set>
     </class>
 </hibernate-mapping>

@@ -1,30 +1,30 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.Contact" table="contact" catalog="posbravo">
+    <class name="com.posbravo.model.Contact" table="Contact" catalog="posbravo">
         <id name="contactId" type="java.lang.Integer">
-            <column name="ContactId" />
+            <column name="ContactID" />
             <generator class="identity" />
         </id>
-        <property name="cellPhone" type="string">
+        <many-to-one name="user" class="com.posbravo.model.User" fetch="select">
+            <column name="UserID" not-null="true" />
+        </many-to-one>
+        <property name="cellPhone" type="java.lang.Integer">
             <column name="CellPhone" />
         </property>
-        <property name="homePhone" type="string">
+        <property name="homePhone" type="java.lang.Integer">
             <column name="HomePhone" />
         </property>
-        <property name="workPhone" type="string">
+        <property name="workPhone" type="java.lang.Integer">
             <column name="WorkPhone" />
         </property>
-        <property name="fax" type="string">
+        <property name="fax" type="java.lang.Integer">
             <column name="Fax" />
         </property>
         <property name="email" type="string">
-            <column name="Email" />
-        </property>
-        <property name="userId" type="string">
-            <column name="UserID" />
+            <column name="Email" not-null="true" unique="true" />
         </property>
     </class>
 </hibernate-mapping>

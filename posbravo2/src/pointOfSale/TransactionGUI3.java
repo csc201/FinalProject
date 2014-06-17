@@ -1,4 +1,6 @@
 package pointOfSale;
+import giftcard.GiftcardGUI;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -8,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowStateListener;
 import java.util.Scanner;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -35,6 +36,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 	private JPanel transactionPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints c = new GridBagConstraints();
 	private JPanel transButtonPanel = new JPanel(new GridLayout(7,1));
+	
 	
 	private JPanel receiptButtonPanel = new JPanel(new GridLayout(2,3));
 	
@@ -76,8 +78,8 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		setLayout(new GridLayout(1,2));
 		setBackground(DARK_CHAMPAGNE);
 		setBorder(BorderFactory.createLoweredBevelBorder());
-		
 		ReceiptPanel.clearReceipt();
+		
 		
 		adminLabel.setFont(new Font(Font.SERIF,Font.BOLD,24));
 		adminLabel.setForeground(Color.RED);
@@ -255,9 +257,9 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		else if(event.getActionCommand().equals("creditSale"))
 		{
 			String total = getTotal();
-			popup("Please Swipe....", this);
+			JButton button = (JButton) event.getSource();
+			SystemInit.swap(button, button.getBackground());
 			
-
 			
 		}
 		else if(event.getActionCommand().equals("giftSale"))
@@ -290,7 +292,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		}
 		else if(event.getActionCommand().equals("Issue"))
 		{
-			
+			new GiftcardGUI(TransactionGUI3.this);
 		}
 		else if(event.getActionCommand().equals("Balance"))
 		{
@@ -351,7 +353,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 				popup.dispose();
 			}
         	
-        });
+        }); 
         contentPane.setLayout(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
         con.gridwidth = GridBagConstraints.REMAINDER;

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.Orders" table="orders" catalog="wollits">
+        <id name="orderId" type="int">
+            <column name="order_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="contacts" class="wollits.hibernate.Contacts" fetch="select">
+            <column name="contact_id" />
+        </many-to-one>
+        <many-to-one name="locations" class="wollits.hibernate.Locations" fetch="select">
+            <column name="location_id" />
+        </many-to-one>
+        <property name="checkoutComplete" type="binary">
+            <column name="checkout_complete" not-null="true" />
+        </property>
+        <property name="userId" type="java.lang.Integer">
+            <column name="user_id" />
+        </property>
+        <property name="datePrepared" type="binary">
+            <column name="date_prepared" not-null="true" />
+        </property>
+        <property name="datePlaced" type="binary">
+            <column name="date_placed" />
+        </property>
+        <set name="orderMenuItemses" table="order_menu_items" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="order_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.OrderMenuItems" />
+        </set>
+        <set name="paymentses" table="payments" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="order_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.Payments" />
+        </set>
+    </class>
+</hibernate-mapping>

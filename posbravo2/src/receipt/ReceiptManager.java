@@ -76,6 +76,7 @@ public class ReceiptManager extends JPanel {
 		receiptBox = new JComboBox<Integer>();
 		receiptBox.addItem(1);
 		receiptBox.addItemListener(new ReceiptBoxListener());
+		receiptBox.setFocusable(false);
 		splitPanel.add(receiptBox);
 		
 		JButton button = new JButton("Copy");
@@ -83,6 +84,7 @@ public class ReceiptManager extends JPanel {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
 				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
+		button.setFocusable(false);
 		splitPanel.add(button);
 		
 		button = new JButton("Delete");
@@ -90,6 +92,7 @@ public class ReceiptManager extends JPanel {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
 				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
+		button.setFocusable(false);
 		splitPanel.add(button);
 		
 		button = new JButton("Delete All");
@@ -97,6 +100,7 @@ public class ReceiptManager extends JPanel {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), 
 				BorderFactory.createMatteBorder(5,10,5,10, CustomColor.PALE_GOLDENROD)));
 		button.addActionListener(new ButtonListener());
+		button.setFocusable(false);
 		splitPanel.add(button);
 		
 		receiptPanel = new JPanel();

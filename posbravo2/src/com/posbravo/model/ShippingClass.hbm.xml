@@ -1,24 +1,36 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 31, 2014 8:16:09 PM by Hibernate Tools 4.0.0 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.posbravo.model.ShippingClass" table="shipping_class" catalog="posbravo">
+    <class name="com.posbravo.model.ShippingClass" table="ShippingClass" catalog="posbravo">
         <id name="shippingClassId" type="java.lang.Integer">
             <column name="ShippingClassID" />
             <generator class="identity" />
         </id>
-        <property name="title" type="string">
-            <column name="Title" />
+        <property name="class_" type="string">
+            <column name="Class" length="31" not-null="true" />
         </property>
         <property name="description" type="string">
-            <column name="Description" />
+            <column name="Description" length="140" />
         </property>
-        <property name="lastModified" type="timestamp">
-            <column name="LastModified" length="19" />
+        <property name="dateLastModified" type="timestamp">
+            <column name="DateLastModified" length="19" not-null="true" />
         </property>
         <property name="dateAdded" type="timestamp">
-            <column name="DateAdded" length="19" />
+            <column name="DateAdded" length="19" not-null="true" />
         </property>
+        <set name="invoices" table="Invoice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ShippingClassID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Invoice" />
+        </set>
+        <set name="shippings" table="Shipping" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ShippingClassID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Shipping" />
+        </set>
     </class>
 </hibernate-mapping>
