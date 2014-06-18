@@ -57,8 +57,8 @@ public class KeyPad extends JPanel implements ActionListener
 		
 		buttonRow3.add(new MenuButton("8","8",this));
 		buttonRow3.add(new MenuButton("9","9",this));
-		buttonRow3.add(new MenuButton("Clear","Clear",this));
-		buttonRow3.add(new MenuButton("Enter","Enter",this));
+		buttonRow3.add(new MenuButton("Clear","10",this));
+		buttonRow3.add(new MenuButton("Enter","11",this));
 		
 		add(numberField);
 		Tools.addBlankSpace(this,1);
@@ -80,12 +80,12 @@ public class KeyPad extends JPanel implements ActionListener
 				numberField.setText(numberField.getText() + "*");
 			}
 		}
-		else if (event.getActionCommand().equals("Clear"))
+		else if (event.getActionCommand().equals("10"))
 		{
 			numberCode = "";
 			numberField.setText("");
 		}
-		else if (event.getActionCommand().equals("Enter"))
+		else if (event.getActionCommand().equals("11"))
 			checkCode();
 	}
 	/**
