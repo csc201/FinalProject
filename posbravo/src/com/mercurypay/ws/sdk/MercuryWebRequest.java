@@ -6,7 +6,9 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import javax.net.ssl.HttpsURLConnection;
+import javax.swing.JOptionPane;
 
 /**
  * Mercury Payment Systems WebServices Platform Request
@@ -140,6 +142,7 @@ public class MercuryWebRequest
 		if (paramName.equals("tran"))
 			paramValue = paramValue.replace("<", "&lt;").replace(">", "&gt;").replace("\t","").replace("\n", "").replace("\r", ""); // Remove less-than, greater-than, newline, carriage return, and tab characters from value
 
+		
 		mWSParameters.put(paramName, paramValue);
 
 	}
@@ -150,7 +153,7 @@ public class MercuryWebRequest
 	 * @throws Exception
 	 *             When error is encountered communicating with WebService
 	 */
-	public String sendRequest() throws Exception
+	public String[] sendRequest() throws Exception
 	{
 
 		validateRequiredParameters();
@@ -185,6 +188,7 @@ public class MercuryWebRequest
 		// Determine response stream according to HTTP response code
 		int httpResponseCode = conn.getResponseCode();
 		BufferedReader rd;
+	
 		if (httpResponseCode != 200)
 			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 		else
@@ -220,11 +224,13 @@ public class MercuryWebRequest
 
 		// Extract single return parameter
 		responseData = responseData.substring(start, end).replace("&lt;", "<").replace("&gt;", ">");
-
+		String [] temp = new String[2];
+		temp[0] = responseData;
+		temp[1] = soap;
 		if (error)
 			throw new Exception(String.format(mMPSExceptionString, responseData));
 		else
-			return responseData;
+			return temp; //responseData;
 	}
 
 	/**
@@ -236,8 +242,11 @@ public class MercuryWebRequest
 	{
 		if (mWebMethodName.equals(""))
 			throw new Exception(String.format(mMPSExceptionString, "WebMethodName is required"));
-		if (!mWSParameters.containsKey("pw"))
-			throw new Exception(String.format(mMPSExceptionString, "WebServices password parameter (\"pw\") is required"));
-	}
+		
+		if(!mWebMethodName.equals("CBatch")){
+			if (!mWSParameters.containsKey("pw"))
+				throw new Exception(String.format(mMPSExceptionString, "WebServices password parameter (\"pw\") is required"));
+			}
+		}
 
 }

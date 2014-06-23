@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.OrderMenuItemCustomizations" table="order_menu_item_customizations" catalog="wollits">
+        <id name="orderMenuItemCustomizationId" type="int">
+            <column name="order_menu_item_customization_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="orderCustomizations" class="wollits.hibernate.OrderCustomizations" fetch="select">
+            <column name="order_customization_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="orderMenuItems" class="wollits.hibernate.OrderMenuItems" fetch="select">
+            <column name="order_menu_item_id" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

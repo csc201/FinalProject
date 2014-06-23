@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.User" table="User" catalog="posbravo">
+        <id name="userId" type="java.lang.Integer">
+            <column name="UserID" />
+            <generator class="identity" />
+        </id>
+        <property name="salutation" type="string">
+            <column name="Salutation" length="10" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="FirstName" length="63" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="LastName" length="63" />
+        </property>
+        <property name="ssn" type="java.lang.Integer">
+            <column name="SSN" />
+        </property>
+        <property name="gender" type="string">
+            <column name="Gender" length="1" />
+        </property>
+        <property name="dob" type="timestamp">
+            <column name="DOB" length="19" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DateCreated" length="19" not-null="true" />
+        </property>
+        <property name="dateLastModified" type="timestamp">
+            <column name="DateLastModified" length="19" not-null="true" />
+        </property>
+        <set name="userPromotions" table="UserPromotion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.UserPromotion" />
+        </set>
+        <set name="residences" table="Residence" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Residence" />
+        </set>
+        <set name="contacts" table="Contact" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Contact" />
+        </set>
+        <set name="deliveriesForCourierId" table="Delivery" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CourierID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Delivery" />
+        </set>
+        <set name="userRestaurants" table="UserRestaurant" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.UserRestaurant" />
+        </set>
+        <set name="deliveriesForRecipientId" table="Delivery" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RecipientID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Delivery" />
+        </set>
+        <set name="promotionUsages" table="PromotionUsage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.PromotionUsage" />
+        </set>
+        <set name="userRoles" table="UserRole" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.UserRole" />
+        </set>
+        <set name="carts" table="Cart" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Cart" />
+        </set>
+        <set name="authentications" table="Authentication" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Authentication" />
+        </set>
+        <set name="securityQuestions" table="SecurityQuestion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="UserID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.SecurityQuestion" />
+        </set>
+    </class>
+</hibernate-mapping>

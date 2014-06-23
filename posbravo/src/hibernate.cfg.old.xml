@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+        <property name="hibernate.connection.password">check for password with Tanes</property>
+        <property name="hibernate.connection.url">jdbc:mysql://174.79.186.25/wollits</property>
+        <property name="hibernate.connection.username">wollits</property>
+        <property name="hibernate.default_schema">wollits</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <mapping class="wollits.hibernate.FixedDeliveryRates" />
+        <mapping class="wollits.hibernate.CustomizationOptions" />
+        <mapping class="wollits.hibernate.Phones" />
+        <mapping class="wollits.hibernate.Roles" />
+        <mapping class="wollits.hibernate.BusinessHours" />
+        <mapping class="wollits.hibernate.OrderMenuItems" />
+        <mapping class="wollits.hibernate.Sizes" />
+        <mapping class="wollits.hibernate.Locations" />
+        <mapping class="wollits.hibernate.Countries" />
+        <mapping class="wollits.hibernate.Menus" />
+        <mapping class="wollits.hibernate.Emails" />
+        <mapping class="wollits.hibernate.RestaurantMenus" />
+        <mapping class="wollits.hibernate.ServiceTypes" />
+        <mapping class="wollits.hibernate.Customizations" />
+        <mapping class="wollits.hibernate.Contacts" />
+        <mapping class="wollits.hibernate.Chains" />
+        <mapping class="wollits.hibernate.OrderCustomizations" />
+        <mapping class="wollits.hibernate.OrderMenuItemCustomizations" />
+        <mapping class="wollits.hibernate.OrderSelectedCustomizationOptions" />
+        <mapping class="wollits.hibernate.Orders" />
+        <mapping class="wollits.hibernate.Payments" />
+        <mapping class="wollits.hibernate.RestaurantRoles" />
+        <mapping class="wollits.hibernate.VariableDeliveryRates" />
+        <mapping class="wollits.hibernate.MenuItems" />
+        <mapping class="wollits.hibernate.MenuSections" />
+        <mapping class="wollits.hibernate.PostCodes" />
+        <mapping class="wollits.hibernate.MenuItemSizePrices" />
+        <mapping class="wollits.hibernate.MenuItemCustomizations" />
+        <mapping class="wollits.hibernate.LocationTypes" />
+        <mapping class="wollits.hibernate.UserRestaurantRoles" />
+        <mapping class="wollits.hibernate.Restaurants" />
+        <mapping class="wollits.hibernate.UserLocations" />
+        <mapping class="wollits.hibernate.States" />
+    </session-factory>
+</hibernate-configuration>

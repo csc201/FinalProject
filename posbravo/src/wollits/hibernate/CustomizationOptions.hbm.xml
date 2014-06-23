@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.CustomizationOptions" table="customization_options" catalog="wollits">
+        <id name="customizationOptionId" type="int">
+            <column name="customization_option_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="customizations" class="wollits.hibernate.Customizations" fetch="select">
+            <column name="customization_id" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" not-null="true" />
+        </property>
+        <property name="price" type="binary">
+            <column name="price" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="priority" type="java.lang.Integer">
+            <column name="priority" />
+        </property>
+        <set name="orderSelectedCustomizationOptionses" table="order_selected_customization_options" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="customization_option_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.OrderSelectedCustomizationOptions" />
+        </set>
+    </class>
+</hibernate-mapping>

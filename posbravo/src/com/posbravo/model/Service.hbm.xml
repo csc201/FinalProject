@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Service" table="Service" catalog="posbravo">
+        <id name="serviceId" type="java.lang.Integer">
+            <column name="ServiceID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="labor" class="com.posbravo.model.Labor" fetch="select">
+            <column name="LaborID" />
+        </many-to-one>
+        <many-to-one name="serviceType" class="com.posbravo.model.ServiceType" fetch="select">
+            <column name="ServiceTypeID" />
+        </many-to-one>
+        <property name="timeStarted" type="timestamp">
+            <column name="TimeStarted" length="19" />
+        </property>
+        <property name="timeEnded" type="timestamp">
+            <column name="TimeEnded" length="19" />
+        </property>
+        <set name="cartItems" table="CartItem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ServiceID" />
+            </key>
+            <one-to-many class="com.posbravo.model.CartItem" />
+        </set>
+    </class>
+</hibernate-mapping>
