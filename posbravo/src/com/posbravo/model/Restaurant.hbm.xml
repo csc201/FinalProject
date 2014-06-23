@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Restaurant" table="Restaurant" catalog="posbravo">
+        <id name="restaurantId" type="java.lang.Integer">
+            <column name="RestaurantID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="address" class="com.posbravo.model.Address" fetch="select">
+            <column name="AddressID" unique="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="Name" />
+        </property>
+        <property name="branch" type="string">
+            <column name="Branch" unique="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="Description" />
+        </property>
+        <property name="dateCreated" type="timestamp">
+            <column name="DateCreated" length="19" not-null="true" />
+        </property>
+        <property name="dateModified" type="timestamp">
+            <column name="DateModified" length="19" not-null="true" />
+        </property>
+        <set name="userRestaurants" table="UserRestaurant" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RestaurantID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.UserRestaurant" />
+        </set>
+        <set name="restaurantPromotions" table="RestaurantPromotion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RestaurantID" />
+            </key>
+            <one-to-many class="com.posbravo.model.RestaurantPromotion" />
+        </set>
+        <set name="restaurantMenus" table="RestaurantMenu" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="RestaurantID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.RestaurantMenu" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.ProductCustomization" table="ProductCustomization" catalog="posbravo">
+        <id name="productCustomizationId" type="java.lang.Integer">
+            <column name="ProductCustomizationID" />
+            <generator class="identity" />
+        </id>
+        <property name="description" type="string">
+            <column name="Description" />
+        </property>
+        <property name="price" type="big_decimal">
+            <column name="Price" scale="6" not-null="true" />
+        </property>
+        <set name="productCustomizationToGroups" table="ProductCustomizationToGroup" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ProductCustomizationID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.ProductCustomizationToGroup" />
+        </set>
+        <set name="cartItemCustomizations" table="CartItemCustomization" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ProductCustomizationID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.CartItemCustomization" />
+        </set>
+    </class>
+</hibernate-mapping>

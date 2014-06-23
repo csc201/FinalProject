@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.RestaurantRoles" table="restaurant_roles" catalog="wollits">
+        <id name="restaurantRoleId" type="int">
+            <column name="restaurant_role_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="roles" class="wollits.hibernate.Roles" fetch="select">
+            <column name="role_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="restaurants" class="wollits.hibernate.Restaurants" fetch="select">
+            <column name="restaurant_id" not-null="true" />
+        </many-to-one>
+        <set name="userRestaurantRoleses" table="user_restaurant_roles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_role_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.UserRestaurantRoles" />
+        </set>
+    </class>
+</hibernate-mapping>

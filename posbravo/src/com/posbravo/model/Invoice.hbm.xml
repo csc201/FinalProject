@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Invoice" table="Invoice" catalog="posbravo">
+        <id name="invoiceId" type="java.lang.Integer">
+            <column name="InvoiceID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="shippingClass" class="com.posbravo.model.ShippingClass" fetch="select">
+            <column name="ShippingClassID" />
+        </many-to-one>
+        <many-to-one name="promotion" class="com.posbravo.model.Promotion" fetch="select">
+            <column name="PromotionID" />
+        </many-to-one>
+        <many-to-one name="diningTable" class="com.posbravo.model.DiningTable" fetch="select">
+            <column name="DiningTableID" />
+        </many-to-one>
+        <property name="dateSent" type="timestamp">
+            <column name="DateSent" length="19" not-null="true" />
+        </property>
+        <property name="amount" type="big_decimal">
+            <column name="Amount" scale="6" not-null="true" />
+        </property>
+        <property name="dateDue" type="timestamp">
+            <column name="DateDue" length="19" not-null="true" />
+        </property>
+        <property name="partySize" type="java.lang.Integer">
+            <column name="PartySize" />
+        </property>
+        <set name="invoiceStatuses" table="InvoiceStatus" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="InvoiceID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.InvoiceStatus" />
+        </set>
+        <set name="deliveries" table="Delivery" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="InvoiceID" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Delivery" />
+        </set>
+        <set name="carts" table="Cart" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="InvoiceID" />
+            </key>
+            <one-to-many class="com.posbravo.model.Cart" />
+        </set>
+        <set name="discountByInvoices" table="DiscountByInvoice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="InvoiceID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.DiscountByInvoice" />
+        </set>
+    </class>
+</hibernate-mapping>

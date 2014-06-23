@@ -37,7 +37,7 @@ public class TaxPanel extends JPanel implements ActionListener
 	 */
 	TaxPanel()
 	{
-		setLayout(new GridLayout(12,1));
+		setLayout(new GridLayout(7,1));
 		setBorder(BorderFactory.createMatteBorder(10,10,10,10,DARK_CHAMPAGNE));
 		setBackground(DARK_CHAMPAGNE);
 		
@@ -64,14 +64,12 @@ public class TaxPanel extends JPanel implements ActionListener
 		buttonPanel.add(new MenuButton("Update","Update",this));
 		
 		add(panelLabel);
-		Tools.addBlankSpace(this,1);
 		add(displayLabel);
 		add(displayField);
 		Tools.addBlankSpace(this,1);
 		add(entryLabel);
 		add(entryField);
 		add(buttonPanel);
-		Tools.addBlankSpace(this,4);
 	}
 	/**
 	 * Responds to the user clicking the "Update" buttons by modifying the current tax rate to reflect the user

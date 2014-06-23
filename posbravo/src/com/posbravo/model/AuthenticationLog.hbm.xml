@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.AuthenticationLog" table="AuthenticationLog" catalog="posbravo">
+        <id name="authenticationLogId" type="java.lang.Integer">
+            <column name="AuthenticationLogID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="authentication" class="com.posbravo.model.Authentication" fetch="select">
+            <column name="AuthenticationID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="authenticationEventType" class="com.posbravo.model.AuthenticationEventType" fetch="select">
+            <column name="AuthenticationEventTypeID" not-null="true" />
+        </many-to-one>
+        <property name="eventDate" type="timestamp">
+            <column name="EventDate" length="19" not-null="true" />
+        </property>
+        <property name="isSuccess" type="boolean">
+            <column name="IsSuccess" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.BusinessHours" table="business_hours" catalog="wollits">
+        <id name="businessHourId" type="int">
+            <column name="business_hour_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="restaurants" class="wollits.hibernate.Restaurants" fetch="select">
+            <column name="restaurant_id" not-null="true" />
+        </many-to-one>
+        <property name="isoWeekday" type="int">
+            <column name="iso_weekday" not-null="true" />
+        </property>
+        <property name="openTime" type="string">
+            <column name="open_time" not-null="true" />
+        </property>
+        <property name="openDuration" type="string">
+            <column name="open_duration" not-null="true" />
+        </property>
+        <property name="closingDuration" type="string">
+            <column name="closing_duration" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

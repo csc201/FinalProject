@@ -1,8 +1,11 @@
 package pointOfSale;
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
+
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 /**
  * 
@@ -24,12 +27,18 @@ public class MenuButton extends JButton
 	 * @param command ActionCommand associated with this button
 	 * @param listener ActionListener to be assigned to the button
 	 */
-	MenuButton(String label, String command, ActionListener listener)
+	public MenuButton(String label, String command, ActionListener listener)
 	{
 		setText(label);
 		setActionCommand(command);
 		setBackground(PALE_GOLDENROD);
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		addActionListener(listener);
+		setFocusable(false);
+		
+	}
+	
+	public void setMargin(int x, int y){
+		setMargin(new Insets(y, x, y, x));
 	}
 }
