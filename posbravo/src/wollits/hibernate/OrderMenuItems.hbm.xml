@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.OrderMenuItems" table="order_menu_items" catalog="wollits">
+        <id name="orderMenuItemId" type="int">
+            <column name="order_menu_item_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="menuItemSizePrices" class="wollits.hibernate.MenuItemSizePrices" fetch="select">
+            <column name="menu_item_size_price_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="orders" class="wollits.hibernate.Orders" fetch="select">
+            <column name="order_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="menuItems" class="wollits.hibernate.MenuItems" fetch="select">
+            <column name="menu_item_id" not-null="true" />
+        </many-to-one>
+        <property name="quantity" type="int">
+            <column name="quantity" not-null="true" />
+        </property>
+        <set name="orderMenuItemCustomizationses" table="order_menu_item_customizations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="order_menu_item_id" not-null="true" />
+            </key>
+            <one-to-many class="wollits.hibernate.OrderMenuItemCustomizations" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.UserPromotion" table="UserPromotion" catalog="posbravo">
+        <id name="userPromotionId" type="java.lang.Integer">
+            <column name="UserPromotionID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="promotionGroup" class="com.posbravo.model.PromotionGroup" fetch="select">
+            <column name="PromotionGroupID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="com.posbravo.model.User" fetch="select">
+            <column name="UserID" not-null="true" />
+        </many-to-one>
+        <property name="promotionCode" type="string">
+            <column name="PromotionCode" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

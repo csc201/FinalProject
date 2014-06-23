@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.UserLocations" table="user_locations" catalog="wollits">
+        <id name="userLocationId" type="int">
+            <column name="user_location_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="locations" class="wollits.hibernate.Locations" fetch="select">
+            <column name="location_id" not-null="true" />
+        </many-to-one>
+        <property name="userId" type="int">
+            <column name="user_id" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Address" table="Address" catalog="posbravo">
+        <id name="addressId" type="java.lang.Integer">
+            <column name="AddressID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="zone" class="com.posbravo.model.Zone" fetch="select">
+            <column name="ZoneID" />
+        </many-to-one>
+        <property name="streetAddress" type="string">
+            <column name="StreetAddress" length="60" />
+        </property>
+        <property name="unitNumber" type="string">
+            <column name="UnitNumber" length="10" />
+        </property>
+        <set name="residences" table="Residence" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AddressID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Residence" />
+        </set>
+        <set name="creditCardInfos" table="CreditCardInfo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AddressID" />
+            </key>
+            <one-to-many class="com.posbravo.model.CreditCardInfo" />
+        </set>
+        <set name="restaurants" table="Restaurant" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="AddressID" unique="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.Restaurant" />
+        </set>
+    </class>
+</hibernate-mapping>

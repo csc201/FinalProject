@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Delivery" table="Delivery" catalog="posbravo">
+        <id name="deliveryId" type="java.lang.Integer">
+            <column name="DeliveryID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="invoice" class="com.posbravo.model.Invoice" fetch="select">
+            <column name="InvoiceID" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="zone" class="com.posbravo.model.Zone" fetch="select">
+            <column name="ZoneID" />
+        </many-to-one>
+        <many-to-one name="userByCourierId" class="com.posbravo.model.User" fetch="select">
+            <column name="CourierID" />
+        </many-to-one>
+        <many-to-one name="userByRecipientId" class="com.posbravo.model.User" fetch="select">
+            <column name="RecipientID" not-null="true" />
+        </many-to-one>
+        <property name="dateOfEstimatedDeparture" type="timestamp">
+            <column name="DateOfEstimatedDeparture" length="19" />
+        </property>
+        <property name="dateOfEstimatedArrival" type="timestamp">
+            <column name="DateOfEstimatedArrival" length="19" />
+        </property>
+        <property name="dateOfDeparture" type="timestamp">
+            <column name="DateOfDeparture" length="19" />
+        </property>
+        <property name="dateOfArrival" type="timestamp">
+            <column name="DateOfArrival" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

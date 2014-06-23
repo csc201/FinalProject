@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 10, 2014 6:20:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.posbravo.model.Cart" table="Cart" catalog="posbravo">
+        <id name="cartId" type="java.lang.Integer">
+            <column name="CartID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="invoice" class="com.posbravo.model.Invoice" fetch="select">
+            <column name="InvoiceID" />
+        </many-to-one>
+        <many-to-one name="cartStatus" class="com.posbravo.model.CartStatus" fetch="select">
+            <column name="CartStatusID" />
+        </many-to-one>
+        <many-to-one name="user" class="com.posbravo.model.User" fetch="select">
+            <column name="UserID" not-null="true" />
+        </many-to-one>
+        <set name="cartItems" table="CartItem" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CartID" not-null="true" />
+            </key>
+            <one-to-many class="com.posbravo.model.CartItem" />
+        </set>
+    </class>
+</hibernate-mapping>

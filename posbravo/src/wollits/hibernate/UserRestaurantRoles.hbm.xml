@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 14, 2014 7:45:28 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="wollits.hibernate.UserRestaurantRoles" table="user_restaurant_roles" catalog="wollits">
+        <id name="userRestaurantRoleId" type="int">
+            <column name="user_restaurant_role_id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="restaurantRoles" class="wollits.hibernate.RestaurantRoles" fetch="select">
+            <column name="restaurant_role_id" not-null="true" />
+        </many-to-one>
+        <property name="userId" type="int">
+            <column name="user_id" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
