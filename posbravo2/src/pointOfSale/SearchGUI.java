@@ -9,7 +9,6 @@ package pointOfSale;
  */
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +24,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import receipt.CustomColor;
 
 public class SearchGUI extends JFrame {
 	
@@ -43,9 +44,6 @@ public class SearchGUI extends JFrame {
 	public JPanel panel;
 	public JPanel resultsPanel;
 	public JPanel buttonPanel;
-	
-	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
-	private static final Color DARK_GREEN = new Color(0,100,0);
 
 	public SearchGUI() {
 		
@@ -63,7 +61,7 @@ public class SearchGUI extends JFrame {
 		panel = new JPanel(); //the north panel, with all the labels and fields
 		resultsPanel = new JPanel();
 		buttonPanel = new JPanel();
-		
+
 		//the grid for the main panel
 		GridLayout aGridLayout = new GridLayout(0,2);
 		
@@ -73,7 +71,9 @@ public class SearchGUI extends JFrame {
 		amountLabel.setLabelFor(amountField);
 		panel.setLayout(aGridLayout);
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10) );
-		
+		panel.setBackground(CustomColor.KHAKI);
+		buttonPanel.setBackground(CustomColor.KHAKI );
+		resultsPanel.setBackground(CustomColor.KHAKI );
 		resultsPanel.setBorder(new TitledBorder ( new EtchedBorder (), "Search Results" ));
 		resultsArea.setLineWrap(true);
 		resultsArea.setEditable(false);
@@ -99,7 +99,7 @@ public class SearchGUI extends JFrame {
 		
 		//JFrame necessities
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 
@@ -129,7 +129,7 @@ public class SearchGUI extends JFrame {
 				int searchUserNo = Integer.parseInt(userIDField.getText());
 				resultsArea.append(aReceipt.findUserByid(searchUserNo) + "\n");
 				
-				int searchAmountNo = Integer.parseInt(amountField.getText());
+				double searchAmountNo = Double.parseDouble(amountField.getText());
 				resultsArea.append(aReceipt.findReceiptByAmount(searchAmountNo) + "\n");
 				
 			}
@@ -139,7 +139,7 @@ public class SearchGUI extends JFrame {
 	
 	
 	public static void main (String[] args) {		
-		SearchGUI searchGUI = new SearchGUI();
+		new SearchGUI();
 	}
 	
 }
