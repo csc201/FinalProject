@@ -124,7 +124,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		transactionPanel.add(giftLabel, c);
 
 		c.weighty = 2.0;
-		
+		printPanel.setLayout( new GridLayout( 2, 1 ) );
 		printPanel.add(jbtKitchen);
 		printPanel.add(jbtPrint);
 		

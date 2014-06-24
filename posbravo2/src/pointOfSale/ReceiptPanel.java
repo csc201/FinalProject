@@ -79,6 +79,14 @@ public class ReceiptPanel extends JPanel
 		
 		add(receiptManager);
 	}
+	
+	/**This method will call a method to mark the items in red that have been sent to the kitchen and are unchangeable.
+	 * @author Ahsan Zaman
+	 */
+	public static void sendOrderToKitchen(){
+		receiptManager.reformatList();
+	}
+	
 	/**
 	 * Static method called by the ItemPanel class to add an item to the receiptList.
 	 * Also adjusts the subtotals/totals to match the new receiptList elements.
@@ -94,7 +102,7 @@ public class ReceiptPanel extends JPanel
 	}
 	private static void updateTotals()
 	{
-		taxAmount = Math.round(subtotalAmount * salesTax / 100.0);
+		taxAmount = Math.round( (subtotalAmount * salesTax) / 100.0);
 		totalAmount = subtotalAmount + taxAmount;
 	}
 	/**

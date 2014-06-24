@@ -38,7 +38,7 @@ public class SystemInit extends JFrame
 	public static void main(String[] args) {
 		SystemInit gui = new SystemInit();  
 		gui.setVisible(true);
-		gui.pack();
+		gui.setExtendedState( MAXIMIZED_BOTH );
 		gui.setResizable(true);
 		gui.setLocationRelativeTo(null);
 		//gui.setSize(1024, 600);

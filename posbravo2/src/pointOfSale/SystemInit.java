@@ -38,7 +38,10 @@ public class SystemInit extends JFrame
 	public static void main(String[] args) {
 		SystemInit gui = new SystemInit();  
 		gui.setVisible(true);
-		gui.setSize(1024, 600);
+		gui.setExtendedState(MAXIMIZED_BOTH);
+		//gui.setResizable( true );
+		//gui.setSize(1024, 600);
+		//gui.pack();
 	}
 	/**
 	 * Defines the initial settings of the JFrame window, adds the top-level JPanel and invokes

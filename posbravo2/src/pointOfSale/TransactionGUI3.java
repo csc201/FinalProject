@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import receipt.Receipt;
+import nimaprinting.Print;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +39,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 	private JPanel transactionPanel = new JPanel(new GridBagLayout());
 	private GridBagConstraints c = new GridBagConstraints();
 	private JPanel transButtonPanel = new JPanel(new GridLayout(7,1));
-	
+	private JPanel printPanel = new JPanel( new GridLayout( 2, 1 ) );
 	
 	private JPanel receiptButtonPanel = new JPanel(new GridLayout(2,3));
 	
@@ -93,6 +96,12 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		//logoPanel.add(adminLabel);
 		logoPanel.add(logoLabel);
 		
+		/**Added Kitchen and checkout buttons to printpanel
+		 * @author Ahsan Zaman
+		 */
+		printPanel.add( new MenuButton( "Kitchen", "Kitchen", this ) );
+		printPanel.add( new MenuButton( "Checkout", "Checkout", this ) );
+		
 		c.weightx = 1.0;
 		c.weighty = 2.0;
 		c.fill = GridBagConstraints.BOTH;
@@ -102,13 +111,13 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		transactionPanel.add(new MenuButton("Log Off","Log Off",this), c);
-		
 		creditLabel.setVerticalAlignment(SwingConstants.CENTER);
 		creditLabel.setFont(new Font(Font.SERIF,Font.BOLD,24));
 		
 		giftLabel.setVerticalAlignment(SwingConstants.CENTER);
 		giftLabel.setFont(new Font(Font.SERIF,Font.BOLD,24));
 		
+		// Comment out this section for better sale method.
 		c.weighty = 1.0;
 		transactionPanel.add(creditLabel, c);
 
@@ -190,6 +199,9 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		transactionPanel.add(new MenuButton("Void", "Void", this), c);
 		transactionPanel.add(new MenuButton("Note", "Note", this), c);
 
+		/// For checkout and kitchen button
+		c.weighty=2.0;
+		transactionPanel.add( printPanel, c );
 		//markerTop.setBackground(DARK_CHAMPAGNE);
 		//markerPanel.setBackground(DARK_CHAMPAGNE);
 		
@@ -306,6 +318,29 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		{
 			
 		}
+		/**Added it to send receipt to kitchen.
+		 * @author Ahsan Zaman
+		 * 
+		 */
+		else if(event.getActionCommand().equals( "Kitchen" ) ){
+			// Implement send to kitchen by changing font to red and making those items unchangeable.
+
+			/*JList<String> list = ReceiptPanel.getReceiptList();
+			ListModel model = list.getModel();
+			String receipt=null;
+			for(int i=0; i < model.getSize(); i++){
+				receipt+=((String)model.getElementAt(i)+"\n");
+			}
+			Print kitchenOrder = new Print( receipt );
+			*/
+			ReceiptPanel.sendOrderToKitchen();
+			
+		}
+		/*else if(event.getActionCommand().equals("PRINT"))
+		{
+			///implement print receipt to receipt printer
+			Print testPrint = new Print("PRINT OUT HELLO");
+		}*/
 		    CardPanel.reset();
 	}
 	/**

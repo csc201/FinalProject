@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.swing.*;
+import javax.swing.table.*;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -20,7 +21,7 @@ import java.awt.event.MouseWheelListener;
  * @author Stephen
  *
  */
-public class Receipt implements Serializable {
+public class Receipt  implements Serializable {
 	private static final long serialVersionUID = 1L;  //Default value, added to satisfy compiler
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
@@ -28,11 +29,14 @@ public class Receipt implements Serializable {
 	private String cashier;
 	private BigDecimal subtotal;
 	private BigDecimal salesTax;
+	
 	private Date date;
 	private LinkedHashMap<Integer, MenuItem> itemMap;
 	private ReceiptGUI gui;
 	private String tableNum;
 	private int receiptNum;
+	// Added
+	private boolean itemChangeable;
 	
 	/**
 	 * Instantiates the Receipt object with the argument Merchant, cashier and taxPercent data
@@ -44,6 +48,7 @@ public class Receipt implements Serializable {
 		this.merchant = merchant;
 		this.cashier = cashier;
 		this.salesTax = salesTax;
+		itemChangeable = true;
 		tableNum = "";
 		date = new Date();
 		itemMap = new LinkedHashMap<Integer, MenuItem>();
@@ -84,6 +89,19 @@ public class Receipt implements Serializable {
 			itemMap.put(itemMap.size()+1, item);
 		gui = new ReceiptGUI();
 	}
+	
+	///Changes have been made.
+	public void markAsSent( ){
+		gui.changeTable();
+		gui.removeReceiptItemListeners();
+		gui.updateReceipt();
+	}
+	
+	/*Changes have been made
+	public void resetTableColor(){
+		gui.resetSettings();
+	}*/
+	
 	/**
 	 * Adds a MenuItem to the receipt
 	 * 
@@ -278,13 +296,19 @@ public class Receipt implements Serializable {
 			table.setRowSelectionAllowed(true);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setColumnSelectionAllowed(false);
-			table.setShowGrid(false);
+			table.setShowGrid(true);
 			table.setIntercellSpacing(new Dimension(0, 0));
 			table.setTableHeader(null);
 			
 			add(headerPanel(), BorderLayout.NORTH);
 			add(scrollPanel(), BorderLayout.CENTER);
 			add(footerPanel(), BorderLayout.SOUTH);
+		}
+		/** Marking the unchangeable part with red.
+		 * @author Ahsan Zaman
+		 */
+		public void changeTable(){
+			table.setBackground( Color.RED );
 		}
 		/*
 		 * Formats the upper third of the Receipt GUI
@@ -339,7 +363,7 @@ public class Receipt implements Serializable {
 			totalTable.setRowSelectionAllowed(false);
 			totalTable.setColumnSelectionAllowed(false);
 			totalTable.setShowGrid(false);
-			totalTable.setIntercellSpacing(new Dimension(0, 0));
+			totalTable.setIntercellSpacing(new Dimension(1, 1));
 			totalTable.setTableHeader(null);
 			
 			totalModel.addRow(new String[] { "","","SUBTOTAL","" });

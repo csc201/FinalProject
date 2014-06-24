@@ -23,6 +23,9 @@ public class ReceiptManager extends JPanel {
 	
 	private JPanel receiptPanel;
 	private ArrayList<Receipt> receiptList;
+	//addition
+	//private ArrayList<Receipt> markedList;
+	
 	private JPopupMenu popup;
 	private JComboBox<Integer> receiptBox;
 	private JComboBox<String> tableBox;
@@ -65,10 +68,10 @@ public class ReceiptManager extends JPanel {
 	private JPanel generateReceiptPanel() {
 		JPanel receiptFrame = new JPanel();
 		receiptFrame.setLayout(new BorderLayout());
-		receiptFrame.setPreferredSize(new Dimension((int)screenSize.getWidth()/4 - 10, (int)screenSize.getHeight()-50));
+		receiptFrame.setPreferredSize(new Dimension((int)screenSize.getWidth()/4 -10, (int)screenSize.getHeight()-50));
 		
 		JPanel splitPanel = new JPanel();
-		splitPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		splitPanel.setLayout(new GridLayout( 1, 5 )); // Changed from new FlowLayout( FlowLayout.RIGHT )
 		splitPanel.setBackground(CustomColor.PALE_GOLDENROD);
 		
 		splitPanel.add(new JLabel("Receipt #"));
@@ -150,6 +153,18 @@ public class ReceiptManager extends JPanel {
 		item.addActionListener(popupListener);
 		popup.add(item);
 	}
+	
+	/**Reformatting receipt to red. 
+	 * @author Ahsan Zaman
+	 * 
+	 */
+	public void reformatList(){
+		for( int i=0; i<receiptList.size() ;i++ ){
+			receiptList.get(i).markAsSent();
+		}
+		
+	}
+	
 	public void deleteSelectedItem() {
 		if(receiptList.get(receiptBox.getSelectedIndex()).hasOrderSelected())
 			receiptList.get(receiptBox.getSelectedIndex()).removeSelectedItem();

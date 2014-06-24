@@ -89,7 +89,7 @@ public class TaxPanel extends JPanel implements ActionListener
 				JOptionPane.showMessageDialog(null,"ERROR: Invalid Entry");
 			else if(Tools.isNonNegativeNumber(entry))
 			{
-				salesTax = Double.parseDouble(entry);
+				salesTax = (Double.parseDouble(entry))/100;
 				saveTax();
 				displayField.setText(String.valueOf(salesTax) + "%");
 				entryField.setText("");
