@@ -28,7 +28,7 @@ import receipt.MenuItem;
 public class ReceiptPanel extends JPanel
 {
 	private static final String TEMP_CASHIER = "CASHIER";
-	private static final Merchant TEMP_MERCHANT = new Merchant("Merchant", "Restaurant"," 703-323-3000",
+	private static final Merchant TEMP_MERCHANT = new Merchant("La dolce Vita", "Restaurant"," 703-323-3000",
 			new Address("8333 Little River Turnpike","","Annandale",Address.State.VA,"22003"));
 	private static final long serialVersionUID = 1L;
 	private static final String RECEIPT_PATH = "Files/Receipt/";
@@ -87,15 +87,21 @@ public class ReceiptPanel extends JPanel
 	 */
 	public static void addItem(String itemPrice, String itemName)
 	{
+		//long itemPricelong=Long.parseLong(itemPrice);
 		itemPrice = itemPrice.substring(0, itemPrice.length()-2) +"." 
 				+ itemPrice.substring(itemPrice.length()-2, itemPrice.length());
 		MenuItem item = new MenuItem(itemName, itemPrice);
+		//totalAmount=totalAmount+itemPricelong;
+		
+		
 		receiptManager.addItem(item);
 	}
-	private static void updateTotals()
+	private static long updateTotals(long totalAmount)
 	{
 		taxAmount = Math.round(subtotalAmount * salesTax / 100.0);
 		totalAmount = subtotalAmount + taxAmount;
+		return totalAmount;
+		
 	}
 	/**
 	 * Called by the Delete button in the CheckOutPanel class to remove an item from the receiptList.
@@ -141,7 +147,7 @@ public class ReceiptPanel extends JPanel
 						}
 					}
 					subtotalAmount = subtotalAmount - Tools.toAmount(itemPrice);
-					updateTotals();
+					updateTotals(subtotalAmount);
 				}
 			}
 			
