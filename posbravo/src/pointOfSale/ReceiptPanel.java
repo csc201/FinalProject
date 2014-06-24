@@ -90,12 +90,14 @@ public class ReceiptPanel extends JPanel
 		itemPrice = itemPrice.substring(0, itemPrice.length()-2) +"." 
 				+ itemPrice.substring(itemPrice.length()-2, itemPrice.length());
 		MenuItem item = new MenuItem(itemName, itemPrice);
+		
 		receiptManager.addItem(item);
 	}
 	private static void updateTotals()
 	{
 		taxAmount = Math.round(subtotalAmount * salesTax / 100.0);
 		totalAmount = subtotalAmount + taxAmount;
+		receiptManager.add(getTimeStamp(), null);
 	}
 	/**
 	 * Called by the Delete button in the CheckOutPanel class to remove an item from the receiptList.

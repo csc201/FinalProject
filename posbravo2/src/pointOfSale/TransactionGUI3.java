@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import nimaprinting.Print;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,15 +33,18 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 	private static final Color DARK_GREEN = new Color(0,100,0);
 	private static boolean adminPrivilege;
 	
+	MenuButton jbtKitchen = new MenuButton("KITCHEN", "KITCHEN", this);
+	JButton jbtPrint = new MenuButton("PRINT", "PRINT", this);
+	private JPanel printPanel = new JPanel(new GridLayout(1,2));
+	
 	private JPanel halfPanel = new JPanel(new GridLayout(1,2));
 	private JPanel wrapperPanel = new JPanel(new GridLayout(1, 1));
 	private JPanel transactionPanel = new JPanel(new GridBagLayout());
+	
 	private GridBagConstraints c = new GridBagConstraints();
 	private JPanel transButtonPanel = new JPanel(new GridLayout(7,1));
 	
-	
 	private JPanel receiptButtonPanel = new JPanel(new GridLayout(2,3));
-	
 	private JPanel markerPanel = new JPanel(new GridLayout(2, 1));
 	private JPanel markerButtonPanel = new JPanel(new GridLayout(2, 2));
 	private JPanel markerTop = new JPanel(new GridLayout(2,1));
@@ -119,6 +124,10 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		transactionPanel.add(giftLabel, c);
 
 		c.weighty = 2.0;
+		
+		printPanel.add(jbtKitchen);
+		printPanel.add(jbtPrint);
+		
 		transactionPanel.add(new MenuButton("Issue", "Issue", this), c);
 		transactionPanel.add(new MenuButton("Sale", "giftSale", this), c);
 		//transButtonPanel.add(new MenuButton("VoidSale", "VoidSale", this));
@@ -189,7 +198,10 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		c.weighty = 2.0;
 		transactionPanel.add(new MenuButton("Void", "Void", this), c);
 		transactionPanel.add(new MenuButton("Note", "Note", this), c);
-
+		transactionPanel.add(new MenuButton("Search", "Search", this), c);
+		transactionPanel.add(printPanel);
+		
+		
 		//markerTop.setBackground(DARK_CHAMPAGNE);
 		//markerPanel.setBackground(DARK_CHAMPAGNE);
 		
@@ -204,7 +216,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		//transactionPanel.add(transButtonPanel);
 		//transactionPanel.add(markerPanel);
 		//transactionPanel.add(logoPanel);
-		//transactionPanel.add(checkoutButtonPanel);
+		transactionPanel.add(checkoutButtonPanel);
 		
 		wrapperPanel.setBorder(BorderFactory.createMatteBorder(10,0,10,0,DARK_CHAMPAGNE));
 		wrapperPanel.add(transactionPanel);
@@ -306,6 +318,26 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		{
 			
 		}
+		else if(event.getActionCommand().equals("Note"))
+		{
+			JOptionPane.showInputDialog(null, "Write the note");
+		}	
+		else if(event.getActionCommand().equals("Search"))
+		{
+			///implement gui
+			new SearchGUI();
+		}
+		else if(event.getActionCommand().equals("KITCHEN"))
+		{
+			///implement send order to kitchen
+			
+		}
+		else if(event.getActionCommand().equals("PRINT"))
+		{
+			///implement print receipt to receipt printer
+			Print testPrint = new Print("PRINT OUT HELLO");
+		}
+		
 		    CardPanel.reset();
 	}
 	/**

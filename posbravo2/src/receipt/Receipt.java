@@ -23,7 +23,7 @@ import java.awt.event.MouseWheelListener;
 public class Receipt implements Serializable {
 	private static final long serialVersionUID = 1L;  //Default value, added to satisfy compiler
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	
+
 	private Merchant merchant;
 	private String cashier;
 	private BigDecimal subtotal;
@@ -33,7 +33,7 @@ public class Receipt implements Serializable {
 	private ReceiptGUI gui;
 	private String tableNum;
 	private int receiptNum;
-	
+
 	/**
 	 * Instantiates the Receipt object with the argument Merchant, cashier and taxPercent data
 	 * @param merchant
@@ -158,7 +158,7 @@ public class Receipt implements Serializable {
 		this.receiptNum = receiptNum;
 		gui.updateReceipt();
 	}
-	
+
 	/**
 	 * Returns the HashMap key value for the currently selected MenuItem in this receipt's GUI
 	 * 
@@ -257,14 +257,14 @@ public class Receipt implements Serializable {
 	 */
 	private class ReceiptGUI extends JPanel {
 		private static final long serialVersionUID = 1L; //Default value
-		
+
 		private StringTableModel tableModel;
 		private JTable table;
 		private StringTableModel totalModel;
 		private JTable totalTable;
 		private JLabel tableNumLabel;
 		private JLabel receiptNumLabel;
-		
+
 		/*
 		 * Creates a JPanel GUI to allow the user to select the MenuItems stored in this receipt and interact with the object as if it
 		 * were a receipt
@@ -281,7 +281,7 @@ public class Receipt implements Serializable {
 			table.setShowGrid(false);
 			table.setIntercellSpacing(new Dimension(0, 0));
 			table.setTableHeader(null);
-			
+
 			add(headerPanel(), BorderLayout.NORTH);
 			add(scrollPanel(), BorderLayout.CENTER);
 			add(footerPanel(), BorderLayout.SOUTH);
@@ -293,12 +293,12 @@ public class Receipt implements Serializable {
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.setBorder(BorderFactory.createMatteBorder(5,5,5,5,Color.WHITE));
 			panel.setBackground(Color.WHITE);
-			
+
 			JLabel label = new JLabel(merchant.getName(), SwingConstants.CENTER);
 			label.setFont(new Font(Font.SERIF, Font.BOLD, 24));
 			label.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.WHITE));
 			panel.add(label, BorderLayout.CENTER);
-			
+
 			JPanel subPanel = new JPanel(new GridLayout(3,1));
 			subPanel.setBackground(Color.WHITE);
 			label = new JLabel(merchant.getAddress().getStreetAddress(), SwingConstants.CENTER);
@@ -309,9 +309,9 @@ public class Receipt implements Serializable {
 			subPanel.add(label);
 			label = new JLabel(merchant.getPhone(), SwingConstants.CENTER);
 			subPanel.add(label);
-			
+
 			panel.add(subPanel, BorderLayout.SOUTH);
-			
+
 			return panel;
 		}
 		/*
@@ -331,7 +331,7 @@ public class Receipt implements Serializable {
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.setBorder(BorderFactory.createMatteBorder(5,5,5,5,Color.WHITE));
 			panel.setBackground(Color.WHITE);
-			
+
 			totalModel = new StringTableModel(new String[] { "Order","Item","Extra","Cost" });
 			totalTable = new JTable(totalModel);
 			totalTable.setBackground(Color.WHITE);
@@ -341,20 +341,21 @@ public class Receipt implements Serializable {
 			totalTable.setShowGrid(false);
 			totalTable.setIntercellSpacing(new Dimension(0, 0));
 			totalTable.setTableHeader(null);
-			
+
 			totalModel.addRow(new String[] { "","","SUBTOTAL","" });
 			totalModel.addRow(new String[] { "","","TAX","" });
 			totalModel.addRow(new String[] { "","","TOTAL","" });
 			
+
 			panel.add(totalTable, BorderLayout.NORTH);
-			
+
 			JLabel label = new JLabel("Thank You for Your Patronage!", SwingConstants.CENTER);
 			label.setBorder(BorderFactory.createMatteBorder(10,10,10,10,Color.WHITE));
 			panel.add(label, BorderLayout.CENTER);
-			
+
 			JPanel subPanel = new JPanel(new GridLayout(2,1));
 			subPanel.setBackground(Color.WHITE);
-			
+
 			JPanel receiptNumPanel = new JPanel();
 			receiptNumPanel.setBackground(Color.WHITE);
 			if(receiptNum > 0) {
@@ -367,23 +368,25 @@ public class Receipt implements Serializable {
 				receiptNumLabel = new JLabel("");
 			receiptNumPanel.add(receiptNumLabel);
 			subPanel.add(receiptNumPanel);
-			
+
 			JPanel infoPanel = new JPanel(new GridLayout(1,3));
 			infoPanel.setBackground(Color.WHITE);
 			label = new JLabel(new SimpleDateFormat(DATE_FORMAT).format(date));
 			infoPanel.add(label);
-			
+
 			if(tableNum.equals(""))
 				tableNumLabel = new JLabel(tableNum, SwingConstants.CENTER);
 			else
 				tableNumLabel = new JLabel("Table: " + tableNum, SwingConstants.CENTER);
 			infoPanel.add(tableNumLabel);
-			
+
 			label = new JLabel("Cashier: " + cashier, SwingConstants.RIGHT);
 			infoPanel.add(label);
 			subPanel.add(infoPanel);
-			
+
 			panel.add(subPanel, BorderLayout.SOUTH);
+
+			
 			
 			return panel;
 		}
@@ -392,7 +395,7 @@ public class Receipt implements Serializable {
 		 */
 		public void updateReceipt() {
 			tableModel.deleteAllRows();
-			
+
 			for(Integer key : itemMap.keySet()) {
 				tableModel.addRow(new String[] { key.toString(), itemMap.get(key).getName(), "", itemMap.get(key).getPrice().toPlainString() });
 				for(ExtraCost extra : itemMap.get(key).getExtraList())
@@ -409,12 +412,12 @@ public class Receipt implements Serializable {
 			totalModel.setValueAt(subtotal.toPlainString(), 0, 3);
 			totalModel.setValueAt(subtotal.multiply(salesTax).setScale(2,BigDecimal.ROUND_HALF_UP).toPlainString(), 1, 3);
 			totalModel.setValueAt(subtotal.multiply(salesTax.add(BigDecimal.ONE)).setScale(2,BigDecimal.ROUND_HALF_UP).toPlainString(), 2, 3);
-			
+
 			if(tableNum.equals(""))
 				tableNumLabel.setText(tableNum);
 			else
 				tableNumLabel.setText("Table: " + tableNum);
-			
+
 			if(receiptNum > 0) {
 				String receiptNumString = String.valueOf(receiptNum);
 				while(receiptNumString.length() < 9)
@@ -423,7 +426,7 @@ public class Receipt implements Serializable {
 			}
 			else
 				receiptNumLabel.setText("");
-			
+
 			refresh();
 		}
 		/*
