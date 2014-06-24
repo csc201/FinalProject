@@ -1,15 +1,18 @@
 package pointOfSale;
 
 /**SearchGUI.java
+ * 
  * This program searches through tickets based on the receipt number, userID or amount
- * @author Helen
+ * This program relies on Receipts.java (mostly for demo purposes, since ReceiptManager wasn't returning Receipt objects correctly)
+ * 
+ * @author Helen Li
  */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,13 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import receipt.Receipt;
-import receipt.ReceiptManager;
-
-public class SearchGUI extends JFrame implements ActionListener {
+public class SearchGUI extends JFrame {
 	
 	//all the components in this GUI
 	public JLabel receiptLabel;
@@ -36,7 +37,6 @@ public class SearchGUI extends JFrame implements ActionListener {
 	public JTextField amountField;
 	public JTextArea resultsArea;
 	public JScrollPane scroll;
-	public JButton closeButton;
 	public JButton searchButton;
 	public JButton clearButton;
 	public JFrame frame;
@@ -44,6 +44,8 @@ public class SearchGUI extends JFrame implements ActionListener {
 	public JPanel resultsPanel;
 	public JPanel buttonPanel;
 	
+	private static final Color DARK_CHAMPAGNE = new Color(194, 178, 128);
+	private static final Color DARK_GREEN = new Color(0,100,0);
 
 	public SearchGUI() {
 		
@@ -51,11 +53,10 @@ public class SearchGUI extends JFrame implements ActionListener {
 		receiptLabel = new JLabel("Receipt: ");
 		receiptField = new JTextField(10);
 		userIDLabel = new JLabel("User ID: ");
-		userIDField = new JTextField(20);
+		userIDField = new JTextField(10);
 		amountLabel = new JLabel("Amount: ");
-		amountField = new JTextField(20);
-		resultsArea = new JTextArea(5, 20);
-		closeButton = new JButton("Close");
+		amountField = new JTextField(10);
+		resultsArea = new JTextArea(5, 27);
 		searchButton = new JButton("Search");
 		clearButton = new JButton("Clear");
 		frame = new JFrame("Search Tickets");
@@ -63,19 +64,22 @@ public class SearchGUI extends JFrame implements ActionListener {
 		resultsPanel = new JPanel();
 		buttonPanel = new JPanel();
 		
-
+		//the grid for the main panel
 		GridLayout aGridLayout = new GridLayout(0,2);
 		
 		//customizing components
 		receiptLabel.setLabelFor(receiptField);
+		userIDLabel.setLabelFor(userIDField);
+		amountLabel.setLabelFor(amountField);
 		panel.setLayout(aGridLayout);
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10) );
 		
 		resultsPanel.setBorder(new TitledBorder ( new EtchedBorder (), "Search Results" ));
-		
+		resultsArea.setLineWrap(true);
 		resultsArea.setEditable(false);
 		scroll = new JScrollPane(resultsArea);
 		scroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
-		
+
 		frame.setLayout(new BorderLayout());
 		
 		//populating JPanels
@@ -87,7 +91,6 @@ public class SearchGUI extends JFrame implements ActionListener {
 		panel.add(amountField, BorderLayout.EAST);
 		buttonPanel.add(searchButton);
 		buttonPanel.add(clearButton);
-		buttonPanel.add(closeButton);
 		resultsPanel.add(scroll);
 		frame.add(panel, BorderLayout.NORTH);
 		frame.add(buttonPanel, BorderLayout.CENTER);
@@ -95,21 +98,14 @@ public class SearchGUI extends JFrame implements ActionListener {
 			
 		
 		//JFrame necessities
-		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300,300);
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 
-		/** ActionListener
-		 * closes window when closeButton's clicked
+		/** 
+		 * resets all text fields to null
 		 */
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-			}
-		});
-		
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				receiptField.setText(null);
@@ -119,15 +115,22 @@ public class SearchGUI extends JFrame implements ActionListener {
 			}
 		});
 		
+		/**
+		 * logic when the search button is pressed
+		 */
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				Receipts aReceipt = new Receipts();
 				
-				int searchReceiptNo = Integer.parseInt(receiptField.getText());
-				resultsArea.append(aReceipt.findReceiptByid(searchReceiptNo)); //OMG IT WORKS
+				int searchReceiptNo = Integer.parseInt(receiptField.getText()); //parse the input to an int
+				resultsArea.setText(aReceipt.findReceiptByid(searchReceiptNo)); //prints the full receipt object as a string to the result area
 				
 				int searchUserNo = Integer.parseInt(userIDField.getText());
+				resultsArea.append(aReceipt.findUserByid(searchUserNo) + "\n");
+				
+				int searchAmountNo = Integer.parseInt(amountField.getText());
+				resultsArea.append(aReceipt.findReceiptByAmount(searchAmountNo) + "\n");
 				
 			}
 		});
@@ -135,32 +138,8 @@ public class SearchGUI extends JFrame implements ActionListener {
 	}
 	
 	
-	public static void main (String[] args) {
-		
+	public static void main (String[] args) {		
 		SearchGUI searchGUI = new SearchGUI();
-		
-		
-		
-		Receipts aReceipt = new Receipts();
-				
-//		ReceiptManager receipts = new ReceiptManager();
-//		ArrayList<Receipt> myReceipts = receipts.getList();
-		
-		aReceipt.findReceiptByid(1111);
-		
 	}
-	
-
-	@Override
-	public void actionPerformed(ActionEvent e) { 
-		// TODO Auto-generated method stub
-		if (e.getActionCommand().equals("searchButton")) {
-			//start to integrate back 
-			//need to get ticket number and loop thru ticket list
-			resultsArea.append("HI");
-			Integer.parseInt(receiptField.getText());
-		}
-	}
-	
 	
 }

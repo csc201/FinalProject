@@ -1,68 +1,103 @@
 package pointOfSale;
 
+/**Receipts.java
+ * 
+ * Has an ArrayList with Receipt objects. Each Receipt has a userID, receiptNo, and amount.
+ * Mostly for demo purposes, since ReceiptManager wasn't working. However, the functionality is there and can be easily expanded upon.
+ * 
+ * @author Helen Li
+ */
 import java.util.ArrayList;
 
 public class Receipts {
 	//attributes
-	int id;
+	int userID;
 	int receiptNo;
 	double amount;
 	
-	private static ArrayList<Receipts> myReceipts = new ArrayList<Receipts>();
+	private ArrayList<Receipts> myReceipts = new ArrayList<Receipts>();
 	
 	Receipts(){
 		//making up new receipts here
-		Receipts r1 = new Receipts(1111, 123,12);
+		Receipts r1 = new Receipts(1111,111,10.00);
+		Receipts r2 = new Receipts(1112,222,12.00);
 		myReceipts.add(r1);
+		myReceipts.add(r2);
 	}
 	
-	Receipts (int i, int rn, double a) {
-		id = i;
+	Receipts (int rn, int i, double a) {
 		receiptNo = rn;
+		userID = i;
 		amount = a;
-		
-		//myReceipts.add(new Receipts(this.id, this.receiptNo, this.amount));
-
 	}
 	
-	public int getID() {
-		System.out.println(this.id);
-		return this.id;
-		
+	//all 3 getters
+	public int getReceiptNo() {
+		return this.receiptNo;
+	}
+	
+	public int getUserID() {
+		return this.userID;
+	}
+	
+	public double getAmount() {
+		return this.amount;
 	}
 
+
+	//need to override toString, or else the ArrayList will print out a memory address
 	@Override
 	public String toString() {
-		return "Receipts [id=" + id + ", receiptNo=" + receiptNo + ", amount="
-				+ amount + "]";
+		return "Receipts [userID=" + userID + ", receiptNo=" + receiptNo
+				+ ", amount=" + amount + "]";
 	}
 	
+	/**
+	 * searches through all Receipt objects by ticket ID
+	 * @param i
+	 * @return
+	 */
 	public String findReceiptByid(int i) {
 		for (Receipts r : myReceipts) {
-			 if(r.getID()== i) {
-				 System.out.println("The ID with" +i +" exists");
+			 if(r.getReceiptNo()== i) {
+				 System.out.println("The ticket ID with" +i +" exists");
 				 System.out.println(r);
 				 return r.toString();
 			} 
 		}
-		return "Not Found";
-	}
-
-	public static void main (String[] args) {
-		
-		
-		Receipts rc = new Receipts();
-		
-		
-		/*for (Receipts r: myReceipts) {
-			System.out.println(r);
-			
-			r.getID();
-			if(r.getID() == 1111) 
-				 System.out.println("The ID is 1111");
-		}*/
-		
-
+		return "Error: Not Found";
 	}
 	
+	/**
+	 * searches through all Receipt objects by user ID
+	 * @param i
+	 * @return
+	 */
+	public String findUserByid(int i) {
+		for (Receipts r : myReceipts) {
+			 if(r.getUserID()== i) {
+				 System.out.println("The User ID with" +i +" exists");
+				 System.out.println(r);
+				 return r.toString();
+			} 
+		}
+		return "Error: Not Found";
+	}
+	
+	/**
+	 * searches through all Receipt objects by amount
+	 * @param i
+	 * @return
+	 */
+	public String findReceiptByAmount(int i) {
+		for (Receipts r : myReceipts) {
+			 if(r.getAmount()== i) {
+				 System.out.println("The ticket with amount" +i +" exists");
+				 System.out.println(r);
+				 return r.toString();
+			} 
+		}
+		return "Error: Not Found";
+	}
+
 }

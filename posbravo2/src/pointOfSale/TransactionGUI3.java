@@ -189,6 +189,7 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		c.weighty = 2.0;
 		transactionPanel.add(new MenuButton("Void", "Void", this), c);
 		transactionPanel.add(new MenuButton("Note", "Note", this), c);
+		transactionPanel.add(new MenuButton("Search", "Search", this), c);
 
 		//markerTop.setBackground(DARK_CHAMPAGNE);
 		//markerPanel.setBackground(DARK_CHAMPAGNE);
@@ -306,7 +307,13 @@ public class TransactionGUI3 extends JPanel implements ActionListener
 		{
 			
 		}
+		
+		else if(event.getActionCommand().equals("Search"))
+		{
+			new SearchGUI();
+		}
 		    CardPanel.reset();
+		    	    
 	}
 	/**
 	 * Setter for the adminPrivilege variable 
