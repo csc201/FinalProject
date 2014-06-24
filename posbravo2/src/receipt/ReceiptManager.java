@@ -22,7 +22,7 @@ public class ReceiptManager extends JPanel {
 	private static final long serialVersionUID = 1L; //Default value
 	
 	private JPanel receiptPanel;
-	private ArrayList<Receipt> receiptList;
+	public ArrayList<Receipt> receiptList;
 	private JPopupMenu popup;
 	private JComboBox<Integer> receiptBox;
 	private JComboBox<String> tableBox;
@@ -41,6 +41,11 @@ public class ReceiptManager extends JPanel {
 	 * 
 	 * @param original
 	 */
+	public ReceiptManager() {
+			
+	}
+	
+	
 	public ReceiptManager(Merchant merchant, String cashier, BigDecimal salesTax) {
 		setBackground(CustomColor.PALE_GOLDENROD);
 		addMouseListener(new BackgroundListener());
@@ -126,7 +131,6 @@ public class ReceiptManager extends JPanel {
 		
 		return receiptFrame;
 	}
-	public ArrayList<Receipt> getList() { return receiptList; }
 	public void clearReceipt() {
 		deleteAll();
 	}
@@ -480,4 +484,11 @@ public class ReceiptManager extends JPanel {
 		}
 		
 	}
+	public ArrayList<Receipt> getList() { return receiptList; }
+	
+	public static void main (String [] args) {
+		ReceiptManager rm = new ReceiptManager();
+		System.out.println(rm.getList());
+	}
+
 }

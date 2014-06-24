@@ -89,7 +89,7 @@ public class Receipts {
 	 * @param i
 	 * @return
 	 */
-	public String findReceiptByAmount(int i) {
+	public String findReceiptByAmount(double i) {
 		for (Receipts r : myReceipts) {
 			 if(r.getAmount()== i) {
 				 System.out.println("The ticket with amount" +i +" exists");
