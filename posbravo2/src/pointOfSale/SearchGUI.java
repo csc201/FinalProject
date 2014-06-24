@@ -38,19 +38,13 @@ public class SearchGUI extends JFrame implements ActionListener {
 	public JScrollPane scroll;
 	public JButton closeButton;
 	public JButton searchButton;
+	public JButton clearButton;
 	public JFrame frame;
 	public JPanel panel;
 	public JPanel resultsPanel;
 	public JPanel buttonPanel;
 	
-	
-	//testing ArrayList
-	private ArrayList<Receipts> myReceipts = new ArrayList<Receipts>();
-	
-	String search = "1111";
-	
 
-	
 	public SearchGUI() {
 		
 		//initializing components
@@ -63,8 +57,9 @@ public class SearchGUI extends JFrame implements ActionListener {
 		resultsArea = new JTextArea(5, 20);
 		closeButton = new JButton("Close");
 		searchButton = new JButton("Search");
+		clearButton = new JButton("Clear");
 		frame = new JFrame("Search Tickets");
-		panel = new JPanel();
+		panel = new JPanel(); //the north panel, with all the labels and fields
 		resultsPanel = new JPanel();
 		buttonPanel = new JPanel();
 		
@@ -91,6 +86,7 @@ public class SearchGUI extends JFrame implements ActionListener {
 		panel.add(amountLabel, BorderLayout.WEST);
 		panel.add(amountField, BorderLayout.EAST);
 		buttonPanel.add(searchButton);
+		buttonPanel.add(clearButton);
 		buttonPanel.add(closeButton);
 		resultsPanel.add(scroll);
 		frame.add(panel, BorderLayout.NORTH);
@@ -103,6 +99,7 @@ public class SearchGUI extends JFrame implements ActionListener {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300,300);
+		frame.setLocationRelativeTo(null);
 
 		/** ActionListener
 		 * closes window when closeButton's clicked
@@ -113,52 +110,46 @@ public class SearchGUI extends JFrame implements ActionListener {
 			}
 		});
 		
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				receiptField.setText(null);
+				userIDField.setText(null);
+				amountField.setText(null);
+				resultsArea.setText(null);
+			}
+		});
 		
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				resultsArea.append("HI");
+				Receipts aReceipt = new Receipts();
+				
+				int searchReceiptNo = Integer.parseInt(receiptField.getText());
+				resultsArea.append(aReceipt.findReceiptByid(searchReceiptNo)); //OMG IT WORKS
+				
+				int searchUserNo = Integer.parseInt(userIDField.getText());
 				
 			}
 		});
 		
 	}
 	
+	
 	public static void main (String[] args) {
 		
 		SearchGUI searchGUI = new SearchGUI();
 		
+		
+		
+		Receipts aReceipt = new Receipts();
+				
 //		ReceiptManager receipts = new ReceiptManager();
 //		ArrayList<Receipt> myReceipts = receipts.getList();
 		
+		aReceipt.findReceiptByid(1111);
 		
-		
-		for (int i=0; i< myReceipts.size(); i++) {
-			String item = myReceipts.get(i);
-			System.out.println("Item is " + item);
-			
-			if (search.equals(myReceipts.get(i)))
-				System.out.println(myReceipts.get(i));
-		}
 	}
 	
-	public class Receipts {
-		//attributes
-		int id;
-		int receiptNo;
-		double amount;
-	}
-	
-	public Receipts findReceiptByid(int id) {
-		
-		for (Receipts r : myReceipts) {
-			if(r.getID() == id) {
-				return r;
-			}
-			
-		}
-		return null;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) { 
